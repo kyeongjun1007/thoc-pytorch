@@ -2,14 +2,14 @@ import torch
 import torch.nn as nn
 
 class THOC(nn.Module):
-    def __init__(self, n_input, n_hidden, n_layers, n_centroids, dropout=0, cell_type='GRU', batch_first=False):
+    def __init__(self, n_input, n_hidden, n_layers, centroids, dropout=0, cell_type='GRU', batch_first=False):
         super().__init__()
         self.drnn = DRNN(n_input, n_hidden, n_layers, dropout, cell_type, batch_first)              # drnn 모델 생성
-        self.centroids = [[[0]*n_hidden]*i for i in n_centroids]                                    # n_centroid 예시 : [6,4,3]
-                                                                                                    # cluster_centroid를 n_centroid만큼 n_hidden 차원 0벡터로 생성
-        
+        self.centroids = centroids
+             
     def forward(self, x):
         out, hidden = self.drnn(x)
+        
     
     def assign_prob(self, f_bar, centroids):
         return prob
