@@ -6,21 +6,19 @@ class THOC(nn.Module):
         super().__init__()
         self.drnn = DRNN(n_input, n_hidden, n_layers, dropout, cell_type, batch_first)              # drnn 모델 생성
         self.centroids = [[[0]*n_hidden]*i for i in n_centroids]                                    # n_centroid 예시 : [6,4,3]
-                                                                                                    # n_hidden 차원의 cluster_centroid를 n_centroid만큼 0벡터로 생성
-        self.f_bar = 
-        self.f_hat = 
+                                                                                                    # cluster_centroid를 n_centroid만큼 n_hidden 차원 0벡터로 생성
         
     def forward(self, x):
-        bb
+        out, hidden = self.drnn(x)
     
     def assign_prob(self, f_bar, centroids):
-        aa
-        
-    def update(self, f_bar, assign_prob):
-        cc
-        
-    def concat(self, f_hat, f)
-
+        return prob
+    
+    def update(self, f_bar, prob):
+        return f_hat
+    
+    def concat(self, f_hat, f):
+        return f_bar
 
 ##-------------------------------------------------DRNN---------------------------------------------------
 class DRNN(nn.Module):
