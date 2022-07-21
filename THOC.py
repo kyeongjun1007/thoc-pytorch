@@ -31,9 +31,6 @@ class THOC(nn.Module):
         loss_thoc = 
         loss_orth = torch.matmul(torch.t(cluster_centers),cluster_centers) - torch.eye('''centroids 3차원 이상??''')
         loss_tss = 
-            
-                
-        
         
     def assign_prob(self, f_bar, centroids):
         return prob
