@@ -1,16 +1,40 @@
 import torch
 import torch.nn as nn
+from sklearn.cluster import KMeans
 
 class THOC(nn.Module):
-    def __init__(self, n_input, n_hidden, n_layers, centroids, dropout=0, cell_type='GRU', batch_first=False):
+    def __init__(self, n_input, n_hidden, n_layers, n_centroids, dropout=0, cell_type='GRU', batch_first=False, first = False):
         super().__init__()
+        self.first = first                                                                          # 첫 배치인가?
         self.drnn = DRNN(n_input, n_hidden, n_layers, dropout, cell_type, batch_first)              # drnn 모델 생성
-        self.centroids = centroids
+        self.n_centroids = n_centroids                                                              # layer별 cluster center의 개수
+        self.cluster_centers = [[[0]*n_hidden]*i for i in n_centroids]                              # cluster_centers를 layer별 n_centorids개 만큼의 n_hidden 차원의 0벡터로 초기화
              
     def forward(self, x):
-        out, hidden = self.drnn(x)
+        out, hidden = self.drnn(x)                                                                  '''n_layer개 만큼의 out이 나오도록 어떻게 쓰지'''
         
-    
+        if self.first == True :                                                                     # 첫 배치일때는 drnn의 노드값에 k-means를 적용하여 cluster centroids 초기화
+            for i, n_clusters in enumerate(self.n_centroids) :
+                k = n_clusters
+                model = KMeans(n_clusters = k)
+                model.fit(out)
+                self.cluster_centers[i] = model.cluster_centers_
+        
+        for layer in range(n_layers) :
+            if (layer == 0) :
+                f_bar = out[layer]
+            P = assign_prob(f_bar, self.cluster_centers)
+            f_hat = update(f_bar, P)
+            if (layer != (n_layer-1)) :
+                f_bar = concat(f_hat,out[layer+1])
+        
+        loss_thoc = 
+        loss_orth = torch.matmul(torch.t(cluster_centers),cluster_centers) - torch.eye('''centroids 3차원 이상??''')
+        loss_tss = 
+            
+                
+        
+        
     def assign_prob(self, f_bar, centroids):
         return prob
     
@@ -21,6 +45,7 @@ class THOC(nn.Module):
         return f_bar
 
 ##-------------------------------------------------DRNN---------------------------------------------------
+'''lyaer별로 out값을 내보내도록 수정해야함...!'''
 class DRNN(nn.Module):
 
     def __init__(self, n_input, n_hidden, n_layers, dropout=0, cell_type='GRU', batch_first=False):
