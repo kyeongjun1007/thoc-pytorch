@@ -54,7 +54,7 @@ class THOC(nn.Module):
     
     def cos_dist(self, f_L,c_L):
         return d
-# git commit 왜 안되지
+
 ##-------------------------------------------------DRNN---------------------------------------------------
 '''lyaer별로 out값을 내보내도록 수정해야함...! (h_n 이용?)'''
 class DRNN(nn.Module):
