@@ -11,8 +11,8 @@ class THOC(nn.Module):
         self.cluster_centers = [[[0]*n_hidden]*i for i in n_centroids]                              # cluster_centers를 layer별 n_centorids개 만큼의 n_hidden 차원의 0벡터로 초기화
              
     def forward(self, x):
-        out, hidden = self.drnn(x)                                                                  '''n_layer개 만큼의 out이 나오도록 어떻게 쓰지'''
-        
+        out, hidden = self.drnn(x)                                                                  '''n_layer개 만큼의 out이 나오도록 어떻게 쓰지(O)'''
+        R = []
         if self.first == True :                                                                     # 첫 배치일때는 drnn의 노드값에 k-means를 적용하여 cluster centroids 초기화
             for i, n_clusters in enumerate(self.n_centroids) :
                 k = n_clusters
@@ -24,12 +24,20 @@ class THOC(nn.Module):
             if (layer == 0) :
                 f_bar = out[layer]
             P = assign_prob(f_bar, self.cluster_centers)
+            R = calculate_R(P)
             f_hat = update(f_bar, P)
             if (layer != (n_layer-1)) :
                 f_bar = concat(f_hat,out[layer+1])
+            
+        KL = self.n_centroids[len(self.n_centroids)-1]
         
-        loss_thoc = 
-        loss_orth = torch.matmul(torch.t(cluster_centers),cluster_centers) - torch.eye('''centroids 3차원 이상??''')
+        loss_thoc = torch.matmul(torch.t(R),cos_dist(f_hat,self.cluster_centers[-1]))/KL            # sum(R*d)/K^L
+        
+        co = torch.matmul(torch.t(self.cluster_centers),self.cluster_centers) -
+             torch.eye(self.cluster_centers.size(0))                                                # co = t(C)*C-I
+        co = np.linalg.norm(co, ord='fro')                                                          # co = frobenius norm of co
+        loss_orth = (co*co)/KL                                                                      # co^2/the num of last layer centroids
+        
         loss_tss = 
         
     def assign_prob(self, f_bar, centroids):
@@ -40,9 +48,15 @@ class THOC(nn.Module):
     
     def concat(self, f_hat, f):
         return f_bar
+    
+    def calculate_R(self, P):
+        return R
+    
+    def cos_dist(self, f_L,c_L):
+        return d
 
 ##-------------------------------------------------DRNN---------------------------------------------------
-'''lyaer별로 out값을 내보내도록 수정해야함...!'''
+'''lyaer별로 out값을 내보내도록 수정해야함...! (h_n 이용?)'''
 class DRNN(nn.Module):
 
     def __init__(self, n_input, n_hidden, n_layers, dropout=0, cell_type='GRU', batch_first=False):
