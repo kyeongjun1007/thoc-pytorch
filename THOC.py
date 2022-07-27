@@ -40,7 +40,8 @@ class THOC(nn.Module):
         
         loss_tss = 
         
-        loss = loss_thoc + loss_orth + loss_tss
+        loss = loss_thoc + loss_orth + loss_tss                                                     # 최종 loss
+        
         
     def assign_prob(self, f_bar, centroids):
         return prob
