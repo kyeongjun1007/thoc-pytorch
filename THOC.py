@@ -3,12 +3,15 @@ import torch.nn as nn
 from sklearn.cluster import KMeans
 
 class THOC(nn.Module):
-    def __init__(self, n_input, n_hidden, n_layers, n_centroids, dropout=0, cell_type='GRU', batch_first=False, first = False):
+    def __init__(self, n_input, n_hidden, n_layers, n_centroids, lambda_ = [0.1, 0,1], dropout=0, cell_type='GRU', batch_first=False, first = False):
         super().__init__()
         self.first = first                                                                          # 첫 배치인가?
         self.drnn = DRNN(n_input, n_hidden, n_layers, dropout, cell_type, batch_first)              # drnn 모델 생성
         self.n_centroids = n_centroids                                                              # layer별 cluster center의 개수
         self.cluster_centers = [[[0]*n_hidden]*i for i in n_centroids]                              # cluster_centers를 layer별 n_centorids개 만큼의 n_hidden 차원의 0벡터로 초기화
+        self.lambda_orth = lambda_[0]
+        self.lambda_tss = lambda_[1]
+        self.cos = nn.CosineSimilarity(dim=0)
              
     def forward(self, x):
         out, hidden = self.drnn(x)                                                                  '''n_layer개 만큼의 out이 나오도록 어떻게 쓰지(O)'''
@@ -17,21 +20,21 @@ class THOC(nn.Module):
             for i, n_clusters in enumerate(self.n_centroids) :
                 k = n_clusters
                 model = KMeans(n_clusters = k)
-                model.fit(out)
+                model.fit(out[i])
                 self.cluster_centers[i] = model.cluster_centers_
         
         for layer in range(n_layers) :
             if (layer == 0) :
-                f_bar = out[layer]
-            P = assign_prob(f_bar, self.cluster_centers)
-            R = calculate_R(P)
+                f_bar = [out[layer]]
+            P = assign_prob(f_bar, self.cluster_centers[layer])
+            R = calculate_R(P, R, layer)
             f_hat = update(f_bar, P)
             if (layer != (n_layer-1)) :
                 f_bar = concat(f_hat,out[layer+1])
             
         KL = self.n_centroids[len(self.n_centroids)-1]
         
-        loss_thoc = torch.matmul(torch.t(R),cos_dist(f_hat,self.cluster_centers[-1]))/KL            # sum(R*d)/K^L
+        loss_thoc = torch.matmul(torch.t(R),(1-self.cos(f_hat,self.cluster_centers[-1])))/KL            # sum(R*d)/K^L
         
         co = torch.matmul(torch.t(self.cluster_centers),self.cluster_centers) -
              torch.eye(self.cluster_centers.size(0))                                                # co = t(C)*C-I
@@ -40,11 +43,23 @@ class THOC(nn.Module):
         
         loss_tss = 
         
-        loss = loss_thoc + loss_orth + loss_tss                                                     # 최종 loss
+        loss = loss_thoc + self.lambda_orth*loss_orth + self.lambda_tss*loss_tss                                                     # 최종 loss
         
         
     def assign_prob(self, f_bar, centroids):
-        return prob
+        P = []
+        prob = []
+        scores = []
+        for t in range(f_bar.shape[0]):
+            for i in range(f_bar.shape[1]) :
+                for j in range(len(controids)) :
+                    scores.append(cos(f_bar[t,i], centroids[j]).tolist())
+                score_sum = sum(scores)
+                scores = [i/score_sum for i in scores]
+                prob.append(scores)
+            P.append(prob)
+        return P
+    # P = [[[*,*,*,*]x6]xT]
     
     def update(self, f_bar, prob):
         return f_hat
@@ -52,12 +67,20 @@ class THOC(nn.Module):
     def concat(self, f_hat, f):
         return f_bar
     
-    def calculate_R(self, P):
+    def calculate_R(self, P, R_, layer):                                                                       # 2차원 P를 받아서 1차원 R을 내보냄
+        R = []
+        if (layer==0):
+            for t in range(P.shape[0]):
+                R.append([(P[t,0,i]/sum(P[t,0])).tolist() for i in range(P.shape[2])])
+        else :
+            for t in range(P.shape[0]):
+                k = []
+                for i in range(P.shape[2]):
+                    k.append(sum[P[t,c,i].tolist()*R_[t,c].tolist() for c in range(R_.shape[1]))])
+                R.append([k[j]/sum(k) for j in range(len(k)-1)])
+        R = torch.tensor(R)
         return R
     
-    def cos_dist(self, f_L,c_L):
-        return d
-
 ##-------------------------------------------------DRNN---------------------------------------------------
 '''lyaer별로 out값을 내보내도록 수정해야함...! (h_n 이용?)'''
 class DRNN(nn.Module):
