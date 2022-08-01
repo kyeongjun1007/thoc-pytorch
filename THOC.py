@@ -12,6 +12,9 @@ class THOC(nn.Module):
         self.lambda_orth = lambda_[0]
         self.lambda_tss = lambda_[1]
         self.cos = nn.CosineSimilarity(dim=0)
+        self.mlp = nn.Linear(2*n_hidden, n_hidden)
+        self.linear = nn.Linear(n_hidden, n_hidden)
+        self.relu = nn.ReLU()
              
     def forward(self, x):
         out, hidden = self.drnn(x)                                                                  '''n_layer개 만큼의 out이 나오도록 어떻게 쓰지(O)'''
@@ -62,10 +65,19 @@ class THOC(nn.Module):
     # P = [[[*,*,*,*]x6]xT]
     
     def update(self, f_bar, prob):
+        for k in range(f_bar.shape[0]):
+            
         return f_hat
     
     def concat(self, f_hat, f):
+        f_bar = []
+        for k in range(f.shape[0]):
+            in_f = torch.cat([f_hat, f[k]], dim=1)
+            out_f = self.mlp(in_f)
+            f_bar.append(out_f)
+        f_bar = torch.stack(f_bar)
         return f_bar
+    # f_bar = [[[dim of X]*T]*6]
     
     def calculate_R(self, P, R_, layer):                                                                       # 2차원 P를 받아서 1차원 R을 내보냄
         R = []
