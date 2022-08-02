@@ -65,9 +65,21 @@ class THOC(nn.Module):
     # P = [[[*,*,*,*]x6]xT]
     
     def update(self, f_bar, prob):
-        for k in range(f_bar.shape[0]):
-            
+        f_hat = []
+        for t in range(f_bar.shape[1]) :
+            l = []
+            for k in range(f_bar.shape[0]):
+                y = self.linear(f_bar[k,t])
+                y = self.relu(y)
+                f_hat_list = [y*prob for prob in prob[t,k].tolist()]
+                f_hat_list = torch.stack(f_hat_list)
+                l.append(f_hat_list)
+            l = torch.stack(l)
+            l = torch.sum(l,0)
+            f_hat.append(l)
+        f_hat = torch.stack(f_hat)
         return f_hat
+    #F_bar = [[[dim of X]*4]*T]
     
     def concat(self, f_hat, f):
         f_bar = []
