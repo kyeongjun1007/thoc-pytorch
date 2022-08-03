@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 from sklearn.cluster import KMeans
 
+
 class THOC(nn.Module):
     def __init__(self, n_input, n_hidden, n_layers, n_centroids, lambda_ = [0.1, 0,1], dropout=0, cell_type='GRU', batch_first=False, first = False):
         super().__init__()
@@ -9,12 +10,12 @@ class THOC(nn.Module):
         self.drnn = DRNN(n_input, n_hidden, n_layers, dropout, cell_type, batch_first)              # drnn 모델 생성
         self.n_centroids = n_centroids                                                              # layer별 cluster center의 개수
         self.cluster_centers = [[[0]*n_hidden]*i for i in n_centroids]                              # cluster_centers를 layer별 n_centorids개 만큼의 n_hidden 차원의 0벡터로 초기화
-        self.lambda_orth = lambda_[0]
-        self.lambda_tss = lambda_[1]
-        self.cos = nn.CosineSimilarity(dim=0)
-        self.mlp = nn.Linear(2*n_hidden, n_hidden)
-        self.linear = nn.Linear(n_hidden, n_hidden)
-        self.relu = nn.ReLU()
+        self.lambda_orth = lambda_[0]                                                               # threshold of loss_orth
+        self.lambda_tss = lambda_[1]                                                                # threshold of loss_tss
+        self.cos = nn.CosineSimilarity(dim=0)                                                       # cosine similarity layer
+        self.mlp = nn.Linear(2*n_hidden, n_hidden)                                                  # MLP layer for concat function
+        self.linear = nn.Linear(n_hidden, n_hidden)                                                 # linear layer for update function
+        self.relu = nn.ReLU()                                                                       # relu layer for update function
              
     def forward(self, x):
         out, hidden = self.drnn(x)                                                                  '''n_layer개 만큼의 out이 나오도록 어떻게 쓰지(O)'''
