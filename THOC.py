@@ -18,7 +18,7 @@ class THOC(nn.Module):
         self.relu = nn.ReLU()                                                                       # relu layer for update function
              
     def forward(self, x):
-        out, hidden = self.drnn(x)                                                                  '''n_layer개 만큼의 out이 나오도록 어떻게 쓰지(O)'''
+        out, hidden = self.drnn(x)                                                                  # out = torch.tensor[[dim of X]*T]
         R = []
         if self.first == True :                                                                     # 첫 배치일때는 drnn의 노드값에 k-means를 적용하여 cluster centroids 초기화
             for i, n_clusters in enumerate(self.n_centroids) :
@@ -107,7 +107,9 @@ class THOC(nn.Module):
         return R
     
 ##-------------------------------------------------DRNN---------------------------------------------------
-'''lyaer별로 out값을 내보내도록 수정해야함...! (h_n 이용?)'''
+
+import torch
+import torch.nn as nn
 class DRNN(nn.Module):
 
     def __init__(self, n_input, n_hidden, n_layers, dropout=0, cell_type='GRU', batch_first=False):
@@ -116,6 +118,7 @@ class DRNN(nn.Module):
         self.dilations = [2 ** i for i in range(n_layers)]
         self.cell_type = cell_type
         self.batch_first = batch_first
+        self.n_hidden = n_hidden
 
         layers = []
         if self.cell_type == "GRU":
@@ -139,6 +142,7 @@ class DRNN(nn.Module):
         if self.batch_first:
             inputs = inputs.transpose(0, 1)
         outputs = []
+        layers = []
         for i, (cell, dilation) in enumerate(zip(self.cells, self.dilations)):
             if hidden is None:
                 inputs, _ = self.drnn_layer(cell, inputs, dilation)
@@ -146,10 +150,11 @@ class DRNN(nn.Module):
                 inputs, hidden[i] = self.drnn_layer(cell, inputs, dilation, hidden[i])
 
             outputs.append(inputs[-dilation:])
+            layers.append(inputs.view(-1,self.n_hidden))
 
         if self.batch_first:
             inputs = inputs.transpose(0, 1)
-        return inputs, outputs
+        return layers, outputs
 
     def drnn_layer(self, cell, inputs, rate, hidden=None):
         n_steps = len(inputs)
