@@ -4,9 +4,8 @@ from sklearn.cluster import KMeans
 
 
 class THOC(nn.Module):
-    def __init__(self, n_input, n_hidden, n_layers, n_centroids, lambda_ = [0.1, 0,1], dropout=0, cell_type='GRU', batch_first=False, first = False):
+    def __init__(self, n_input, n_hidden, n_layers, n_centroids, lambda_ = [0.1, 0,1], dropout=0, cell_type='GRU', batch_first=False):
         super().__init__()
-        self.first = first                                                                          # 첫 배치인가?
         self.drnn = DRNN(n_input, n_hidden, n_layers, dropout, cell_type, batch_first)              # drnn 모델 생성
         self.n_layers = n_layers
         self.n_centroids = n_centroids                                                              # layer별 cluster center의 개수
@@ -18,19 +17,19 @@ class THOC(nn.Module):
         self.linear = nn.Linear(n_hidden, n_hidden)                                                 # linear layer for update function
         self.relu = nn.ReLU()                                                                       # relu layer for update function
              
-    def forward(self, x):
+    def forward(self, x, first = False):
         out, hidden = self.drnn(x)                                                                  # out = torch.tensor[[dim of X]*T]
         R = []
-        if self.first == True :                                                                     # 첫 배치일때는 drnn의 노드값에 k-means를 적용하여 cluster centroids 초기화
+        if first == True :                                                                     # 첫 배치일때는 drnn의 노드값에 k-means를 적용하여 cluster centroids 초기화
             for i, n_clusters in enumerate(self.n_centroids) :
                 k = n_clusters
                 model = KMeans(n_clusters = k)
-                model.fit(out[i])
+                model.fit(out[i].detach().numpy())
                 self.cluster_centers[i] = model.cluster_centers_
         
         for layer in range(self.n_layers) :
             if (layer == 0) :
-                f_bar = [out[layer]]
+                f_bar = torch.stack([out[layer]])
             P = self.assign_prob(f_bar, self.cluster_centers[layer])
             R = self.calculate_R(P, R, layer)
             f_hat = self.update(f_bar, P)
@@ -47,14 +46,15 @@ class THOC(nn.Module):
         P = []
         prob = []
         scores = []
-        for t in range(f_bar.shape[0]):
-            for i in range(f_bar.shape[1]) :
+        for i in range(f_bar.shape[0]):
+            for t in range(f_bar.shape[1]) :
                 for j in range(len(centroids)) :
-                    scores.append(self.cos(f_bar[t,i], centroids[j]).tolist())
+                    scores.append(self.cos(f_bar[i,t], torch.tensor(centroids[j])).tolist())
                 score_sum = sum(scores)
                 scores = [i/score_sum for i in scores]
                 prob.append(scores)
             P.append(prob)
+        P = torch.stack(P)
         return P
     # P = [[[*,*,*,*]x6]xT]
     
@@ -73,7 +73,7 @@ class THOC(nn.Module):
             f_hat.append(l)
         f_hat = torch.stack(f_hat)
         return f_hat
-    #F_bar = [[[dim of X]*4]*T]
+    #F_hat = [[[dim of X]*4]*T]
     
     def concat(self, f_hat, f):
         f_bar = []

@@ -1,3 +1,38 @@
+# debug code
+# pip install KMeans-pytorch
+import os
+import THOC
+import torch
+import pandas as pd
+import numpy as np
+from torch.utils.data import Dataset, DataLoader
+from torch.autograd import Variable
+
+# data setting
+
+os.chdir("C:/Users/IDSL/Desktop/aaa")
+
+data = torch.randn(30,1,9)
+
+
+# model setting
+
+n_input = 9
+n_hidden = 9
+n_layers = 3
+cell_type = 'RNN'
+dropout = 0
+n_centroids = [6,4,3]
+
+use_cuda = False
+
+model = THOC(n_input, n_hidden, n_layers, n_centroids, dropout = dropout, cell_type = cell_type)
+
+model.forward(data, first = True)
+
+
+
+
 # pip install KMeans-pytorch
 import os
 import THOC
