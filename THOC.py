@@ -8,6 +8,7 @@ class THOC(nn.Module):
         super().__init__()
         self.first = first                                                                          # 첫 배치인가?
         self.drnn = DRNN(n_input, n_hidden, n_layers, dropout, cell_type, batch_first)              # drnn 모델 생성
+        self.n_layers = n_layers
         self.n_centroids = n_centroids                                                              # layer별 cluster center의 개수
         self.cluster_centers = [[[0]*n_hidden]*i for i in n_centroids]                              # cluster_centers를 layer별 n_centorids개 만큼의 n_hidden 차원의 0벡터로 초기화
         self.lambda_orth = lambda_[0]                                                               # threshold of loss_orth
@@ -27,28 +28,20 @@ class THOC(nn.Module):
                 model.fit(out[i])
                 self.cluster_centers[i] = model.cluster_centers_
         
-        for layer in range(n_layers) :
+        for layer in range(self.n_layers) :
             if (layer == 0) :
                 f_bar = [out[layer]]
-            P = assign_prob(f_bar, self.cluster_centers[layer])
-            R = calculate_R(P, R, layer)
-            f_hat = update(f_bar, P)
-            if (layer != (n_layer-1)) :
-                f_bar = concat(f_hat,out[layer+1])
+            P = self.assign_prob(f_bar, self.cluster_centers[layer])
+            R = self.calculate_R(P, R, layer)
+            f_hat = self.update(f_bar, P)
+            if (layer != (self.n_layer-1)) :
+                f_bar = self.concat(f_hat,out[layer+1])
             
         KL = self.n_centroids[len(self.n_centroids)-1]
         
-        loss_thoc = torch.matmul(torch.t(R),(1-self.cos(f_hat,self.cluster_centers[-1])))/KL            # sum(R*d)/K^L
+        anomaly_score = torch.matmul(torch.t(R),(1-self.cos(f_hat,self.cluster_centers[-1])))/KL            # sum(R*d)/K^L
         
-        co = torch.matmul(torch.t(self.cluster_centers),self.cluster_centers) -
-             torch.eye(self.cluster_centers.size(0))                                                # co = t(C)*C-I
-        co = np.linalg.norm(co, ord='fro')                                                          # co = frobenius norm of co
-        loss_orth = (co*co)/KL                                                                      # co^2/the num of last layer centroids
-        
-        loss_tss = 
-        
-        loss = loss_thoc + self.lambda_orth*loss_orth + self.lambda_tss*loss_tss                                                     # 최종 loss
-        
+        return anomaly_score
         
     def assign_prob(self, f_bar, centroids):
         P = []
@@ -56,8 +49,8 @@ class THOC(nn.Module):
         scores = []
         for t in range(f_bar.shape[0]):
             for i in range(f_bar.shape[1]) :
-                for j in range(len(controids)) :
-                    scores.append(cos(f_bar[t,i], centroids[j]).tolist())
+                for j in range(len(centroids)) :
+                    scores.append(self.cos(f_bar[t,i], centroids[j]).tolist())
                 score_sum = sum(scores)
                 scores = [i/score_sum for i in scores]
                 prob.append(scores)
@@ -101,7 +94,7 @@ class THOC(nn.Module):
             for t in range(P.shape[0]):
                 k = []
                 for i in range(P.shape[2]):
-                    k.append(sum[P[t,c,i].tolist()*R_[t,c].tolist() for c in range(R_.shape[1]))])
+                    k.append(sum([P[t,c,i].tolist()*R_[t,c].tolist() for c in range(R_.shape[1])]))
                 R.append([k[j]/sum(k) for j in range(len(k)-1)])
         R = torch.tensor(R)
         return R

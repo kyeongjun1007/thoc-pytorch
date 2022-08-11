@@ -52,6 +52,17 @@ test_dl = DataLoader(dataset=test_dataset,
 
 # loss function
 def thoc_loss() :
+    loss_toch = torch.matmul(torch.t(R),(1-self.cos(f_hat,self.cluster_centers[-1])))/KL            # sum(R*d)/K^L
+    
+    co = torch.matmul(torch.t(self.cluster_centers),self.cluster_centers) -
+         torch.eye(self.cluster_centers.size(0))                                                # co = t(C)*C-I
+    co = np.linalg.norm(co, ord='fro')                                                          # co = frobenius norm of co
+    loss_orth = (co*co)/KL                                                                      # co^2/the num of last layer centroids
+    
+    loss_tss = 
+    
+    loss = loss_thoc + self.lambda_orth*loss_orth + self.lambda_tss*loss_tss                                                     # 최종 loss
+   
     pass
 
 # model setting
