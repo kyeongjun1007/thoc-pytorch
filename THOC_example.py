@@ -88,7 +88,7 @@ class THOC(nn.Module):
             P.append(prob)
         P = torch.tensor(P)
         return P
-    # P = [[[*,*,*,*]x6]xT]
+    # P = [[[*,*,*,*,*,*]xT]x4]
     
     def update(self, f_bar, prob):
         f_hat = []
@@ -105,7 +105,7 @@ class THOC(nn.Module):
             f_hat.append(l)
         f_hat = torch.stack(f_hat)
         return f_hat
-    #F_hat = [[[dim of X]*4]*T]
+    #f_hat = [[[dim of X]*4]*T]
     
     def concat(self, f_hat, f):
         f_bar = []
@@ -120,16 +120,17 @@ class THOC(nn.Module):
     def calculate_R(self, P, R_, layer):                                                                       # 2차원 P를 받아서 1차원 R을 내보냄
         R = []
         if (layer==0):
-            for t in range(P.shape[0]):
-                R.append([(P[t,0,i]/sum(P[t,0])).tolist() for i in range(P.shape[2])])
+            for t in range(P.shape[1]):
+                R.append([(P[0,t,i]/sum(P[0,t])).tolist() for i in range(P.shape[2])])
         else :
-            for t in range(P.shape[0]):
+            for t in range(P.shape[1]):
                 k = []
                 for i in range(P.shape[2]):
-                    k.append(sum([P[t,c,i].tolist()*R_[t,c].tolist() for c in range(R_.shape[1])]))
-                R.append([k[j]/sum(k) for j in range(len(k)-1)])
+                    k.append(sum([P[c,t,i].tolist()*R_[t,c].tolist() for c in range(R_.shape[1])]))
+                R.append([k[j]/sum(k) for j in range(len(k))])
         R = torch.tensor(R)
         return R
+    # R = [['*'*T]*4]
     
 ##-------------------------------------------------DRNN---------------------------------------------------
 
