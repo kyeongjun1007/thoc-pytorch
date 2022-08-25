@@ -33,7 +33,7 @@ class THOC(nn.Module):
             P = self.assign_prob(f_bar, self.cluster_centers[layer])
             R = self.calculate_R(P, R, layer)
             f_hat = self.update(f_bar, P)
-            if (layer != (self.n_layer-1)) :
+            if (layer != (self.n_layers-1)) :
                 f_bar = self.concat(f_hat,out[layer+1])
             
         KL = self.n_centroids[len(self.n_centroids)-1]
@@ -65,7 +65,7 @@ class THOC(nn.Module):
             for k in range(f_bar.shape[0]):
                 y = self.linear(f_bar[k,t])
                 y = self.relu(y)
-                f_hat_list = [y*prob for prob in prob[t,k].tolist()]
+                f_hat_list = [y*p for p in prob[k,t].tolist()]
                 f_hat_list = torch.stack(f_hat_list)
                 l.append(f_hat_list)
             l = torch.stack(l)
