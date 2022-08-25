@@ -109,8 +109,8 @@ class THOC(nn.Module):
     
     def concat(self, f_hat, f):
         f_bar = []
-        for k in range(f.shape[0]):
-            in_f = torch.cat([f_hat, f[k]], dim=1)
+        for k in range(f_hat.shape[1]):
+            in_f = torch.cat([f_hat[:,k,:], f], dim=1)
             out_f = self.mlp(in_f)
             f_bar.append(out_f)
         f_bar = torch.stack(f_bar)
@@ -176,6 +176,8 @@ class DRNN(nn.Module):
 
             outputs.append(inputs[-dilation:])
             layers.append(inputs.view(-1,self.n_hidden))
+        
+        layers = torch.stack(layers)
 
         if self.batch_first:
             inputs = inputs.transpose(0, 1)
