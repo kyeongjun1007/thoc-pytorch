@@ -70,10 +70,10 @@ class THOC(nn.Module):
             
         KL = self.n_centroids[len(self.n_centroids)-1]
         
-        anomaly_score = torch.matmul(torch.t(R),(1-self.cos(f_hat,self.cluster_centers[-1])))/KL            # sum(R*d)/K^L
+        anomaly_score = torch.matmul(torch.t(R),(1-self.cos(f_hat,torch.tensor(self.cluster_centers[-1]))))/KL            # sum(R*d)/K^L
         
         return anomaly_score
-        
+    
     def assign_prob(self, f_bar, centroids):
         P = []
         for i in range(f_bar.shape[0]):
