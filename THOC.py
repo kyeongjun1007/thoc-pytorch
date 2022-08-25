@@ -20,12 +20,12 @@ class THOC(nn.Module):
     def forward(self, x, first = False):
         out, hidden = self.drnn(x)                                                                  # out = torch.tensor[[dim of X]*T]
         R = []
-        if first == True :                                                                     # 첫 배치일때는 drnn의 노드값에 k-means를 적용하여 cluster centroids 초기화
+        if first == True :                                                                          # 첫 배치일때는 drnn의 노드값에 k-means를 적용하여 cluster centroids 초기화
             for i, n_clusters in enumerate(self.n_centroids) :
                 k = n_clusters
                 model = KMeans(n_clusters = k)
                 model.fit(out[i].detach().numpy())
-                self.cluster_centers[i] = model.cluster_centers_
+                self.cluster_centers[i] = model.cluster_centers_                                    # self.cluster_centers[i] = array([[dim of X]*i_th n_clusers])
         
         for layer in range(self.n_layers) :
             if (layer == 0) :
@@ -44,17 +44,17 @@ class THOC(nn.Module):
         
     def assign_prob(self, f_bar, centroids):
         P = []
-        prob = []
-        scores = []
         for i in range(f_bar.shape[0]):
+            prob = []
             for t in range(f_bar.shape[1]) :
+                scores = []
                 for j in range(len(centroids)) :
                     scores.append(self.cos(f_bar[i,t], torch.tensor(centroids[j])).tolist())
                 score_sum = sum(scores)
-                scores = [i/score_sum for i in scores]
+                scores = [score/score_sum for score in scores]
                 prob.append(scores)
             P.append(prob)
-        P = torch.stack(P)
+        P = torch.tensor(P)
         return P
     # P = [[[*,*,*,*]x6]xT]
     
