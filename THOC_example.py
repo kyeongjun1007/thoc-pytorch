@@ -27,7 +27,7 @@ use_cuda = False
 
 model = THOC(n_input, n_hidden, n_layers, n_centroids, dropout = dropout, cell_type = cell_type)
 
-a = model.forward(data, first = True)
+anomaly_scores, cluster_centroids, out_of_drnn = model.forward(data, first = True)
 
 import torch
 import torch.nn as nn
@@ -66,8 +66,6 @@ class THOC(nn.Module):
             f_hat = self.update(f_bar, P)
             if (layer != (self.n_layers-1)) :
                 f_bar = self.concat(f_hat,out[layer+1])
-            
-        KL = self.n_centroids[len(self.n_centroids)-1]
         
         anomaly_score = []
         for t in range(f_hat.shape[0]) :
@@ -77,7 +75,7 @@ class THOC(nn.Module):
                     anomaly += R[t,f]*(1-self.cos(f_hat[t,f], torch.tensor(self.cluster_centers[-1][c])))
             anomaly_score.append(anomaly.item())
         
-        return anomaly_score
+        return anomaly_score, self.cluster_centers, out
     
     def assign_prob(self, f_bar, centroids):
         P = []
@@ -321,20 +319,26 @@ test_dl = DataLoader(dataset=test_dataset,
            batch_size=1,
            shuffle=False)
 
+
 # loss function
-def thoc_loss() :
-    loss_toch = torch.matmul(torch.t(R),(1-self.cos(f_hat,self.cluster_centers[-1])))/KL            # sum(R*d)/K^L
+def thoc_loss(anomaly_scores, cluster_centroids, out_of_drnn) :
     
-    co = torch.matmul(torch.t(self.cluster_centers),self.cluster_centers) -
-         torch.eye(self.cluster_centers.size(0))                                                # co = t(C)*C-I
-    co = np.linalg.norm(co, ord='fro')                                                          # co = frobenius norm of co
-    loss_orth = (co*co)/KL                                                                      # co^2/the num of last layer centroids
+    loss_thoc = sum(anomaly_scores)/(window_size*n_centroids[-1])
     
-    loss_tss = 
+    loss_orth = 0
+    for l in range(len(cluster_centroids)) :
+        C = torch.tensor(cluster_centroids[l])
+        CI = torch.matmul(torch.t(C),C) - torch.eye(C.size(1))
+        CI = np.linalg.norm(CI, ord='fro')
+        loss_orth += (CI*CI)
+    loss_orth = loss_orth/len(cluster_centroids)
     
-    loss = loss_thoc + self.lambda_orth*loss_orth + self.lambda_tss*loss_tss                    # 최종 loss
-   
-    pass
+    loss_tss = 0
+    
+    loss = loss_thoc + loss_orth + loss_tss
+    
+    return loss
+
 
 # model setting
 
@@ -359,7 +363,7 @@ for epoch in range(num_epochs) :
         window = window.type(torch.float32)
         window = Variable(window)
         optimizer.zero_grad()
-        outputs = model.forward(window)
+        anomaly_scores, cluster_centroids, out_of_drnn = model.forward(window)
         loss = thoc_loss()
         loss.backward()
     

@@ -35,8 +35,6 @@ class THOC(nn.Module):
             f_hat = self.update(f_bar, P)
             if (layer != (self.n_layers-1)) :
                 f_bar = self.concat(f_hat,out[layer+1])
-            
-        KL = self.n_centroids[len(self.n_centroids)-1]
         
         anomaly_score = []
         for t in range(f_hat.shape[0]) :
@@ -46,7 +44,7 @@ class THOC(nn.Module):
                     anomaly += R[t,f]*(1-self.cos(f_hat[t,f], torch.tensor(self.cluster_centers[-1][c])))
             anomaly_score.append(anomaly.item())
         
-        return anomaly_score
+        return anomaly_score, self.cluster_centers, out
     
     def assign_prob(self, f_bar, centroids):
         P = []
