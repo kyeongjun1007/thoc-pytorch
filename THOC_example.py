@@ -27,12 +27,12 @@ use_cuda = False
 
 model = THOC(n_input, n_hidden, n_layers, n_centroids, dropout = dropout, cell_type = cell_type)
 
-model.forward(data, first = True)
+a = model.forward(data, first = True)
 
 import torch
 import torch.nn as nn
 from sklearn.cluster import KMeans
-
+import math
 
 class THOC(nn.Module):
     def __init__(self, n_input, n_hidden, n_layers, n_centroids, lambda_ = [0.1, 0,1], dropout=0, cell_type='GRU', batch_first=False):
@@ -69,12 +69,13 @@ class THOC(nn.Module):
             
         KL = self.n_centroids[len(self.n_centroids)-1]
         
-        anomaly = 0
+        anomaly_score = []
         for t in range(f_hat.shape[0]) :
+            anomaly = 0
             for c in range(self.n_centroids[-1]) : 
                 for f in range(f_hat.shape[1]) :
                     anomaly += R[t,f]*(1-self.cos(f_hat[t,f], torch.tensor(self.cluster_centers[-1][c])))
-        anomaly_score = anomaly/(f_hat.shape[0]*f_hat.shape[1]*f_hat.shape[2])
+            anomaly_score.append(anomaly.item())
         
         return anomaly_score
     
@@ -85,7 +86,7 @@ class THOC(nn.Module):
             for t in range(f_bar.shape[1]) :
                 scores = []
                 for j in range(len(centroids)) :
-                    scores.append(self.cos(f_bar[i,t], torch.tensor(centroids[j])).tolist())
+                    scores.append(math.exp(self.cos(f_bar[i,t], torch.tensor(centroids[j])).item()))
                 score_sum = sum(scores)
                 scores = [score/score_sum for score in scores]
                 prob.append(scores)
@@ -331,7 +332,7 @@ def thoc_loss() :
     
     loss_tss = 
     
-    loss = loss_thoc + self.lambda_orth*loss_orth + self.lambda_tss*loss_tss                                                     # 최종 loss
+    loss = loss_thoc + self.lambda_orth*loss_orth + self.lambda_tss*loss_tss                    # 최종 loss
    
     pass
 
@@ -367,4 +368,5 @@ for epoch in range(num_epochs) :
             print("window steps : %d, loss : %1.5f" %(i, loss.item()))
     print("Epochs : %d, loss : %1.5f" %(epoch, loss.item()))
     
-    
+torch.tensor([[1,2],[3,4],[5,6]]).contiguous()
+[1,2,3,4,5].contiguous()
