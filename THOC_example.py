@@ -74,8 +74,12 @@ class THOC(nn.Module):
                 for f in range(f_hat.shape[1]) :
                     anomaly += R[t,f]*(1-self.cos(f_hat[t,f], torch.tensor(self.cluster_centers[-1][c])))
             anomaly_score.append(anomaly.item())
+            
+        out_anomaly_score = torch.tensor(anomaly_score)
+        out_cluster_centers = [torch.tensor(c) for c in self.cluster_centers]
+        out_f = out
         
-        return anomaly_score, self.cluster_centers, out
+        return out_anomaly_score, out_cluster_centers, out_f
     
     def assign_prob(self, f_bar, centroids):
         P = []
@@ -282,6 +286,8 @@ os.chdir("C:/Users/Kyeongjun/Desktop/water_level_pred")
 
 data = pd.read_csv("file.csv")
 
+data = pd.DataFrame(np.random.randn(300000,9))
+
 class SlidingWindow(Dataset) :
     def __init__(self, data, window) :
         self.data = data
@@ -319,7 +325,6 @@ test_dl = DataLoader(dataset=test_dataset,
            batch_size=1,
            shuffle=False)
 
-
 # loss function
 def thoc_loss(anomaly_scores, cluster_centroids, out_of_drnn) :
     
@@ -327,9 +332,9 @@ def thoc_loss(anomaly_scores, cluster_centroids, out_of_drnn) :
     
     loss_orth = 0
     for l in range(len(cluster_centroids)) :
-        C = torch.tensor(cluster_centroids[l])
+        C = cluster_centroids[l]
         CI = torch.matmul(torch.t(C),C) - torch.eye(C.size(1))
-        CI = np.linalg.norm(CI, ord='fro')
+        CI = torch.norm(CI, p='fro')
         loss_orth += (CI*CI)
     loss_orth = loss_orth/len(cluster_centroids)
     
@@ -350,7 +355,7 @@ dropout = 0
 
 use_cuda = torch.cuda.is_available()
 
-model = THOC(n_input, n_hidden, n_layers, dropout = dropout, cell_type = cell_type)
+model = THOC(n_input, n_hidden, n_layers, n_centroids, dropout = dropout, cell_type = cell_type)
 
 num_epochs = 100
 learning_rate = 0.001
@@ -363,8 +368,11 @@ for epoch in range(num_epochs) :
         window = window.type(torch.float32)
         window = Variable(window)
         optimizer.zero_grad()
-        anomaly_scores, cluster_centroids, out_of_drnn = model.forward(window)
-        loss = thoc_loss()
+        if i == 0 :
+            anomaly_scores, cluster_centroids, out_of_drnn = model.forward(window, first = True)
+        else : 
+            anomaly_scores, cluster_centroids, out_of_drnn = model.forward(window)
+        loss = Variable(thoc_loss(anomaly_scores, cluster_centroids, out_of_drnn), requires_grad=True)
         loss.backward()
     
         optimizer.step()
@@ -372,5 +380,3 @@ for epoch in range(num_epochs) :
             print("window steps : %d, loss : %1.5f" %(i, loss.item()))
     print("Epochs : %d, loss : %1.5f" %(epoch, loss.item()))
     
-torch.tensor([[1,2],[3,4],[5,6]]).contiguous()
-[1,2,3,4,5].contiguous()

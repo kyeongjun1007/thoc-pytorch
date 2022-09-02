@@ -43,8 +43,12 @@ class THOC(nn.Module):
                 for f in range(f_hat.shape[1]) :
                     anomaly += R[t,f]*(1-self.cos(f_hat[t,f], torch.tensor(self.cluster_centers[-1][c])))
             anomaly_score.append(anomaly.item())
+            
+        out_anomaly_score = torch.tensor(anomaly_score)
+        out_cluster_centers = [torch.tensor(c) for c in self.cluster_centers]
+        out_f = out
         
-        return anomaly_score, self.cluster_centers, out
+        return out_anomaly_score, out_cluster_centers, out_f
     
     def assign_prob(self, f_bar, centroids):
         P = []
