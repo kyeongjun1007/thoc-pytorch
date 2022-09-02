@@ -109,9 +109,8 @@ class THOC(nn.Module):
     # R = [[*,*,*,*T]*T]
 
 ##-------------------------------------------------DRNN---------------------------------------------------
+use_cuda = torch.cuda.is_available()
 
-import torch
-import torch.nn as nn
 class DRNN(nn.Module):
 
     def __init__(self, n_input, n_hidden, n_layers, dropout=0, cell_type='GRU', batch_first=False):
