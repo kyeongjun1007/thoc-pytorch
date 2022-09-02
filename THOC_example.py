@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 from torch.utils.data import Dataset, DataLoader
 from torch.autograd import Variable
+from sklearn.preprocessing import MinMaxScaler
 
 # data setting
 
@@ -37,8 +38,9 @@ test = data.iloc[k:,:]
 window_size = 250
 
 # DataLoader 생성
-train = torch.tensor(np.array(train, dtype=float))
-test = torch.tensor(np.array(test, dtype=float))
+train_scaler, test_scaler = MinMaxScaler(), MinMaxScaler()
+train = torch.tensor(train_scaler.fit_transform(np.array(train, dtype=float)))
+test = torch.tensor(test_scaler.fit_transform(np.array(test, dtype=float)))
 
 train_dataset = SlidingWindow(data=train, window=window_size)
 train_dl = DataLoader(dataset=train_dataset,
@@ -69,16 +71,12 @@ def thoc_loss(anomaly_scores, cluster_centroids, out_of_drnn, timeseries_input) 
         tss = out[:-dilation] - timeseries_input[0][dilation:]
         tss = sum(sum(tss**2))
         loss_tss += tss/len(out[:-dilation])
-    loss_tss/len(out_of_drnn)
+    loss_tss = loss_tss/len(out_of_drnn)
     
     loss = loss_thoc + loss_orth + loss_tss
     
     return loss
     
-
-#sum(sum((out_of_drnn[0][:-245] - train_dataset[0][245:])**2))
-#torch.tensor([1,2,3,4,5])[1:]
-
 # model setting
 
 n_input = 9
@@ -90,8 +88,8 @@ n_centroids = [6,4,3]
 
 model = THOC(n_input, n_hidden, n_layers, n_centroids, dropout = dropout, cell_type = cell_type)
 
-num_epochs = 100
-learning_rate = 0.001
+num_epochs = 1
+learning_rate = 0.01
 
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
@@ -105,11 +103,20 @@ for epoch in range(num_epochs) :
             anomaly_scores, cluster_centroids, out_of_drnn = model.forward(window, first = True)
         else : 
             anomaly_scores, cluster_centroids, out_of_drnn = model.forward(window)
-        loss = Variable(thoc_loss(anomaly_scores, cluster_centroids, out_of_drnn, window), requires_grad=True)
+        loss = Variable(thoc_loss(anomaly_scores, cluster_centroids, out_of_drnn, window), requires_grad =True)
         loss.backward()
     
         optimizer.step()
+        
+        for k in model.state_dict():
+            print(k)
+            print(f"{model.state_dict()[k]}")
+            print("#"*100)
+            
         if i % 30 == 0 :
             print("window steps : %d, loss : %1.5f" %(i, loss.item()))
+            
+        if i == 3 :
+            break
     print("Epochs : %d, loss : %1.5f" %(epoch, loss.item()))
     

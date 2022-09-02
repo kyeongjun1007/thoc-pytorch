@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from sklearn.cluster import KMeans
+from kmeans_pytorch import kmeans
 import math
 
 class THOC(nn.Module):
@@ -9,7 +9,7 @@ class THOC(nn.Module):
         self.drnn = DRNN(n_input, n_hidden, n_layers, dropout, cell_type, batch_first)              # drnn 모델 생성
         self.n_layers = n_layers
         self.n_centroids = n_centroids                                                              # layer별 cluster center의 개수
-        self.cluster_centers = [[[0]*n_hidden]*i for i in n_centroids]                              # cluster_centers를 layer별 n_centorids개 만큼의 n_hidden 차원의 0벡터로 초기화
+        self.cluster_centers = [torch.tensor([[0]*n_hidden]*i) for i in n_centroids]                              # cluster_centers를 layer별 n_centorids개 만큼의 n_hidden 차원의 0벡터로 초기화
         self.lambda_orth = lambda_[0]                                                               # threshold of loss_orth
         self.lambda_tss = lambda_[1]                                                                # threshold of loss_tss
         self.cos = nn.CosineSimilarity(dim=0)                                                       # cosine similarity layer
@@ -23,9 +23,7 @@ class THOC(nn.Module):
         if first == True :                                                                          # 첫 배치일때는 drnn의 노드값에 k-means를 적용하여 cluster centroids 초기화
             for i, n_clusters in enumerate(self.n_centroids) :
                 k = n_clusters
-                model = KMeans(n_clusters = k)
-                model.fit(out[i].detach().numpy())
-                self.cluster_centers[i] = model.cluster_centers_                                    # self.cluster_centers[i] = array([[dim of X]*i_th n_clusers])
+                _,self.cluster_centers[i] = kmeans(X=out[i].detach(), num_clusters=k)               # self.cluster_centers[i] = tensor([[dim of X]*i_th n_clusers])
         
         for layer in range(self.n_layers) :
             if (layer == 0) :
