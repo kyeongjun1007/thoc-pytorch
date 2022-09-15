@@ -141,7 +141,7 @@ class DRNN(nn.Module):
         if self.batch_first:
             inputs = inputs.transpose(0, 1)
         outputs = []
-        layers = []
+        layers = torch.zeros(len(self.dilations),inputs.shape[1], inputs.shape[2])
         for i, (cell, dilation) in enumerate(zip(self.cells, self.dilations)):
             if hidden is None:
                 inputs, _ = self.drnn_layer(cell, inputs, dilation)
@@ -149,7 +149,7 @@ class DRNN(nn.Module):
                 inputs, hidden[i] = self.drnn_layer(cell, inputs, dilation, hidden[i])
 
             outputs.append(inputs[-dilation:])
-            layers.append(inputs.view(-1,self.n_hidden))
+            layers[i] = inputs.view(-1,self.n_hidden)
 
         if self.batch_first:
             inputs = inputs.transpose(0, 1)

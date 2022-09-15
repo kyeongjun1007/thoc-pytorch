@@ -39,8 +39,8 @@ window_size = 250
 
 # DataLoader 생성
 train_scaler, test_scaler = MinMaxScaler(), MinMaxScaler()
-train = torch.tensor(train_scaler.fit_transform(np.array(train, dtype=float)))
-test = torch.tensor(test_scaler.fit_transform(np.array(test, dtype=float)))
+train = torch.tensor(train_scaler.fit_transform(np.array(train, dtype = "float32")))
+test = torch.tensor(test_scaler.fit_transform(np.array(test, dtype="float32")))
 
 train_dataset = SlidingWindow(data=train, window=window_size)
 train_dl = DataLoader(dataset=train_dataset,
@@ -119,45 +119,3 @@ for epoch in range(num_epochs) :
         if i == 2 :
             break
     print("Epochs : %d, loss : %1.5f" %(epoch, loss.item()))
-
-#########################################################################################################################
-# drnn은 학습 되는지 확인해보자.
-
-drnn = DRNN(n_input, n_hidden, n_layers)
-
-def drnn_loss(out_of_drnn, timeseries_input) :
-    
-    loss_tss = 0
-    for i, out in enumerate(out_of_drnn) :
-        dilation = 2**i
-        tss = out[:-dilation] - timeseries_input[0][dilation:]
-        tss = sum(sum(tss**2))
-        loss_tss += tss/len(out[:-dilation])
-    loss_tss = loss_tss/len(out_of_drnn)
-    
-    return loss_tss
-
-for epoch in range(num_epochs) :
-    for i, window in enumerate(train_dl):
-        window = window.type(torch.float32)
-        window = Variable(window)
-        optimizer.zero_grad()
-        out, _ = drnn.forward(window)
-        
-        loss = Variable(drnn_loss(out, window), requires_grad =True)
-        loss.backward()
-        
-        optimizer.step()
-        
-        for k in model.state_dict():
-            print(k)
-            print(f"{model.state_dict()[k]}")
-            print("#"*100)
-            
-        if i % 30 == 0 :
-            print("window steps : %d, loss : %1.5f" %(i, loss.item()))
-            
-        if i == 2 :
-            break
-    print("Epochs : %d, loss : %1.5f" %(epoch, loss.item()))
-    
