@@ -117,7 +117,6 @@ class DRNN(nn.Module):
         self.dilations = [2 ** i for i in range(n_layers)]
         self.cell_type = cell_type
         self.batch_first = batch_first
-        self.n_hidden = n_hidden
 
         layers = []
         if self.cell_type == "GRU":
@@ -141,7 +140,6 @@ class DRNN(nn.Module):
         if self.batch_first:
             inputs = inputs.transpose(0, 1)
         outputs = []
-        layers = torch.zeros(len(self.dilations),inputs.shape[1], inputs.shape[2])
         for i, (cell, dilation) in enumerate(zip(self.cells, self.dilations)):
             if hidden is None:
                 inputs, _ = self.drnn_layer(cell, inputs, dilation)
@@ -149,11 +147,10 @@ class DRNN(nn.Module):
                 inputs, hidden[i] = self.drnn_layer(cell, inputs, dilation, hidden[i])
 
             outputs.append(inputs[-dilation:])
-            layers[i] = inputs.view(-1,self.n_hidden)
 
         if self.batch_first:
             inputs = inputs.transpose(0, 1)
-        return layers, outputs
+        return inputs, outputs
 
     def drnn_layer(self, cell, inputs, rate, hidden=None):
         n_steps = len(inputs)
@@ -166,7 +163,7 @@ class DRNN(nn.Module):
         if hidden is None:
             dilated_outputs, hidden = self._apply_cell(dilated_inputs, cell, batch_size, rate, hidden_size)
         else:
-            hidden = self._prepare_inputs(hidden, rate)
+            hidden = self._prepare_hiddens(hidden, rate)
             dilated_outputs, hidden = self._apply_cell(dilated_inputs, cell, batch_size, rate, hidden_size, hidden=hidden)
 
         splitted_outputs = self._split_outputs(dilated_outputs, rate)
@@ -217,10 +214,19 @@ class DRNN(nn.Module):
             dilated_steps = n_steps // rate
 
         return inputs, dilated_steps
+    # inputs.shape = (max(len(inputs), dilation), n_input, batch_size)
 
     def _prepare_inputs(self, inputs, rate):
         dilated_inputs = torch.cat([inputs[j::rate, :, :] for j in range(rate)], 1)
         return dilated_inputs
+    
+    def _prepare_hiddens(self, hiddens, rate):
+        if (len(hiddens)>=rate) :
+            dilated_hiddens = torch.cat([hiddens[j::rate, :, :] for j in range(rate)], 1)
+        else : 
+            dilated_hiddens = torch.cat([hiddens[j::rate, :, :] for j in range(len(hiddens))], 1)
+            dilated_hiddens = torch.cat([dilated_hiddens,torch.zeros(1,rate-len(hiddens),n_hidden)],1)
+        return dilated_hiddens
 
     def init_hidden(self, batch_size, hidden_dim):
         hidden = torch.zeros(batch_size, hidden_dim)

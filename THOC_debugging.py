@@ -140,4 +140,46 @@ for epoch in range(num_epochs) :
         if i ==1 :
             break
         
-# User defined loss function도 정상 작동..!
+### User defined loss function도 정상 작동..!
+
+# 3. Dilated RNN without Sliding Window & User defined loss function
+
+n_input = 9
+n_hidden = 9
+n_layers = 3
+cell_type = 'RNN'
+
+model = DRNN(n_input, n_hidden, n_layers, cell_type=cell_type)
+
+num_epochs = 1
+learning_rate = 0.01
+
+optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+
+criterion = nn.MSELoss()
+
+# training
+for epoch in range(num_epochs) :
+    for i, window in enumerate(train_dl):
+        window = window.type(torch.float32)
+        window = Variable(window)
+        optimizer.zero_grad()
+        if (epoch==0 & i==0) :
+            out, hidden = model.forward(window)
+        else :
+            out, hidden = model.forwaard(window, hidden)
+        
+        loss = criterion(window[0][1:], out[0][:-1])
+        loss.backward()
+        
+        optimizer.step()
+        
+        for k in model.state_dict():
+            print(k)
+            print(f"{model.state_dict()[k]}")
+            print("#"*100)
+    
+        if i ==2 :
+            break
+
+### hidden-hidden weight만 학습이 안되네요..
