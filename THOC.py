@@ -9,21 +9,23 @@ class THOC(nn.Module):
         self.drnn = DRNN(n_input, n_hidden, n_layers, dropout, cell_type, batch_first)              # drnn 모델 생성
         self.n_layers = n_layers
         self.n_centroids = n_centroids                                                              # layer별 cluster center의 개수
-        self.cluster_centers = [torch.tensor([[0]*n_hidden]*i) for i in n_centroids]                              # cluster_centers를 layer별 n_centorids개 만큼의 n_hidden 차원의 0벡터로 초기화
+        self.cluster_centers = [torch.tensor([[0]*n_hidden]*i) for i in n_centroids]                # cluster_centers를 layer별 n_centorids개 만큼의 n_hidden 차원의 0벡터로 초기화
         self.lambda_orth = lambda_[0]                                                               # threshold of loss_orth
         self.lambda_tss = lambda_[1]                                                                # threshold of loss_tss
         self.cos = nn.CosineSimilarity(dim=0)                                                       # cosine similarity layer
         self.mlp = nn.Linear(2*n_hidden, n_hidden)                                                  # MLP layer for concat function
         self.linear = nn.Linear(n_hidden, n_hidden)                                                 # linear layer for update function
         self.relu = nn.ReLU()                                                                       # relu layer for update function
+        self.batch_first = batch_first
              
-    def forward(self, x, first = False):
-        out, hidden = self.drnn(x)                                                                  # out = torch.tensor[[dim of X]*T]
+    def forward(self, x, hidden=None, first = False):
+        out, hidden = self.drnn(x, hidden)                                                          # out = torch.tensor[[dim of X]*T]
         R = []
         if first == True :                                                                          # 첫 배치일때는 drnn의 노드값에 k-means를 적용하여 cluster centroids 초기화
             for i, n_clusters in enumerate(self.n_centroids) :
                 k = n_clusters
-                _,self.cluster_centers[i] = kmeans(X=out[i].detach(), num_clusters=k)               # self.cluster_centers[i] = tensor([[dim of X]*i_th n_clusers])
+                _, self.cluster_centers[i] = kmeans(X=out[i], num_clusters=k)                       # self.cluster_centers[i] = tensor([[dim of X]*i_th n_clusers])
+        
         
         for layer in range(self.n_layers) :
             if (layer == 0) :
@@ -46,7 +48,7 @@ class THOC(nn.Module):
         out_cluster_centers = [torch.tensor(c) for c in self.cluster_centers]
         out_f = out
         
-        return out_anomaly_score, out_cluster_centers, out_f
+        return out_anomaly_score, out_cluster_centers, out_f, hidden
     
     def assign_prob(self, f_bar, centroids):
         P = []
@@ -117,6 +119,7 @@ class DRNN(nn.Module):
         self.dilations = [2 ** i for i in range(n_layers)]
         self.cell_type = cell_type
         self.batch_first = batch_first
+        self.n_hidden = n_hidden
 
         layers = []
         if self.cell_type == "GRU":
@@ -139,18 +142,22 @@ class DRNN(nn.Module):
     def forward(self, inputs, hidden=None):
         if self.batch_first:
             inputs = inputs.transpose(0, 1)
+        layers = torch.zeros(len(self.dilations),inputs.shape[0], inputs.shape[2])
+            
         outputs = []
+        
         for i, (cell, dilation) in enumerate(zip(self.cells, self.dilations)):
             if hidden is None:
                 inputs, _ = self.drnn_layer(cell, inputs, dilation)
             else:
                 inputs, hidden[i] = self.drnn_layer(cell, inputs, dilation, hidden[i])
-
+                
+            layers[i] = inputs.view(-1,self.n_hidden)
             outputs.append(inputs[-dilation:])
 
         if self.batch_first:
             inputs = inputs.transpose(0, 1)
-        return inputs, outputs
+        return layers, outputs
 
     def drnn_layer(self, cell, inputs, rate, hidden=None):
         n_steps = len(inputs)
@@ -225,7 +232,7 @@ class DRNN(nn.Module):
             dilated_hiddens = torch.cat([hiddens[j::rate, :, :] for j in range(rate)], 1)
         else : 
             dilated_hiddens = torch.cat([hiddens[j::rate, :, :] for j in range(len(hiddens))], 1)
-            dilated_hiddens = torch.cat([dilated_hiddens,torch.zeros(1,rate-len(hiddens),n_hidden)],1)
+            dilated_hiddens = torch.cat([dilated_hiddens,torch.zeros(1,rate-len(hiddens),self.n_hidden)],1)
         return dilated_hiddens
 
     def init_hidden(self, batch_size, hidden_dim):

@@ -86,7 +86,7 @@ cell_type = 'RNN'
 dropout = 0
 n_centroids = [6,4,3]
 
-model = THOC(n_input, n_hidden, n_layers, n_centroids, dropout = dropout, cell_type = cell_type)
+model = THOC(n_input, n_hidden, n_layers, n_centroids, dropout = dropout, cell_type = cell_type, batch_first=True)
 
 num_epochs = 1
 learning_rate = 0.01
@@ -94,18 +94,16 @@ learning_rate = 0.01
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 # training
+hidden = None
 for epoch in range(num_epochs) :
     for i, window in enumerate(train_dl):
-        window = window.type(torch.float32)
-        window = Variable(window)
-        optimizer.zero_grad()
-        if i == 0 :
-            anomaly_scores, cluster_centroids, out_of_drnn = model.forward(window, first = True)
-        else : 
-            anomaly_scores, cluster_centroids, out_of_drnn = model.forward(window)
+        # window = window.type(torch.float32)
+        # window = Variable(window)
+        anomaly_scores, cluster_centroids, out_of_drnn, hidden = model.forward(window, hidden=hidden)
         loss = Variable(thoc_loss(anomaly_scores, cluster_centroids, out_of_drnn, window), requires_grad =True)
-        loss.backward()
-        
+
+        optimizer.zero_grad()
+        loss.backward()        
         optimizer.step()
         
         for k in model.state_dict():
