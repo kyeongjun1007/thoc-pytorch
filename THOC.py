@@ -4,29 +4,30 @@ from kmeans_pytorch import kmeans
 import math
 
 class THOC(nn.Module):
-    def __init__(self, n_input, n_hidden, n_layers, n_centroids, lambda_ = [0.1, 0,1], dropout=0, cell_type='GRU', batch_first=False):
+    def __init__(self, n_input, n_hidden, n_layers, n_centroids, dropout=0, cell_type='GRU', batch_first=False):
         super().__init__()
         self.drnn = DRNN(n_input, n_hidden, n_layers, dropout, cell_type, batch_first)              # drnn 모델 생성
         self.n_layers = n_layers
         self.n_centroids = n_centroids                                                              # layer별 cluster center의 개수
         self.cluster_centers = [torch.tensor([[0]*n_hidden]*i) for i in n_centroids]                # cluster_centers를 layer별 n_centorids개 만큼의 n_hidden 차원의 0벡터로 초기화
-        self.lambda_orth = lambda_[0]                                                               # threshold of loss_orth
-        self.lambda_tss = lambda_[1]                                                                # threshold of loss_tss
         self.cos = nn.CosineSimilarity(dim=0)                                                       # cosine similarity layer
         self.mlp = nn.Linear(2*n_hidden, n_hidden)                                                  # MLP layer for concat function
         self.linear = nn.Linear(n_hidden, n_hidden)                                                 # linear layer for update function
         self.relu = nn.ReLU()                                                                       # relu layer for update function
-        self.batch_first = batch_first
+
+    def init_centroids(self, x):
+        out, hidden = self.drnn(x)
+        cluster_centers = []
+        for i, n_clusters in enumerate(self.n_centroids) :
+            k = n_clusters
+            _, cluster_center = kmeans(X=out[i],  num_clusters=k)
+            cluster_centers.append(cluster_center.detach())
+        self.cluster_centers = cluster_centers
              
-    def forward(self, x, hidden=None, first = False):
-        out, hidden = self.drnn(x, hidden)                                                          # out = torch.tensor[[dim of X]*T]
+    def forward(self, x):
+        out, hidden = self.drnn(x)                                                                  # out = torch.tensor[[dim of X]*T]
         R = []
-        if first == True :                                                                          # 첫 배치일때는 drnn의 노드값에 k-means를 적용하여 cluster centroids 초기화
-            for i, n_clusters in enumerate(self.n_centroids) :
-                k = n_clusters
-                _, self.cluster_centers[i] = kmeans(X=out[i], num_clusters=k)                       # self.cluster_centers[i] = tensor([[dim of X]*i_th n_clusers])
-        
-        
+
         for layer in range(self.n_layers) :
             if (layer == 0) :
                 f_bar = torch.stack([out[layer]])
@@ -41,14 +42,14 @@ class THOC(nn.Module):
             anomaly = 0
             for c in range(self.n_centroids[-1]) : 
                 for f in range(f_hat.shape[1]) :
-                    anomaly += R[t,f]*(1-self.cos(f_hat[t,f], torch.tensor(self.cluster_centers[-1][c])))
-            anomaly_score.append(anomaly.item())
+                    anomaly += R[t,f]*(1-self.cos(f_hat[t,f], self.cluster_centers[-1][c]))
+            anomaly_score.append(anomaly)
             
-        out_anomaly_score = torch.tensor(anomaly_score)
-        out_cluster_centers = [torch.tensor(c) for c in self.cluster_centers]
+        out_anomaly_score = torch.stack(anomaly_score)
+        out_cluster_centers = self.cluster_centers
         out_f = out
-        
-        return out_anomaly_score, out_cluster_centers, out_f, hidden
+
+        return out_anomaly_score, out_cluster_centers, out_f
     
     def assign_prob(self, f_bar, centroids):
         P = []
@@ -57,10 +58,10 @@ class THOC(nn.Module):
             for t in range(f_bar.shape[1]) :
                 scores = []
                 for j in range(len(centroids)) :
-                    scores.append(math.exp(self.cos(f_bar[i,t], torch.tensor(centroids[j])).item()))
+                    scores.append(torch.exp(self.cos(f_bar[i,t], centroids[j])))
                 score_sum = sum(scores)
-                scores = [score/score_sum for score in scores]
-                prob.append(scores)
+                scores_p = [score/score_sum for score in scores]
+                prob.append(scores_p)
             P.append(prob)
         P = torch.tensor(P)
         return P
