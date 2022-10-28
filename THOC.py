@@ -67,7 +67,7 @@ class THOC(nn.Module):
             P.append(prob)
         P = torch.tensor(P)
         return P
-    # P = [[[*,*,*,*,*,*]xT]x4]
+    # P = [[[*,*,*,*,*,*]xT]x1]
 
     def update(self, f_bar, prob):
         f_hat = []
@@ -96,18 +96,19 @@ class THOC(nn.Module):
         return f_bar
     # f_bar = [[[dim of X]*T]*6]
 
-    def calculate_R(self, P_list):                                                                       # 2차원 P를 받아서 1차원 R을 내보냄
-        R_ = torch.tensor([[1]*P_list[0].shape[0]]*P_list[0].shape[1])
-        for layer, P in enumerate(P_list) :
+    def calculate_R(self, P, R_):
+        B_calculate_R = []
+        for b in range(P.shape[0]) :
             R_list = []
-            for t in range(P.shape[1]) :
+            for t in range(P.shape[2]) :
                 k = []
-                for i in range(P.shape[2]) :
-                    k.append(sum([P[c, t, i].tolist() * R_[t, c].tolist() for c in range(R_.shape[1])]))
+                for i in range(P.shape[3]) :
+                    k.append(sum([P[b, c, t, i].tolist() * R_[b, t, c].tolist() for c in range(R_.shape[2])]))
                 R_list.append(k)
-            R_ = torch.tensor(R_list)
-        return R_
-    # R = [[*,*,*,*T]*T]
+            B_calculate_R.append(R_list)
+        B_calculate_R = torch.tensor(B_calculate_R)
+        return B_calculate_R
+    # R = [[[*,*,*,*]*T]*batch_size]
 
     def pad_tensor(self, short_tensor, layer):
         if layer == 0 :

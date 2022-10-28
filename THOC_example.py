@@ -25,7 +25,7 @@ class SlidingWindow(Dataset):
 
 # sliding window에 맞게 데이터 조정
 window_size = 100
-batch_size = 1
+batch_size = 2
 
 # DataLoader 생성
 data_scaler = MinMaxScaler()
