@@ -3,98 +3,130 @@ import torch.nn as nn
 from kmeans_pytorch import kmeans
 from torch.nn.parameter import Parameter
 
+use_cuda = torch.cuda.is_available()
+
 class THOC(nn.Module):
     def __init__(self, n_input, n_hidden, n_layers, n_centroids, x, tau=1, dropout=0, cell_type='GRU', batch_first=False):
         super().__init__()
-        self.drnn = DRNN(n_input, n_hidden, n_layers, dropout, cell_type, batch_first)                                      # drnn 모델 생성
+        if use_cuda :
+            self.drnn = DRNN(n_input, n_hidden, n_layers, dropout, cell_type, batch_first).cuda()                           # drnn 모델 생성
+        else :
+            self.drnn = DRNN(n_input, n_hidden, n_layers, dropout, cell_type, batch_first)
         self.n_layers = n_layers                                                                                            # layer 개수
         self.n_centroids = n_centroids                                                                                      # layer별 cluster center의 개수
         self.out = self.drnn(x)[0]                                                                                          # 1st window의 drnn output (cluster centroids initializing에 사용)
-        self.cluster_centers = Parameter(torch.stack([self.pad_tensor(kmeans(X=self.out[i], num_clusters=n_clusters)[1], i) for i, n_clusters in enumerate(self.n_centroids)]), requires_grad=True)
+        if use_cuda :
+            self.cluster_centers = Parameter(torch.stack([self.pad_tensor(kmeans(X=self.out[i].view(-1, n_hidden), device='cuda',
+                                             num_clusters=n_clusters)[1], i) for i, n_clusters in enumerate(self.n_centroids)]), requires_grad=True)
+        else :
+            self.cluster_centers = Parameter(torch.stack([self.pad_tensor(kmeans(X=self.out[i].view(-1, n_hidden),
+                                             num_clusters=n_clusters)[1], i) for i, n_clusters in enumerate(self.n_centroids)]), requires_grad=True)
         self.cos = nn.CosineSimilarity(dim=0)                                                                               # cosine similarity layer
         self.mlp = nn.Linear(2*n_hidden, n_hidden)                                                                          # MLP layer for concat function
         self.linear = nn.Linear(n_hidden, n_hidden)                                                                         # linear layer for update function
         self.relu = nn.ReLU()                                                                                               # relu layer for update function
+        self.self_superv = nn.Linear(n_hidden, n_input)
         self.tau = tau                                                                                                      # assign probability between f_bar & centroids
+        self.batch_first = batch_first
+
+        if use_cuda :
+            self.device = "cuda:0"
+        else :
+            self.device = 'cpu'
 
     def forward(self, x):
-        out, hidden = self.drnn(x)                                                                                          # out = torch.tensor[[dim of X]*T]
-        P_list = []
+        out, hidden = self.drnn(x)                                                                                          # out = torch.tensor[[[[dim of X]*batch_size]*T]*layer]
+        if self.batch_first :
+            R = torch.ones(x.shape[0], x.shape[1], 1)
+        else :
+            R = torch.ones(x.shape[1], x.shape[0], 1)
+        # if use_cuda :
+        #     R = R.cuda()
 
         for layer in range(self.n_layers) :
-            if (layer == 0) :
-                f_bar = torch.stack([out[layer]])
+            if layer == 0:
+                f_bar = torch.stack([out[layer]])                                                                           # f_bar = torch.tensor[[[[dim_of_X]*batch_size]*T]*1]
             P = self.assign_prob(f_bar, self.unpad_tensor(self.cluster_centers[layer], layer))
-            P_list.append(P)
+            R = self.calculate_R(P, R)
             f_hat = self.update(f_bar, P)
-            if (layer != (self.n_layers-1)) :
+            if layer != (self.n_layers - 1):
                 f_bar = self.concat(f_hat,out[layer+1])
 
-        R = self.calculate_R(P_list)
-
         anomaly_score = []
-        for t in range(f_hat.shape[0]) :
-            anomaly = 0
-            for c in range(self.n_centroids[-1]) :
-                for f in range(f_hat.shape[1]) :
-                    anomaly += R[t,f]*(1-self.cos(f_hat[t,f], self.cluster_centers[-1][c]))
-            anomaly_score.append(anomaly)
+        for b in range(f_hat.shape[0]) :
+            for t in range(f_hat.shape[1]) :
+                anomaly = 0
+                for c in range(self.n_centroids[-1]) :
+                    for f in range(f_hat.shape[2]) :
+                        anomaly += R[b,t,f]*(1-self.cos(f_hat[b,t,f], self.cluster_centers[-1][c]))
+                anomaly_score.append(anomaly)
 
         diff_list = []
         for layer, C in enumerate(self.cluster_centers):
             unpaded_C = self.unpad_tensor(C,layer)
-            CI = torch.matmul(torch.t(unpaded_C), unpaded_C) - torch.eye(unpaded_C.size(1))
+            CI = torch.matmul(torch.t(unpaded_C), unpaded_C) - torch.eye(unpaded_C.size(1)).to(self.device)
             diff_list.append((CI**2).mean())
         centroids_diff = torch.stack(diff_list)
 
         out_anomaly_score = torch.stack(anomaly_score)
         out_centroids_diff = centroids_diff
-        out_f = out
+        out_f = self.self_superv(out)
 
         return out_anomaly_score, out_centroids_diff, out_f
 
     def assign_prob(self, f_bar, centroids):
-        P = []
-        for i in range(f_bar.shape[0]):
-            prob = []
-            for t in range(f_bar.shape[1]) :
-                scores = []
-                for j in range(len(centroids)) :
-                    scores.append(torch.exp(self.cos(f_bar[i,t], centroids[j])/self.tau))
-                score_sum = sum(scores)
-                scores_p = [score/score_sum for score in scores]
-                prob.append(scores_p)
-            P.append(prob)
-        P = torch.tensor(P)
-        return P
-    # P = [[[*,*,*,*,*,*]xT]x1]
+        B_assign = []
+        for b in range(f_bar.shape[2]) :
+            P = []
+            for i in range(f_bar.shape[0]):
+                prob = []
+                for t in range(f_bar.shape[1]) :
+                    scores = []
+                    for j in range(len(centroids)) :
+                        scores.append(torch.exp(self.cos(f_bar[i,t,b], centroids[j])/self.tau))
+                    score_sum = sum(scores)
+                    scores_p = [score/score_sum for score in scores]
+                    prob.append(scores_p)
+                P.append(prob)
+            B_assign.append(P)
+        P_batch = torch.tensor(B_assign)
+        return P_batch
+    # P = torch.tensor([[[[n_centroids[layer+1]]*T]*n_centroids[layer]]*batch_size])
 
     def update(self, f_bar, prob):
-        f_hat = []
-        for t in range(f_bar.shape[1]) :
-            l = []
-            for k in range(f_bar.shape[0]):
-                y = self.linear(f_bar[k,t])
-                y = self.relu(y)
-                f_hat_list = [y*p for p in prob[k,t]]
-                f_hat_list = torch.stack(f_hat_list)
-                l.append(f_hat_list)
-            l = torch.stack(l)
-            l = torch.sum(l,0)
-            f_hat.append(l)
-        f_hat = torch.stack(f_hat)
-        return f_hat
-    #f_hat = [[[dim of X]*4]*T]
+        B_update = []
+        for b in range(f_bar.shape[2]) :
+            f_hat = []
+            for t in range(f_bar.shape[1]) :
+                l = []
+                for k in range(f_bar.shape[0]):
+                    y = self.linear(f_bar[k,t,b])
+                    y = self.relu(y)
+                    f_hat_list = [y*p for p in prob[b,k,t]]
+                    f_hat_list = torch.stack(f_hat_list)
+                    l.append(f_hat_list)
+                l = torch.stack(l)
+                l = torch.sum(l,0)
+                f_hat.append(l)
+            f_hat = torch.stack(f_hat)
+            B_update.append(f_hat)
+        f_hat_batch = torch.stack(B_update)
+        return f_hat_batch
+    # f_hat = torch.tensor([[[[dim of X]*n_centroids[layer+1]]*T]*batch_size])
 
     def concat(self, f_hat, f):
         f_bar = []
-        for k in range(f_hat.shape[1]):
-            in_f = torch.cat([f_hat[:,k,:], f], dim=1)
-            out_f = self.mlp(in_f)
-            f_bar.append(out_f)
-        f_bar = torch.stack(f_bar)
-        return f_bar
-    # f_bar = [[[dim of X]*T]*6]
+        for k in range(f_hat.shape[2]) :
+            B_concat = []
+            for b in range(f_hat.shape[0]):
+                in_f = torch.cat([f_hat[b,:,k,:], f[:,b,:]], dim=1)
+                out_f = self.mlp(in_f)
+                B_concat.append(out_f)
+            B_concat = torch.stack(B_concat).view(f_hat.shape[1],-1,f_hat.shape[3])
+            f_bar.append(B_concat)
+        f_bar_batch = torch.stack(f_bar)
+        return f_bar_batch
+    # f_bar = torch.tensor([[[[dim of X]*batch_size]*T]*n_centroids[layer+1]])
 
     def calculate_R(self, P, R_):
         B_calculate_R = []
@@ -104,11 +136,13 @@ class THOC(nn.Module):
                 k = []
                 for i in range(P.shape[3]) :
                     k.append(sum([P[b, c, t, i].tolist() * R_[b, t, c].tolist() for c in range(R_.shape[2])]))
-                R_list.append(k)
+                r_sum = sum(k)
+                k_exp = [r/r_sum for r in torch.exp(torch.tensor(k))]
+                R_list.append(k_exp)
             B_calculate_R.append(R_list)
         B_calculate_R = torch.tensor(B_calculate_R)
         return B_calculate_R
-    # R = [[[*,*,*,*]*T]*batch_size]
+    # R = [[[# of next layer cluster_centers]*T]*batch_size]
 
     def pad_tensor(self, short_tensor, layer):
         if layer == 0 :
@@ -127,8 +161,8 @@ class THOC(nn.Module):
             unpaded_tensor = long_tensor[:n_centroid]
         return unpaded_tensor
 
+
 ##-------------------------------------------------DRNN---------------------------------------------------
-use_cuda = torch.cuda.is_available()
 
 class DRNN(nn.Module):
 
@@ -161,8 +195,8 @@ class DRNN(nn.Module):
     def forward(self, inputs, hidden=None):
         if self.batch_first:
             inputs = inputs.transpose(0, 1)
-        layers = torch.zeros(len(self.dilations),inputs.shape[0], inputs.shape[2])
 
+        layers = torch.zeros(len(self.dilations), inputs.shape[0], inputs.shape[1], self.n_hidden).cuda()
         outputs = []
 
         for i, (cell, dilation) in enumerate(zip(self.cells, self.dilations)):
@@ -171,11 +205,10 @@ class DRNN(nn.Module):
             else:
                 inputs, hidden[i] = self.drnn_layer(cell, inputs, dilation, hidden[i])
 
-            layers[i] = inputs.view(-1,self.n_hidden)
+            layers[i] = inputs
+
             outputs.append(inputs[-dilation:])
 
-        if self.batch_first:
-            inputs = inputs.transpose(0, 1)
         return layers, outputs
 
     def drnn_layer(self, cell, inputs, rate, hidden=None):
@@ -238,6 +271,8 @@ class DRNN(nn.Module):
             inputs = torch.cat((inputs, zeros_))
         else:
             dilated_steps = n_steps // rate
+            if use_cuda:
+                inputs = inputs.cuda()
 
         return inputs, dilated_steps
     # inputs.shape = (max(len(inputs), dilation), n_input, batch_size)
