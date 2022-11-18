@@ -14,12 +14,12 @@ class THOC(nn.Module):
             self.drnn = DRNN(n_input, n_hidden, n_layers, dropout, cell_type, batch_first)
         self.n_layers = n_layers                                                                                            # layer 개수
         self.n_centroids = n_centroids                                                                                      # layer별 cluster center의 개수
-        self.out = self.drnn(x)[0]                                                                                          # 1st window의 drnn output (cluster centroids initializing에 사용)
+        self.hiddens = self.drnn(x)[1]                                                                                          # 1st window의 drnn output (cluster centroids initializing에 사용)
         if use_cuda :
-            self.cluster_centers = Parameter(torch.stack([self.pad_tensor(kmeans(X=self.out[i].view(-1, n_hidden), device='cuda',
+            self.cluster_centers = Parameter(torch.stack([self.pad_tensor(kmeans(X=self.hiddens[i].view(-1, n_hidden), device='cuda',
                                              num_clusters=n_clusters)[1], i) for i, n_clusters in enumerate(self.n_centroids)]), requires_grad=True)
         else :
-            self.cluster_centers = Parameter(torch.stack([self.pad_tensor(kmeans(X=self.out[i].view(-1, n_hidden),
+            self.cluster_centers = Parameter(torch.stack([self.pad_tensor(kmeans(X=self.hiddens[i].view(-1, n_hidden),
                                              num_clusters=n_clusters)[1], i) for i, n_clusters in enumerate(self.n_centroids)]), requires_grad=True)
         self.cos = nn.CosineSimilarity(dim=0)                                                                               # cosine similarity layer
         self.mlp = nn.Linear(2*n_hidden, n_hidden)                                                                          # MLP layer for concat function
@@ -197,19 +197,20 @@ class DRNN(nn.Module):
             inputs = inputs.transpose(0, 1)
 
         layers = torch.zeros(len(self.dilations), inputs.shape[0], inputs.shape[1], self.n_hidden).cuda()
-        outputs = []
+        hiddens = []
 
         for i, (cell, dilation) in enumerate(zip(self.cells, self.dilations)):
             if hidden is None:
-                inputs, _ = self.drnn_layer(cell, inputs, dilation)
+                inputs, k = self.drnn_layer(cell, inputs, dilation)
             else:
                 inputs, hidden[i] = self.drnn_layer(cell, inputs, dilation, hidden[i])
+                k = hidden[i]
 
             layers[i] = inputs
 
-            outputs.append(inputs[-dilation:])
+            hiddens.append(k)
 
-        return layers, outputs
+        return layers, hiddens
 
     def drnn_layer(self, cell, inputs, rate, hidden=None):
         n_steps = len(inputs)
