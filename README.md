@@ -12,3 +12,9 @@ You can train this model for mini-batch learning and use GPU.
 
 ### THOC_debugging.py
 For debugging...
+
+## SRNN   
+### WRNN.py   
+Scaled-RNN version 1 trial.   
+version1 : make scaled_input tensor using mean and predict multi-scaled y_hat.   
+Scaled-RNN class를 따로 만들고 multi-layer를 stack 하는 방식으로 다시 짜야 할 듯.
