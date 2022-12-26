@@ -1,4 +1,5 @@
 # review_models
+## THOC
 Dilated RNN model code refers to [Zalando Research](https://github.com/zalandoresearch/pytorch-dilated-rnn).   
 And I changed the output of this model to extract whole layer outs.
 
