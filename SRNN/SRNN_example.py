@@ -1,10 +1,11 @@
-from WRNN import WRNN
+from SRNN import SRNN
 import torch
 import numpy as np
 from torch.utils.data import Dataset, DataLoader
 
 # data setting
 data = torch.randn(100, 9)
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 
 # window setting
@@ -39,7 +40,7 @@ n_hidden = 32
 n_layers = 3
 nonlinearity = 'tanh'
 
-model = WRNN(n_input, n_hidden, n_layers, nonlinearity=nonlinearity)
+model = SRNN(n_input, n_hidden, n_layers, nonlinearity=nonlinearity)
 
 num_epochs = 1
 learning_rate = 0.001
@@ -49,6 +50,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 # training
 for epoch in range(num_epochs):
     for i, window in enumerate(dataloader):
+        window = window.to(device)
         out = model.forward(window)
 
         print(out)
