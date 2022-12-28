@@ -2,11 +2,15 @@ from SRNN import SRNN
 import torch
 import numpy as np
 from torch.utils.data import Dataset, DataLoader
+import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
 
 # data setting
-data = torch.randn(100, 9)
+data = pd.read_csv("PowerDemand.csv")
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
+scaler = MinMaxScaler()
+data = scaler.fit_transform(data)
 
 # window setting
 
@@ -33,24 +37,49 @@ dataloader = DataLoader(dataset=dataset,
                         batch_size=batch_size,
                         shuffle=False)
 
+# loss function
+def srnn_loss(out_all, scaled_x_all) :
+    loss = torch.zeros(1).cuda()
+    for i in range(len(out_all)) :
+        diff = out_all[i] - scaled_x_all[i]
+        loss += (diff**2).mean()
+
+    loss = loss/len(out_all)
+
+    return loss
+
+
 # model setting
 
-n_input = 9
-n_hidden = 32
+n_input = 1
+n_hidden = 8
 n_layers = 3
 nonlinearity = 'tanh'
 
 model = SRNN(n_input, n_hidden, n_layers, nonlinearity=nonlinearity)
 
 num_epochs = 1
-learning_rate = 0.001
+learning_rate = 0.01
 
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
+# for name, param in model.named_parameters():
+#     if param.requires_grad:
+#         print(name, param.data)
+
 # training
+k = []
 for epoch in range(num_epochs):
     for i, window in enumerate(dataloader):
         window = window.to(device)
-        out = model.forward(window)
+        out_all, scaled_x_all = model.forward(window)
 
-        print(out)
+        loss = srnn_loss(out_all, scaled_x_all)
+
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+
+        k.append(out_all)
+
+        print("time window %d : loss = %f" %(i, loss.item()))

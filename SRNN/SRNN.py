@@ -12,16 +12,20 @@ class SRNN(nn.Module) :
             self.device = "cuda:0"
         else :
             self.device = "cpu"
-        self.cells = nn.ModuleList([SRNNCell(n_input, n_hidden, n_input, nonlinearity=nonlinearity, device = self.device)] +
-                                   [SRNNCell(n_hidden, n_hidden, n_input, nonlinearity=nonlinearity, device = self.device) for _ in range(n_layers-1)])
+        self.cells = nn.ModuleList([SRNNCell(n_input, n_hidden, n_input)] +
+                                   [SRNNCell(n_hidden, n_hidden, n_input) for _ in range(n_layers-1)])
+        self.linear = nn.Linear(n_hidden, n_input, device=self.device)
         self.scales = [2 ** i for i in range(n_layers)]
         self.batch_first = batch_first
+        self.nonlinearity = nonlinearity
+        self.n_hidden = n_hidden
 
     def forward(self, inputs) :
         if self.batch_first :
             inputs = inputs.transpose(0,1)
 
         out_all = []
+        scaled_x_all = []
         for l in range(len(self.cells)) :
             scaled_x = self.scaled_input(inputs, self.scales[l])
             if l == 0 :
@@ -29,23 +33,30 @@ class SRNN(nn.Module) :
             else :
                 out = self.apply_layer(out, scaled_x, l)
             out_all.append(out)
+            scaled_x_all.append(scaled_x)
 
-        return out_all
+        return out_all, scaled_x_all
 
     def scaled_input(self, x, scale) :
         scaled_x = x.unfold(0, scale, 1)
-        scaled_x = torch.mean(scaled_x, 3)
+        scaled_x = scaled_x.mean(dim=3)
         return scaled_x
 
     def apply_layer(self, input, scaled_x, l) :
         out = []
         cell = self.cells[l]
-        for i in range(scaled_x.shape[0]-self.scales[l]) :
-            index = self.scales[l]-1+i
-            if i == 0 :
-                hidden = cell.apply_cell(input[index], scaled_x[index])
+        for i in range(scaled_x.shape[0]) :
+            if l == 0 :
+                index = self.scales[l]-1+i
             else :
-                hidden = cell.apply_cell(input[index], scaled_x[index], hidden)
+                index = self.scales[l] - self.scales[l-1] - 1 + i
+            if i == 0 :
+                hidden = torch.randn(input.shape[1], self.n_hidden, device=self.device)
+            if self.nonlinearity == 'tanh':
+                hidden = torch.tanh(cell.gate_i(input[index]) + cell.gate_s(scaled_x[i]) + cell.gate_h(hidden))
+            elif self.nonlinearity == 'relu':
+                hidden = torch.relu(cell.gate_i(input[index]) + cell.gate_s(scaled_x[i]) + cell.gate_h(hidden))
+
             out.append(hidden)
 
         out = torch.stack(out)
@@ -55,30 +66,14 @@ class SRNN(nn.Module) :
 
 class SRNNCell(nn.Module) :
 
-    def __init__(self, input_size, hidden_size, scaled_size, nonlinearity, device = 'cpu', dtype = None):
+    def __init__(self, input_size, hidden_size, scaled_size):
         super(SRNNCell, self).__init__()
-        factory_kwargs = {'device':device, 'dtype': dtype}
         self.n_hidden = hidden_size
-        self.nonlinearity = nonlinearity
-        self.weight_i = Parameter(torch.empty((input_size, hidden_size), **factory_kwargs))
-        self.weight_s = Parameter(torch.empty((scaled_size, hidden_size), **factory_kwargs))
-        self.weight_h = Parameter(torch.empty((hidden_size, hidden_size), **factory_kwargs))
-        # self.bias_i = Parameter(torch.empty(hidden_size, **factory_kwargs))
-        # self.bias_s = Parameter(torch.empty(hidden_size, **factory_kwargs))
-        # self.bias_h = Parameter(torch.empty(hidden_size, **factory_kwargs))
-
-    def apply_cell(self, x, scaled_x, hidden = None) :
-        if hidden is None:
-            if use_cuda :
-                hidden = torch.empty(x.shape[0], self.n_hidden).cuda()
-            else :
-                hidden = torch.empty(x.shape[0], self.n_hidden)
-        if self.nonlinearity == 'tanh' :
-            hidden = torch.tanh(torch.matmul(x, self.weight_i) +
-                                torch.matmul(hidden, self.weight_h) +
-                                torch.matmul(scaled_x, self.weight_s))
-        elif self.nonlinearity == 'relu' :
-            hidden = torch.relu(torch.matmul(x, self.weight_i) +
-                                torch.matmul(hidden, self.weight_h) +
-                                torch.matmul(scaled_x, self.weight_s))
-        return hidden
+        if use_cuda :
+            self.gate_i = nn.Linear(input_size, hidden_size).cuda()
+            self.gate_s = nn.Linear(scaled_size, hidden_size).cuda()
+            self.gate_h = nn.Linear(hidden_size, hidden_size).cuda()
+        else :
+            self.gate_i = nn.Linear(input_size, hidden_size)
+            self.gate_s = nn.Linear(scaled_size, hidden_size)
+            self.gate_h = nn.Linear(hidden_size, hidden_size)
