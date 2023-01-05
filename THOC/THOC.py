@@ -12,10 +12,9 @@ class THOC(nn.Module):
         super().__init__()
         if use_cuda:
             self.device = "cuda:0"
-            self.drnn = DRNN(n_input, n_hidden, n_layers, dropout, cell_type, batch_first).cuda()
         else:
             self.device = 'cpu'
-            self.drnn = DRNN(n_input, n_hidden, n_layers, dropout, cell_type, batch_first)
+        self.drnn = DRNN(n_input, n_hidden, n_layers, dropout, cell_type, batch_first)
         self.n_layers = n_layers  # layer 개수
         self.n_centroids = n_centroids  # layer별 cluster center의 개수
         self.hiddens = self.drnn(x)[1]  # 1st window의 drnn output (cluster centroids initializing에 사용)
@@ -33,7 +32,13 @@ class THOC(nn.Module):
         self.batch_first = batch_first
 
     def forward(self, x):
-        out, hidden = self.drnn(x)  # out = torch.tensor[[[[dim of X]*batch_size]*T]*layer]
+
+        # L : # of layers
+        # T : length of input data
+        # B : batch size
+        # H : hidden size
+
+        out, hidden = self.drnn(x)  # out = Tensor : (L, T, B, H)
         if self.batch_first:
             R = torch.ones(1, x.shape[1], x.shape[0], device=self.device)
         else:
@@ -41,7 +46,7 @@ class THOC(nn.Module):
 
         for layer in range(self.n_layers):
             if layer == 0:
-                f_bar = torch.stack([out[layer]])  # f_bar = torch.tensor[[[[dim_of_X]*batch_size]*T]*1]
+                f_bar = torch.stack([out[layer]])                           # Tensor : (1, T, B, H);
             P = self.assign_prob(f_bar, self.unpad_tensor(self.cluster_centers[layer], layer))
             R = self.calculate_R(P, R)
             f_hat = self.update(f_bar, P)
@@ -79,7 +84,7 @@ class THOC(nn.Module):
         P = torch.div(P_tensor, P_sum)
         return P
 
-    # P = Tensor : (n_clusters[n], n_clusters[n-1], T, n_hidden)
+    # P = Tensor : (n_clusters[layer+1], n_clusters[layer], T, H)
 
     def update(self, f_bar, prob):
         T = f_bar.shape[1] # length of input data
@@ -95,7 +100,7 @@ class THOC(nn.Module):
         f_hat = torch.sum(f_hats, 1)
         return f_hat
 
-    # f_hat = torch.tensor([[[[dim of X]*n_centroids[layer+1]]*T]*batch_size])
+    # f_hat = Tensor : (n_clusters[layer+1], T, B, H)
 
     def concat(self, f_hat, f):
         concat_list = []
@@ -105,14 +110,14 @@ class THOC(nn.Module):
         f_bar = torch.stack(concat_list)
         return f_bar
 
-    # f_bar = torch.tensor([[[[dim of X]*batch_size]*T]*n_centroids[layer+1]])
+    # f_bar = Tensor : (n_clusters[layer+1], T, B, H)
 
     def calculate_R(self, P, R_):
         R_hat = torch.mul(P, R_)
         R = R_hat.sum(1)
         return R
 
-    # R = [[[# of next layer cluster_centers]*T]*batch_size]
+    # R = Tensor : (n_clusters[layer+1], T, B)
 
     def pad_tensor(self, short_tensor, layer):
         if layer == 0:
@@ -139,7 +144,10 @@ class DRNN(nn.Module):
 
     def __init__(self, n_input, n_hidden, n_layers, dropout=0, cell_type='GRU', batch_first=False):
         super(DRNN, self).__init__()
-
+        if use_cuda:
+            self.device = "cuda:0"
+        else:
+            self.device = 'cpu'
         self.dilations = [2 ** i for i in range(n_layers)]
         self.cell_type = cell_type
         self.batch_first = batch_first
@@ -157,9 +165,9 @@ class DRNN(nn.Module):
 
         for i in range(n_layers):
             if i == 0:
-                c = cell(n_input, n_hidden, dropout=dropout)
+                c = cell(n_input, n_hidden, dropout=dropout, device=self.device)
             else:
-                c = cell(n_hidden, n_hidden, dropout=dropout)
+                c = cell(n_hidden, n_hidden, dropout=dropout, device=self.device)
             layers.append(c)
         self.cells = nn.Sequential(*layers)
 
@@ -167,7 +175,7 @@ class DRNN(nn.Module):
         if self.batch_first:
             inputs = inputs.transpose(0, 1)
 
-        layers = torch.zeros(len(self.dilations), inputs.shape[0], inputs.shape[1], self.n_hidden).cuda()
+        layers = torch.zeros(len(self.dilations), inputs.shape[0], inputs.shape[1], self.n_hidden, device=self.device)
         hiddens = []
 
         for i, (cell, dilation) in enumerate(zip(self.cells, self.dilations)):
@@ -237,9 +245,7 @@ class DRNN(nn.Module):
 
             zeros_ = torch.zeros(dilated_steps * rate - inputs.size(0),
                                  inputs.size(1),
-                                 inputs.size(2))
-            if use_cuda:
-                zeros_ = zeros_.cuda()
+                                 inputs.size(2), device=self.device)
 
             inputs = torch.cat((inputs, zeros_))
         else:
@@ -264,13 +270,9 @@ class DRNN(nn.Module):
         return dilated_hiddens
 
     def init_hidden(self, batch_size, hidden_dim):
-        hidden = torch.zeros(batch_size, hidden_dim)
-        if use_cuda:
-            hidden = hidden.cuda()
+        hidden = torch.zeros(batch_size, hidden_dim, device=self.device)
         if self.cell_type == "LSTM":
-            memory = torch.zeros(batch_size, hidden_dim)
-            if use_cuda:
-                memory = memory.cuda()
+            memory = torch.zeros(batch_size, hidden_dim, device=self.device)
             return (hidden, memory)
         else:
             return hidden
