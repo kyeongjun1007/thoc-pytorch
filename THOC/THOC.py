@@ -17,10 +17,10 @@ class THOC(nn.Module):
         self.drnn = DRNN(n_input, n_hidden, n_layers, dropout, cell_type, batch_first)
         self.n_layers = n_layers  # layer 개수
         self.n_centroids = n_centroids  # layer별 cluster center의 개수
-        self.hiddens = self.drnn(x)[1]  # 1st window의 drnn output (cluster centroids initializing에 사용)
+        self.hiddens = self.drnn(x)[0]  # 1st window의 drnn output (cluster centroids initializing에 사용)
         self.cluster_centers = Parameter(
-            torch.stack([self.pad_tensor(kmeans(X=self.hiddens[i].view(-1, n_hidden), device=self.device,
-                                                num_clusters=n_clusters)[1], i) for i, n_clusters in
+            torch.stack([self.pad_tensor(kmeans(X=self.hiddens[i].flatten(0,1), device=self.device,
+                                                num_clusters=n_clusters, tol = 0.000001)[1], i) for i, n_clusters in
                          enumerate(self.n_centroids)]), requires_grad=True)
         self.cos = nn.CosineSimilarity(dim=3)  # cosine similarity layer
         self.cos_for_dist = nn.CosineSimilarity(dim=2)
@@ -124,7 +124,7 @@ class THOC(nn.Module):
             paded_tensor = short_tensor
         else:
             n_centroid = self.n_centroids[layer]
-            zero_tensor = torch.zeros(self.n_centroids[0] - n_centroid, short_tensor.shape[1])
+            zero_tensor = torch.zeros(self.n_centroids[0] - n_centroid, short_tensor.shape[1], device=self.device)
             paded_tensor = torch.cat((short_tensor, zero_tensor))
         return paded_tensor
 
