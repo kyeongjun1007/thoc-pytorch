@@ -3,6 +3,7 @@ import torch.nn as nn
 
 use_cuda = torch.cuda.is_available()
 
+
 class SRNN(nn.Module) :
 
     def __init__(self, n_input, n_hidden, n_layers, nonlinearity = 'tanh', batch_first = 'True') :
@@ -34,8 +35,8 @@ class SRNN(nn.Module) :
                 if i == target_scale:
                     self.depth += 1
             scaled_x_list = self.scaled_input(p_inputs[i:i+largest_scale, :, :], self.depth)
-            hidden = self.apply_layers(scaled_x_list, hidden, self.depth)
-            hidden = self.pad_hidden(hidden, self.depth)
+            hidden[:self.depth] = self.apply_layers(scaled_x_list, hidden, self.depth)
+            # hidden = self.pad_hidden(hidden, self.depth)
 
         for i in range(len(hidden)) :
             hidden[i] = self.linear(hidden[i])

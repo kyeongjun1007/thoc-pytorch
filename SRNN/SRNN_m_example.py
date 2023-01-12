@@ -1,4 +1,4 @@
-from SRNN_multipred import SRNN
+from SRNN_m import SRNN
 import torch
 import numpy as np
 from torch.utils.data import Dataset, DataLoader
@@ -13,6 +13,7 @@ scaler = MinMaxScaler()
 data = scaler.fit_transform(data)
 
 # window setting
+
 
 class SlidingWindow(Dataset):
     def __init__(self, data, window):
@@ -36,6 +37,7 @@ dataset = SlidingWindow(data=data, window=window_size)
 dataloader = DataLoader(dataset=dataset,
                         batch_size=batch_size,
                         shuffle=False)
+
 
 # loss function
 def srnn_loss(out_all, scaled_x_all) :
@@ -73,6 +75,11 @@ for epoch in range(num_epochs):
     for i, window in enumerate(dataloader):
         window = window.to(device)
         out_all, scaled_x_all = model.forward(window)
+
+        for i in range(len(out_all)) :
+            print(out_all[i].shape)
+        break
+    break
 
         loss = srnn_loss(out_all, scaled_x_all)
 
