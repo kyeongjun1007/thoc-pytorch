@@ -1,0 +1,65 @@
+[33m89173e2[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m HEAD@{0}: reset: moving to HEAD^
+[33m213f594[m HEAD@{1}: rebase (abort): updating HEAD
+[33m213f594[m HEAD@{2}: rebase (abort): updating HEAD
+[33m213f594[m HEAD@{3}: commit: THOC example with open-dataset 'kddcup.csv'
+[33m89173e2[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m HEAD@{4}: commit: THOC example with open-dataset 'kddcup.csv'
+[33m388f8fb[m[33m ([m[1;31morigin/master[m[33m)[m HEAD@{5}: pull origin master: Merge made by the 'ort' strategy.
+[33mea02220[m HEAD@{6}: commit: code cleaning
+[33mbc29288[m HEAD@{7}: pull origin master: Merge made by the 'ort' strategy.
+[33m53a305b[m HEAD@{8}: commit: THOC cuda version upgrade
+[33m095432a[m HEAD@{9}: commit: 1 horizon for single, many horizon for multi
+[33m33e1f6a[m HEAD@{10}: commit: SRNN (multi-scale prediction version)
+[33m791a423[m HEAD@{11}: commit: Scaled-RNN ver1 using SRNNCell
+[33m7d151ab[m HEAD@{12}: commit: make THOC folder
+[33m1fdac66[m HEAD@{13}: pull origin master: Fast-forward
+[33m1dc432a[m HEAD@{14}: pull origin master: Merge made by the 'ort' strategy.
+[33mb3d0de1[m HEAD@{15}: commit: Scaled-RNN ver1 try
+[33m7e295c9[m HEAD@{16}: commit: init cluster centers with hiddens of drnn
+[33m894fd2c[m HEAD@{17}: pull origin master: Merge made by the 'ort' strategy.
+[33m53f6958[m HEAD@{18}: commit: cuda config version
+[33m2aa58bc[m HEAD@{19}: pull origin master: Merge made by the 'ort' strategy.
+[33mb48f5e5[m HEAD@{20}: commit: delete data
+[33m8d4a49b[m HEAD@{21}: commit: mini batch THOC
+[33m41fa3dd[m HEAD@{22}: commit: example modified
+[33mc09ec66[m HEAD@{23}: commit: debugging complete T.T
+[33m965f0fd[m HEAD@{24}: commit: init cluster centroids method
+[33maffe91a[m HEAD@{25}: commit: debugging...
+[33m3960c89[m HEAD@{26}: commit: create _prepare_hiddens method in Dilated-RNN Class
+[33mffdce89[m HEAD@{27}: commit: debugging
+[33m5fef1a2[m HEAD@{28}: commit: drnn model can't learning too. maybe loss function issue?
+[33mdde75b4[m HEAD@{29}: commit: parameter learning X.. sklearn kmeans -> torch kmeans
+[33mb622817[m HEAD@{30}: commit: modeling finished but loss is too big
+[33mc5f4a19[m HEAD@{31}: commit: return tensor
+[33me96fa06[m HEAD@{32}: commit: THOC output and loss function are defined
+[33m2a5f35f[m HEAD@{33}: commit: debugging (anomaly_score, assign_prob)
+[33mf272fc4[m HEAD@{34}: commit: debugging (anomaly_score)
+[33ma8f255a[m HEAD@{35}: commit: debugging (anomaly_score)
+[33mb295bca[m HEAD@{36}: commit: debugging (calculate_R)
+[33m86877ee[m HEAD@{37}: commit: debugging (concat function)
+[33m67cc3e6[m HEAD@{38}: commit: debugging (update function)
+[33mea5a733[m HEAD@{39}: commit: debugging (assign prob fucntion)
+[33m00ee949[m HEAD@{40}: pull origin master: Fast-forward
+[33m82fdd29[m HEAD@{41}: commit: debugging...
+[33m10648e6[m HEAD@{42}: commit: THOC complete.but need to define loss_function
+[33m5da7c7b[m HEAD@{43}: commit: example with sliding window
+[33m627a8bd[m HEAD@{44}: commit: extract all layer output from dilated-rnn
+[33m8bea5f6[m HEAD@{45}: commit: 주석 추가 및 함수 확인
+[33m5a7cc78[m HEAD@{46}: commit: update fumction added
+[33m1ed94ac[m HEAD@{47}: commit: concat function added
+[33mfa40e7b[m HEAD@{48}: pull origin master: Merge made by the 'ort' strategy.
+[33m46ce3c9[m HEAD@{49}: commit: P and R functions added
+[33m177b3e3[m HEAD@{50}: checkout: moving from version1 to master
+[33m10c74b4[m[33m ([m[1;32mversion1[m[33m)[m HEAD@{51}: checkout: moving from version1 to version1
+[33m10c74b4[m[33m ([m[1;32mversion1[m[33m)[m HEAD@{52}: checkout: moving from master to version1
+[33m177b3e3[m HEAD@{53}: commit: loss_orth, loss_thoc added!
+[33m080e516[m HEAD@{54}: commit: check
+[33m1cec475[m HEAD@{55}: commit: loss_orth, loss_thoc added
+[33med73e83[m HEAD@{56}: commit: loss_orth, loss_thoc added
+[33mce5ff94[m HEAD@{57}: commit: loss_orth, loss_thoc added
+[33m9fd97ca[m HEAD@{58}: commit: 첫 batch 데이터일 때 first = True로 인자 설정하는 방식
+[33m6749c58[m HEAD@{59}: pull origin master: Merge made by the 'ort' strategy.
+[33m8f91764[m HEAD@{60}: commit: example 수정
+[33m2b72cde[m HEAD@{61}: commit: 사용 예시 코드 함께 작성하는게 편할 듯
+[33m7ae2165[m HEAD@{62}: commit: THOC_start
+[33ma67042c[m HEAD@{63}: pull origin master: Fast-forward
+[33m50ebbea[m HEAD@{64}: commit (initial): THOC_start
