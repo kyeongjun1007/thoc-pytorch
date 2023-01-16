@@ -76,11 +76,6 @@ for epoch in range(num_epochs):
         window = window.to(device)
         out_all, scaled_x_all = model.forward(window)
 
-        for i in range(len(out_all)) :
-            print(out_all[i].shape)
-        break
-    break
-
         loss = srnn_loss(out_all, scaled_x_all)
 
         optimizer.zero_grad()

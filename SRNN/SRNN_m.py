@@ -32,7 +32,7 @@ class SRNN(nn.Module):
                 out = self.apply_layer(inputs, scaled_x, l)
             else:
                 out = self.apply_layer(out, scaled_x, l)
-            out_all.append(out)
+            out_all.append(self.linear(out))
             scaled_x_all.append(scaled_x)
 
         return out_all, scaled_x_all

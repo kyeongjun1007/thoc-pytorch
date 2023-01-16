@@ -1,4 +1,4 @@
-from SRNN_m import SRNN
+from VRNN_m import VRNN
 import torch
 import pandas as pd
 import numpy as np
@@ -13,7 +13,7 @@ from pathlib import Path
 
 # data config
 ## make directory
-path = "./gridsearch/srnn_m"
+path = "./gridsearch/vrnn_m"
 if not Path(path).exists():
     Path(path).mkdir(parents=True)
 
@@ -120,7 +120,7 @@ for n_layers in n_layers_ :
                                                       batch_size=batch_size,
                                                       shuffle=False)
 
-                        model = SRNN(n_input, n_hidden, n_layers, nonlinearity=nonlinearity)
+                        model = VRNN(n_input, n_hidden, n_layers, nonlinearity=nonlinearity)
                         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
 
                         # training
@@ -131,7 +131,7 @@ for n_layers in n_layers_ :
                                 y = y.to(device)
                                 y_list = [y[:,:2**k].mean(dim=1) for k in range(n_layers)]
 
-                                out = model.forward(window)[0]
+                                out = model.forward(window)
 
                                 loss = mse_loss_m(out, y_list)
 
@@ -147,7 +147,7 @@ for n_layers in n_layers_ :
                             window, y = data_[0], data_[1]
                             window = window.to(device)
 
-                            out = model.forward(window)[0]
+                            out = model.forward(window)
 
                             out_list.append([scaler.inverse_transform(out[k][-1].cpu().detach().numpy()) for k in range(len(out))])
                             if i == (len(valid) - window_size - 2**(n_layers-1))//batch_size-1 :

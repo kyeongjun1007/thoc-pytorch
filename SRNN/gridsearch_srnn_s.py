@@ -171,5 +171,5 @@ for n_layers in n_layers_ :
                               "experiment " + str(count) + "/" + str(total) + " done..." )
                         print("validation loss : %d, best : %d" %(mse, top_loss))
 
-with open ('param_dict.pkl','wb') as f :
+with open (path + 'param_dict.pkl','wb') as f :
     pickle.dump(param_dict,f)
