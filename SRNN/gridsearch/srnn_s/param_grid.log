@@ -1,0 +1,2787 @@
+n_layers : 3
+	n_hidden : 16
+		batch_size : 1024
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0012555366847664118
+					validation loss : 3312.43798828125
+
+				weight_decay : 1e-06
+					training loss : 0.001226728199981153
+					validation loss : 2848.848876953125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0020962113048881292
+					validation loss : 5850.126953125
+
+				weight_decay : 1e-06
+					training loss : 0.01574891060590744
+					validation loss : 51788.6953125
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0011799933854490519
+					validation loss : 2811.149169921875
+
+				weight_decay : 1e-06
+					training loss : 0.0013099628267809749
+					validation loss : 3036.172119140625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.003823466831818223
+					validation loss : 5665.76171875
+
+				weight_decay : 1e-06
+					training loss : 0.011010848917067051
+					validation loss : 36337.6015625
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0012582065537571907
+					validation loss : 2948.174072265625
+
+				weight_decay : 1e-06
+					training loss : 0.0011420988012105227
+					validation loss : 2902.421875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.001899140770547092
+					validation loss : 3743.686767578125
+
+				weight_decay : 1e-06
+					training loss : 0.002856126055121422
+					validation loss : 5216.03759765625
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.001391267986036837
+					validation loss : 3023.70751953125
+
+				weight_decay : 1e-06
+					training loss : 0.0012434180825948715
+					validation loss : 2854.17822265625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0021348316222429276
+					validation loss : 4256.87255859375
+
+				weight_decay : 1e-06
+					training loss : 0.0016506859101355076
+					validation loss : 3437.41455078125
+
+		batch_size : 512
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0013985536061227322
+					validation loss : 3056.726318359375
+
+				weight_decay : 1e-06
+					training loss : 0.0014879638329148293
+					validation loss : 2925.987548828125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.006599176209419966
+					validation loss : 15432.2138671875
+
+				weight_decay : 1e-06
+					training loss : 0.001919951755553484
+					validation loss : 3942.489990234375
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0011728249955922365
+					validation loss : 2932.976806640625
+
+				weight_decay : 1e-06
+					training loss : 0.0014140296261757612
+					validation loss : 2870.3310546875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.002136081689968705
+					validation loss : 4197.37939453125
+
+				weight_decay : 1e-06
+					training loss : 0.0014336872845888138
+					validation loss : 3424.5791015625
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.001189893577247858
+					validation loss : 2755.177001953125
+
+				weight_decay : 1e-06
+					training loss : 0.0013846040237694979
+					validation loss : 3008.92578125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0022424538619816303
+					validation loss : 4276.10107421875
+
+				weight_decay : 1e-06
+					training loss : 0.0013272158103063703
+					validation loss : 2959.21533203125
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0012616459280252457
+					validation loss : 2838.5087890625
+
+				weight_decay : 1e-06
+					training loss : 0.001218015793710947
+					validation loss : 2847.120849609375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0013232475612312555
+					validation loss : 3199.673583984375
+
+				weight_decay : 1e-06
+					training loss : 0.0012722552055492997
+					validation loss : 2940.8330078125
+
+		batch_size : 128
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0012020079884678125
+					validation loss : 3083.912353515625
+
+				weight_decay : 1e-06
+					training loss : 0.001255808281712234
+					validation loss : 2949.520751953125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0014131759526208043
+					validation loss : 3200.874267578125
+
+				weight_decay : 1e-06
+					training loss : 0.0013525583781301975
+					validation loss : 3395.553955078125
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0011309640249237418
+					validation loss : 2858.2939453125
+
+				weight_decay : 1e-06
+					training loss : 0.0011501772096380591
+					validation loss : 2858.6318359375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0011818167986348271
+					validation loss : 2822.43359375
+
+				weight_decay : 1e-06
+					training loss : 0.0011887196451425552
+					validation loss : 2909.183837890625
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0012574788415804505
+					validation loss : 2817.177978515625
+
+				weight_decay : 1e-06
+					training loss : 0.0013097955379635096
+					validation loss : 2929.558349609375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.001135973259806633
+					validation loss : 2764.2529296875
+
+				weight_decay : 1e-06
+					training loss : 0.0011994276428595185
+					validation loss : 2743.90869140625
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.001237576361745596
+					validation loss : 2874.5205078125
+
+				weight_decay : 1e-06
+					training loss : 0.0012657440965995193
+					validation loss : 3983.482666015625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0011534721124917269
+					validation loss : 2735.183349609375
+
+				weight_decay : 1e-06
+					training loss : 0.0011897759977728128
+					validation loss : 2749.837890625
+
+	n_hidden : 32
+		batch_size : 1024
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0013388541992753744
+					validation loss : 3198.107177734375
+
+				weight_decay : 1e-06
+					training loss : 0.0014453426701948047
+					validation loss : 3286.00634765625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0029292101971805096
+					validation loss : 6359.89013671875
+
+				weight_decay : 1e-06
+					training loss : 0.0017376224277541041
+					validation loss : 3943.49853515625
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.00130172586068511
+					validation loss : 3143.132080078125
+
+				weight_decay : 1e-06
+					training loss : 0.001392542151734233
+					validation loss : 3139.093505859375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0018510724185034633
+					validation loss : 3767.037109375
+
+				weight_decay : 1e-06
+					training loss : 0.001687089097686112
+					validation loss : 3587.698974609375
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0011976183159276843
+					validation loss : 2717.415771484375
+
+				weight_decay : 1e-06
+					training loss : 0.0014189184876158834
+					validation loss : 3032.498046875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0011957704555243254
+					validation loss : 2998.097412109375
+
+				weight_decay : 1e-06
+					training loss : 0.0020404967945069075
+					validation loss : 4014.5029296875
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.001303343684412539
+					validation loss : 3034.378173828125
+
+				weight_decay : 1e-06
+					training loss : 0.0012277750065550208
+					validation loss : 2955.39306640625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.001356641761958599
+					validation loss : 3283.758056640625
+
+				weight_decay : 1e-06
+					training loss : 0.0011542955180630088
+					validation loss : 2932.931396484375
+
+		batch_size : 512
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0014157876139506698
+					validation loss : 3002.05224609375
+
+				weight_decay : 1e-06
+					training loss : 0.0014250701060518622
+					validation loss : 3126.213134765625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0016057799803093076
+					validation loss : 3560.697265625
+
+				weight_decay : 1e-06
+					training loss : 0.0021110097877681255
+					validation loss : 3962.664306640625
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0014340574853122234
+					validation loss : 3136.041748046875
+
+				weight_decay : 1e-06
+					training loss : 0.0014539496041834354
+					validation loss : 3219.409912109375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0013688734034076333
+					validation loss : 3195.2998046875
+
+				weight_decay : 1e-06
+					training loss : 0.0015320229576900601
+					validation loss : 3464.10498046875
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0013496334431692958
+					validation loss : 3004.421142578125
+
+				weight_decay : 1e-06
+					training loss : 0.001455053687095642
+					validation loss : 2995.79541015625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0013491690624505281
+					validation loss : 2925.46728515625
+
+				weight_decay : 1e-06
+					training loss : 0.0014714443823322654
+					validation loss : 3428.14599609375
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0015284687979146838
+					validation loss : 2967.147216796875
+
+				weight_decay : 1e-06
+					training loss : 0.0012125460198149085
+					validation loss : 2933.375732421875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0012465890031307936
+					validation loss : 2916.20947265625
+
+				weight_decay : 1e-06
+					training loss : 0.0011881100945174694
+					validation loss : 2958.459228515625
+
+		batch_size : 128
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0012466899352148175
+					validation loss : 2834.57470703125
+
+				weight_decay : 1e-06
+					training loss : 0.0012016418622806668
+					validation loss : 2882.3505859375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0012017431436106563
+					validation loss : 3226.49169921875
+
+				weight_decay : 1e-06
+					training loss : 0.0011455900967121124
+					validation loss : 2717.22216796875
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0012620006455108523
+					validation loss : 2894.474609375
+
+				weight_decay : 1e-06
+					training loss : 0.0012411094503477216
+					validation loss : 2950.720458984375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0011653995607048273
+					validation loss : 2772.7783203125
+
+				weight_decay : 1e-06
+					training loss : 0.00135456258431077
+					validation loss : 3035.8828125
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0012785439612343907
+					validation loss : 2811.01171875
+
+				weight_decay : 1e-06
+					training loss : 0.0012607353273779154
+					validation loss : 2836.8505859375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0011608671629801393
+					validation loss : 2920.225341796875
+
+				weight_decay : 1e-06
+					training loss : 0.001212729373946786
+					validation loss : 2811.237548828125
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0012692996533587575
+					validation loss : 2935.3232421875
+
+				weight_decay : 1e-06
+					training loss : 0.0012544626370072365
+					validation loss : 2843.741455078125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.001110527548007667
+					validation loss : 2728.0791015625
+
+				weight_decay : 1e-06
+					training loss : 0.0011185382027179003
+					validation loss : 2748.763916015625
+
+	n_hidden : 64
+		batch_size : 1024
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0019549152348190546
+					validation loss : 4013.2861328125
+
+				weight_decay : 1e-06
+					training loss : 0.011008544825017452
+					validation loss : 36641.19921875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0015451222425326705
+					validation loss : 3795.5859375
+
+				weight_decay : 1e-06
+					training loss : 0.002176715759560466
+					validation loss : 4148.13525390625
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0015119643649086356
+					validation loss : 3235.01171875
+
+				weight_decay : 1e-06
+					training loss : 0.0015611167764291167
+					validation loss : 3321.003662109375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0014394039753824472
+					validation loss : 3368.99853515625
+
+				weight_decay : 1e-06
+					training loss : 0.0013606054708361626
+					validation loss : 3354.677734375
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0013941858196631074
+					validation loss : 3092.4912109375
+
+				weight_decay : 1e-06
+					training loss : 0.0014864506665617228
+					validation loss : 3285.971435546875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0012226314283907413
+					validation loss : 2973.2705078125
+
+				weight_decay : 1e-06
+					training loss : 0.0013391487300395966
+					validation loss : 3300.92578125
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0013814065605401993
+					validation loss : 3067.293212890625
+
+				weight_decay : 1e-06
+					training loss : 0.0013487322721630335
+					validation loss : 3048.45166015625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0011609656503424048
+					validation loss : 2975.427734375
+
+				weight_decay : 1e-06
+					training loss : 0.0011938133975490928
+					validation loss : 3067.43359375
+
+		batch_size : 512
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.001773420604877174
+					validation loss : 3230.904541015625
+
+				weight_decay : 1e-06
+					training loss : 0.0018657961627468467
+					validation loss : 3293.8779296875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0013185227289795876
+					validation loss : 3342.63916015625
+
+				weight_decay : 1e-06
+					training loss : 0.0012555839493870735
+					validation loss : 3208.83544921875
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0014482011320069432
+					validation loss : 3242.08154296875
+
+				weight_decay : 1e-06
+					training loss : 0.0013416665606200695
+					validation loss : 3131.854248046875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0011941922130063176
+					validation loss : 3152.139404296875
+
+				weight_decay : 1e-06
+					training loss : 0.0012254059547558427
+					validation loss : 3091.349365234375
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0012574789579957724
+					validation loss : 3060.140869140625
+
+				weight_decay : 1e-06
+					training loss : 0.0013087878469377756
+					validation loss : 3036.97509765625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0012152109993621707
+					validation loss : 3029.694091796875
+
+				weight_decay : 1e-06
+					training loss : 0.001163779990747571
+					validation loss : 2820.35888671875
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0014907483709976077
+					validation loss : 3008.7216796875
+
+				weight_decay : 1e-06
+					training loss : 0.0015508919022977352
+					validation loss : 3168.3525390625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0011481776600703597
+					validation loss : 2896.389404296875
+
+				weight_decay : 1e-06
+					training loss : 0.001334065687842667
+					validation loss : 2912.5146484375
+
+		batch_size : 128
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0013098536292091012
+					validation loss : 3100.5458984375
+
+				weight_decay : 1e-06
+					training loss : 0.0013634387869387865
+					validation loss : 2971.611083984375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0011570390779525042
+					validation loss : 3234.255615234375
+
+				weight_decay : 1e-06
+					training loss : 0.0013716572429984808
+					validation loss : 3537.249267578125
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0013002688065171242
+					validation loss : 2895.22265625
+
+				weight_decay : 1e-06
+					training loss : 0.0013662077253684402
+					validation loss : 2953.496337890625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0012049690121784806
+					validation loss : 2978.293212890625
+
+				weight_decay : 1e-06
+					training loss : 0.0011526450980454683
+					validation loss : 3036.554931640625
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0014318700414150953
+					validation loss : 3177.265625
+
+				weight_decay : 1e-06
+					training loss : 0.0012918649008497596
+					validation loss : 2979.2822265625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0011512346100062132
+					validation loss : 2979.338623046875
+
+				weight_decay : 1e-06
+					training loss : 0.001141730579547584
+					validation loss : 2835.044677734375
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0012906696647405624
+					validation loss : 2849.292236328125
+
+				weight_decay : 1e-06
+					training loss : 0.001306080841459334
+					validation loss : 2785.708984375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0011476362124085426
+					validation loss : 2896.59326171875
+
+				weight_decay : 1e-06
+					training loss : 0.0011568258050829172
+					validation loss : 2858.789306640625
+
+	n_hidden : 128
+		batch_size : 1024
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.020377855747938156
+					validation loss : 63525.89453125
+
+				weight_decay : 1e-06
+					training loss : 0.0022558204364031553
+					validation loss : 3332.1875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0017358603654429317
+					validation loss : 3690.285888671875
+
+				weight_decay : 1e-06
+					training loss : 0.0014063675189390779
+					validation loss : 3393.27880859375
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0022162438835948706
+					validation loss : 3509.31640625
+
+				weight_decay : 1e-06
+					training loss : 0.0014489326858893037
+					validation loss : 3253.439208984375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0013736350229009986
+					validation loss : 3331.358154296875
+
+				weight_decay : 1e-06
+					training loss : 0.0013111041625961661
+					validation loss : 3315.950927734375
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.001983033958822489
+					validation loss : 5492.24658203125
+
+				weight_decay : 1e-06
+					training loss : 0.00151439243927598
+					validation loss : 4461.1083984375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0012272688327357173
+					validation loss : 3217.356689453125
+
+				weight_decay : 1e-06
+					training loss : 0.0012797702802345157
+					validation loss : 3253.65283203125
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0016627756413072348
+					validation loss : 3293.662353515625
+
+				weight_decay : 1e-06
+					training loss : 0.0015228582778945565
+					validation loss : 3152.6748046875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0012724207481369376
+					validation loss : 3241.499755859375
+
+				weight_decay : 1e-06
+					training loss : 0.0011874367482960224
+					validation loss : 3012.68115234375
+
+		batch_size : 512
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.008399375714361668
+					validation loss : 33634.0078125
+
+				weight_decay : 1e-06
+					training loss : 0.0017096241936087608
+					validation loss : 3276.81494140625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0013371561653912067
+					validation loss : 3275.968994140625
+
+				weight_decay : 1e-06
+					training loss : 0.0014067176962271333
+					validation loss : 3297.458740234375
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0014874865300953388
+					validation loss : 3202.4873046875
+
+				weight_decay : 1e-06
+					training loss : 0.0014465571148321033
+					validation loss : 3773.841064453125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.001263159909285605
+					validation loss : 3156.400146484375
+
+				weight_decay : 1e-06
+					training loss : 0.0011329769622534513
+					validation loss : 3008.27880859375
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0016570850275456905
+					validation loss : 3156.3310546875
+
+				weight_decay : 1e-06
+					training loss : 0.001718731946311891
+					validation loss : 3147.794921875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0011782979127019644
+					validation loss : 2999.772705078125
+
+				weight_decay : 1e-06
+					training loss : 0.001157375518232584
+					validation loss : 3047.531982421875
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0017866622656583786
+					validation loss : 4136.74560546875
+
+				weight_decay : 1e-06
+					training loss : 0.002176770707592368
+					validation loss : 4494.15087890625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0011541431304067373
+					validation loss : 2853.80078125
+
+				weight_decay : 1e-06
+					training loss : 0.0011732944985851645
+					validation loss : 2875.713134765625
+
+		batch_size : 128
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0012845988385379314
+					validation loss : 4120.177734375
+
+				weight_decay : 1e-06
+					training loss : 0.002098681638017297
+					validation loss : 4027.7822265625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0013181323884055018
+					validation loss : 3193.00439453125
+
+				weight_decay : 1e-06
+					training loss : 0.0013136017369106412
+					validation loss : 3601.28759765625
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.003817656310275197
+					validation loss : 13831.16015625
+
+				weight_decay : 1e-06
+					training loss : 0.001256495132111013
+					validation loss : 3950.759521484375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0012013106606900692
+					validation loss : 3123.4931640625
+
+				weight_decay : 1e-06
+					training loss : 0.0016471018316224217
+					validation loss : 3298.78173828125
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0036621137987822294
+					validation loss : 6861.2265625
+
+				weight_decay : 1e-06
+					training loss : 0.0013419215101748705
+					validation loss : 15514.25390625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0011265026405453682
+					validation loss : 2963.843505859375
+
+				weight_decay : 1e-06
+					training loss : 0.0012439240235835314
+					validation loss : 3303.79052734375
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.4675154387950897
+					validation loss : 73384.6015625
+
+				weight_decay : 1e-06
+					training loss : 0.11475590616464615
+					validation loss : 89442.078125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.001134239137172699
+					validation loss : 2922.606689453125
+
+				weight_decay : 1e-06
+					training loss : 0.001173513475805521
+					validation loss : 3008.921875
+
+n_layers : 4
+	n_hidden : 16
+		batch_size : 1024
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0016419070307165384
+					validation loss : 8537.001953125
+
+				weight_decay : 1e-06
+					training loss : 0.036226820200681686
+					validation loss : 60775.71484375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.02312324196100235
+					validation loss : 74632.671875
+
+				weight_decay : 1e-06
+					training loss : 0.02141575887799263
+					validation loss : 69696.4609375
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.001771148876287043
+					validation loss : 3828.821044921875
+
+				weight_decay : 1e-06
+					training loss : 0.0017992552602663636
+					validation loss : 3509.792724609375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.010259663686156273
+					validation loss : 16039.408203125
+
+				weight_decay : 1e-06
+					training loss : 0.020096877589821815
+					validation loss : 34680.76953125
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.004974898416548967
+					validation loss : 7702.7490234375
+
+				weight_decay : 1e-06
+					training loss : 0.0020348539110273123
+					validation loss : 3613.265869140625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.005335009191185236
+					validation loss : 7427.52392578125
+
+				weight_decay : 1e-06
+					training loss : 0.0019476533634588122
+					validation loss : 4639.90087890625
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0011178766144439578
+					validation loss : 2845.546142578125
+
+				weight_decay : 1e-06
+					training loss : 0.0016704135341569781
+					validation loss : 3285.83642578125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0030887157190591097
+					validation loss : 5881.5009765625
+
+				weight_decay : 1e-06
+					training loss : 0.0017167845508083701
+					validation loss : 4929.33984375
+
+		batch_size : 512
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.00406278669834137
+					validation loss : 6791.87353515625
+
+				weight_decay : 1e-06
+					training loss : 0.0015964803751558065
+					validation loss : 3369.685302734375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.005338663700968027
+					validation loss : 7083.77734375
+
+				weight_decay : 1e-06
+					training loss : 0.0211111381649971
+					validation loss : 55590.9375
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0019714103545993567
+					validation loss : 3347.361572265625
+
+				weight_decay : 1e-06
+					training loss : 0.0012408130569383502
+					validation loss : 2859.51171875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.002387062646448612
+					validation loss : 4851.5126953125
+
+				weight_decay : 1e-06
+					training loss : 0.002449398161843419
+					validation loss : 4390.27392578125
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0012240852229297161
+					validation loss : 2737.65771484375
+
+				weight_decay : 1e-06
+					training loss : 0.0015358650125563145
+					validation loss : 3303.8857421875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0013468055985867977
+					validation loss : 3445.00244140625
+
+				weight_decay : 1e-06
+					training loss : 0.0041185347363352776
+					validation loss : 6142.9716796875
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.002195087494328618
+					validation loss : 3417.100830078125
+
+				weight_decay : 1e-06
+					training loss : 0.0012402123538777232
+					validation loss : 2819.22802734375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0014167590998113155
+					validation loss : 3253.040283203125
+
+				weight_decay : 1e-06
+					training loss : 0.0026413516607135534
+					validation loss : 4765.32666015625
+
+		batch_size : 128
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0015128898667171597
+					validation loss : 3155.202392578125
+
+				weight_decay : 1e-06
+					training loss : 0.001414890168234706
+					validation loss : 3467.1259765625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0020442642271518707
+					validation loss : 3925.19140625
+
+				weight_decay : 1e-06
+					training loss : 0.0017419918440282345
+					validation loss : 3965.671630859375
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0014811246655881405
+					validation loss : 3244.82861328125
+
+				weight_decay : 1e-06
+					training loss : 0.001124490750953555
+					validation loss : 2878.979736328125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0011485338909551501
+					validation loss : 2879.511962890625
+
+				weight_decay : 1e-06
+					training loss : 0.0015442819567397237
+					validation loss : 3314.90966796875
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.002768599661067128
+					validation loss : 7542.1669921875
+
+				weight_decay : 1e-06
+					training loss : 0.0014423761749640107
+					validation loss : 3117.978759765625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0011774229351431131
+					validation loss : 2926.20654296875
+
+				weight_decay : 1e-06
+					training loss : 0.0013112437445670366
+					validation loss : 3237.452880859375
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.001282350393012166
+					validation loss : 2756.67041015625
+
+				weight_decay : 1e-06
+					training loss : 0.0011673212284222245
+					validation loss : 2777.707763671875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0012739719823002815
+					validation loss : 2810.955810546875
+
+				weight_decay : 1e-06
+					training loss : 0.0012013004161417484
+					validation loss : 3093.684814453125
+
+	n_hidden : 32
+		batch_size : 1024
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.01641296036541462
+					validation loss : 28569.373046875
+
+				weight_decay : 1e-06
+					training loss : 0.002243553753942251
+					validation loss : 5125.38623046875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.023970099166035652
+					validation loss : 74516.34375
+
+				weight_decay : 1e-06
+					training loss : 0.00762595608830452
+					validation loss : 11586.5146484375
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0018909507198259234
+					validation loss : 3413.2490234375
+
+				weight_decay : 1e-06
+					training loss : 0.0015812473138794303
+					validation loss : 3273.187255859375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0034421903546899557
+					validation loss : 5043.61328125
+
+				weight_decay : 1e-06
+					training loss : 0.003108662785962224
+					validation loss : 5047.74169921875
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0014835697365924716
+					validation loss : 3375.34033203125
+
+				weight_decay : 1e-06
+					training loss : 0.001680866815149784
+					validation loss : 3358.780517578125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.003462647320702672
+					validation loss : 6048.71337890625
+
+				weight_decay : 1e-06
+					training loss : 0.00409355852752924
+					validation loss : 6038.5830078125
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0016651891637593508
+					validation loss : 3335.11181640625
+
+				weight_decay : 1e-06
+					training loss : 0.003679996356368065
+					validation loss : 3730.888427734375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0025266760494560003
+					validation loss : 4735.767578125
+
+				weight_decay : 1e-06
+					training loss : 0.0024235292803496122
+					validation loss : 4836.17138671875
+
+		batch_size : 512
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0014653739053755999
+					validation loss : 3140.450439453125
+
+				weight_decay : 1e-06
+					training loss : 0.0014406265690922737
+					validation loss : 3178.774169921875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.004653334617614746
+					validation loss : 6290.95361328125
+
+				weight_decay : 1e-06
+					training loss : 0.00776948407292366
+					validation loss : 11009.7451171875
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0012786424485966563
+					validation loss : 3047.764892578125
+
+				weight_decay : 1e-06
+					training loss : 0.0015363615239039063
+					validation loss : 3227.40478515625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0013893028954043984
+					validation loss : 3073.547607421875
+
+				weight_decay : 1e-06
+					training loss : 0.002472042106091976
+					validation loss : 4254.09130859375
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0023621791042387486
+					validation loss : 3923.276123046875
+
+				weight_decay : 1e-06
+					training loss : 0.0012451332295313478
+					validation loss : 2910.441650390625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0012921079760417342
+					validation loss : 3279.4716796875
+
+				weight_decay : 1e-06
+					training loss : 0.0012651538709178567
+					validation loss : 2934.31103515625
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0018553261179476976
+					validation loss : 3661.172607421875
+
+				weight_decay : 1e-06
+					training loss : 0.0012213945155963302
+					validation loss : 3061.150634765625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0014461231185123324
+					validation loss : 3291.17822265625
+
+				weight_decay : 1e-06
+					training loss : 0.001446644659154117
+					validation loss : 3066.8115234375
+
+		batch_size : 128
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0015592253766953945
+					validation loss : 3164.749267578125
+
+				weight_decay : 1e-06
+					training loss : 0.001260038698092103
+					validation loss : 3843.552978515625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0011561823775991797
+					validation loss : 2900.144287109375
+
+				weight_decay : 1e-06
+					training loss : 0.0016513566952198744
+					validation loss : 3506.13525390625
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.001313801622018218
+					validation loss : 3128.643798828125
+
+				weight_decay : 1e-06
+					training loss : 0.0012847331818193197
+					validation loss : 3154.569091796875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0011104837758466601
+					validation loss : 2815.232666015625
+
+				weight_decay : 1e-06
+					training loss : 0.001107462914660573
+					validation loss : 2831.597412109375
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0012555206194519997
+					validation loss : 2943.81298828125
+
+				weight_decay : 1e-06
+					training loss : 0.0012552149128168821
+					validation loss : 2931.0546875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0011617476120591164
+					validation loss : 2846.548583984375
+
+				weight_decay : 1e-06
+					training loss : 0.0012036316329613328
+					validation loss : 2756.246337890625
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0013992676977068186
+					validation loss : 3055.55712890625
+
+				weight_decay : 1e-06
+					training loss : 0.001356861088424921
+					validation loss : 2906.8046875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0010634860955178738
+					validation loss : 2776.0927734375
+
+				weight_decay : 1e-06
+					training loss : 0.00111901864875108
+					validation loss : 2771.021240234375
+
+	n_hidden : 64
+		batch_size : 1024
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0031234719790518284
+					validation loss : 4657.88037109375
+
+				weight_decay : 1e-06
+					training loss : 0.0020064939744770527
+					validation loss : 4632.78125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.00459663663059473
+					validation loss : 7199.73095703125
+
+				weight_decay : 1e-06
+					training loss : 0.006268188823014498
+					validation loss : 7809.9296875
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.012044386938214302
+					validation loss : 13150.1669921875
+
+				weight_decay : 1e-06
+					training loss : 0.001900817733258009
+					validation loss : 3282.751708984375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.004338366445153952
+					validation loss : 6545.50927734375
+
+				weight_decay : 1e-06
+					training loss : 0.0036082465667277575
+					validation loss : 5528.4248046875
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0019064631778746843
+					validation loss : 3274.349609375
+
+				weight_decay : 1e-06
+					training loss : 0.0017833346500992775
+					validation loss : 3282.82275390625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0012799003161489964
+					validation loss : 3471.452392578125
+
+				weight_decay : 1e-06
+					training loss : 0.004859634675085545
+					validation loss : 5194.4501953125
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0018904648022726178
+					validation loss : 3182.357421875
+
+				weight_decay : 1e-06
+					training loss : 0.0023244351614266634
+					validation loss : 3541.51708984375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.001298515941016376
+					validation loss : 3231.967041015625
+
+				weight_decay : 1e-06
+					training loss : 0.0012808284955099225
+					validation loss : 3368.685546875
+
+		batch_size : 512
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.004489782266318798
+					validation loss : 12789.6181640625
+
+				weight_decay : 1e-06
+					training loss : 0.001571488450281322
+					validation loss : 3157.134033203125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0022532539442181587
+					validation loss : 3818.3994140625
+
+				weight_decay : 1e-06
+					training loss : 0.004188606981188059
+					validation loss : 6106.55078125
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.026546888053417206
+					validation loss : 75050.1796875
+
+				weight_decay : 1e-06
+					training loss : 0.0015273086028173566
+					validation loss : 3238.373779296875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.002092219889163971
+					validation loss : 3245.220703125
+
+				weight_decay : 1e-06
+					training loss : 0.002398235024884343
+					validation loss : 4454.24853515625
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.00156808749306947
+					validation loss : 3295.57275390625
+
+				weight_decay : 1e-06
+					training loss : 0.0019551641307771206
+					validation loss : 3725.85107421875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0013013483257964253
+					validation loss : 3626.923583984375
+
+				weight_decay : 1e-06
+					training loss : 0.0011707150842994452
+					validation loss : 2875.095458984375
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.001656417385675013
+					validation loss : 3573.4091796875
+
+				weight_decay : 1e-06
+					training loss : 0.0014891383470967412
+					validation loss : 3244.5087890625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0014296337030828
+					validation loss : 3698.174560546875
+
+				weight_decay : 1e-06
+					training loss : 0.001196400262415409
+					validation loss : 2810.20263671875
+
+		batch_size : 128
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.002040681429207325
+					validation loss : 5181.1826171875
+
+				weight_decay : 1e-06
+					training loss : 0.001497394754551351
+					validation loss : 3745.2578125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0016524981474503875
+					validation loss : 4523.10595703125
+
+				weight_decay : 1e-06
+					training loss : 0.0025059871841222048
+					validation loss : 4066.31689453125
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.04503810405731201
+					validation loss : 87508.453125
+
+				weight_decay : 1e-06
+					training loss : 0.030206477269530296
+					validation loss : 82240.953125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0011141523718833923
+					validation loss : 2867.6123046875
+
+				weight_decay : 1e-06
+					training loss : 0.0010879688197746873
+					validation loss : 2821.880859375
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0011374459136277437
+					validation loss : 3060.12939453125
+
+				weight_decay : 1e-06
+					training loss : 0.0014277604641392827
+					validation loss : 3525.505126953125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.001043665804900229
+					validation loss : 2723.201904296875
+
+				weight_decay : 1e-06
+					training loss : 0.00110246695112437
+					validation loss : 2788.900390625
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.002109997672960162
+					validation loss : 5643.97119140625
+
+				weight_decay : 1e-06
+					training loss : 0.0009742035181261599
+					validation loss : 3180.29931640625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0010716819670051336
+					validation loss : 2833.0205078125
+
+				weight_decay : 1e-06
+					training loss : 0.0010967319831252098
+					validation loss : 2773.245361328125
+
+	n_hidden : 128
+		batch_size : 1024
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.024181023240089417
+					validation loss : 74152.7109375
+
+				weight_decay : 1e-06
+					training loss : 0.0041801175102591515
+					validation loss : 4138.6015625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.011898438446223736
+					validation loss : 37985.578125
+
+				weight_decay : 1e-06
+					training loss : 0.00817735493183136
+					validation loss : 27929.291015625
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.029539210721850395
+					validation loss : 70393.46875
+
+				weight_decay : 1e-06
+					training loss : 0.02192026935517788
+					validation loss : 71465.9765625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0018631586572155356
+					validation loss : 4004.86865234375
+
+				weight_decay : 1e-06
+					training loss : 0.002722283126786351
+					validation loss : 4699.02490234375
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0016242171404883265
+					validation loss : 3317.961181640625
+
+				weight_decay : 1e-06
+					training loss : 0.0017549520125612617
+					validation loss : 4445.59716796875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0014883930562064052
+					validation loss : 3641.24853515625
+
+				weight_decay : 1e-06
+					training loss : 0.0017917617224156857
+					validation loss : 3791.320068359375
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.007687258068472147
+					validation loss : 43573.77734375
+
+				weight_decay : 1e-06
+					training loss : 0.0017588690388947725
+					validation loss : 5037.45458984375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0026910644955933094
+					validation loss : 4611.083984375
+
+				weight_decay : 1e-06
+					training loss : 0.0011186443734914064
+					validation loss : 3002.73291015625
+
+		batch_size : 512
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.023243475705385208
+					validation loss : 76666.0390625
+
+				weight_decay : 1e-06
+					training loss : 0.00269521027803421
+					validation loss : 3584.4130859375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.003292605746537447
+					validation loss : 4929.52978515625
+
+				weight_decay : 1e-06
+					training loss : 0.0024934778921306133
+					validation loss : 4677.77099609375
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0018099263543263078
+					validation loss : 4034.7529296875
+
+				weight_decay : 1e-06
+					training loss : 0.001812754082493484
+					validation loss : 3392.449462890625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0012745538260787725
+					validation loss : 3279.179443359375
+
+				weight_decay : 1e-06
+					training loss : 0.0016082380898296833
+					validation loss : 3410.70263671875
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0016370074590668082
+					validation loss : 3662.01513671875
+
+				weight_decay : 1e-06
+					training loss : 0.015810120850801468
+					validation loss : 57056.2421875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0011370410211384296
+					validation loss : 2934.772216796875
+
+				weight_decay : 1e-06
+					training loss : 0.001237456570379436
+					validation loss : 2973.69677734375
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0024694150779396296
+					validation loss : 8619.857421875
+
+				weight_decay : 1e-06
+					training loss : 0.0014018311630934477
+					validation loss : 4459.033203125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0011374108726158738
+					validation loss : 2873.39306640625
+
+				weight_decay : 1e-06
+					training loss : 0.0012429412454366684
+					validation loss : 2896.38134765625
+
+		batch_size : 128
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.03694741055369377
+					validation loss : 70370.1328125
+
+				weight_decay : 1e-06
+					training loss : 0.03779520466923714
+					validation loss : 76993.1640625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0013013933785259724
+					validation loss : 3306.062255859375
+
+				weight_decay : 1e-06
+					training loss : 0.0012876484543085098
+					validation loss : 3237.01513671875
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.042704127728939056
+					validation loss : 76720.234375
+
+				weight_decay : 1e-06
+					training loss : 0.0075113303028047085
+					validation loss : 12485.2841796875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.001150712021626532
+					validation loss : 3242.16162109375
+
+				weight_decay : 1e-06
+					training loss : 0.0015227767871692777
+					validation loss : 3163.8369140625
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.03770364075899124
+					validation loss : 73924.890625
+
+				weight_decay : 1e-06
+					training loss : 0.00682254321873188
+					validation loss : 12408.0087890625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0010806822683662176
+					validation loss : 2988.091796875
+
+				weight_decay : 1e-06
+					training loss : 0.0011280248872935772
+					validation loss : 2926.19384765625
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.004485019017010927
+					validation loss : 11096.9619140625
+
+				weight_decay : 1e-06
+					training loss : 0.03450453653931618
+					validation loss : 83764.734375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0011051057372242212
+					validation loss : 2955.03125
+
+				weight_decay : 1e-06
+					training loss : 0.0011909636668860912
+					validation loss : 2827.127685546875
+
+n_layers : 5
+	n_hidden : 16
+		batch_size : 1024
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.03114619106054306
+					validation loss : 40930.578125
+
+				weight_decay : 1e-06
+					training loss : 0.008190223015844822
+					validation loss : 20670.640625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.024581681936979294
+					validation loss : 75746.5703125
+
+				weight_decay : 1e-06
+					training loss : 0.028954079374670982
+					validation loss : 85246.015625
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0657113641500473
+					validation loss : 126626.6171875
+
+				weight_decay : 1e-06
+					training loss : 0.00775456428527832
+					validation loss : 26816.1328125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.031790826469659805
+					validation loss : 90863.84375
+
+				weight_decay : 1e-06
+					training loss : 0.030370602384209633
+					validation loss : 55855.83203125
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0051589589565992355
+					validation loss : 5521.48681640625
+
+				weight_decay : 1e-06
+					training loss : 0.0486488938331604
+					validation loss : 97982.7734375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.023822708055377007
+					validation loss : 70315.546875
+
+				weight_decay : 1e-06
+					training loss : 0.01128566823899746
+					validation loss : 11170.794921875
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.002643157262355089
+					validation loss : 3702.279052734375
+
+				weight_decay : 1e-06
+					training loss : 0.0025079946499317884
+					validation loss : 6272.29248046875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.009076803922653198
+					validation loss : 9231.380859375
+
+				weight_decay : 1e-06
+					training loss : 0.02131287194788456
+					validation loss : 67674.25
+
+		batch_size : 512
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.018948281183838844
+					validation loss : 16782.703125
+
+				weight_decay : 1e-06
+					training loss : 0.005335896275937557
+					validation loss : 8324.7158203125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.007397438865154982
+					validation loss : 14175.4326171875
+
+				weight_decay : 1e-06
+					training loss : 0.01585363782942295
+					validation loss : 44171.30859375
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0035334229469299316
+					validation loss : 4046.877685546875
+
+				weight_decay : 1e-06
+					training loss : 0.005280862096697092
+					validation loss : 13343.580078125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.006890692748129368
+					validation loss : 9870.6923828125
+
+				weight_decay : 1e-06
+					training loss : 0.009738830849528313
+					validation loss : 10391.7109375
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0023111479822546244
+					validation loss : 4161.00341796875
+
+				weight_decay : 1e-06
+					training loss : 0.0017141475109383464
+					validation loss : 2951.90625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.00523636769503355
+					validation loss : 7386.3017578125
+
+				weight_decay : 1e-06
+					training loss : 0.008255243301391602
+					validation loss : 8863.16796875
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0015948009677231312
+					validation loss : 4843.61767578125
+
+				weight_decay : 1e-06
+					training loss : 0.0019615606870502234
+					validation loss : 4793.3798828125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0038888324052095413
+					validation loss : 6270.458984375
+
+				weight_decay : 1e-06
+					training loss : 0.002226258162409067
+					validation loss : 5013.9892578125
+
+		batch_size : 128
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0020227658096700907
+					validation loss : 5996.15283203125
+
+				weight_decay : 1e-06
+					training loss : 0.0014033598126843572
+					validation loss : 3948.616943359375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.003463627304881811
+					validation loss : 6287.12548828125
+
+				weight_decay : 1e-06
+					training loss : 0.006164161022752523
+					validation loss : 8695.046875
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0016177979996427894
+					validation loss : 6267.2236328125
+
+				weight_decay : 1e-06
+					training loss : 0.0011979795526713133
+					validation loss : 2757.22607421875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.003939146175980568
+					validation loss : 6552.955078125
+
+				weight_decay : 1e-06
+					training loss : 0.0038645968306809664
+					validation loss : 8581.8291015625
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0015934654511511326
+					validation loss : 3605.029541015625
+
+				weight_decay : 1e-06
+					training loss : 0.001215115888044238
+					validation loss : 2686.8515625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.002992075402289629
+					validation loss : 6314.17578125
+
+				weight_decay : 1e-06
+					training loss : 0.0018290739972144365
+					validation loss : 3686.47216796875
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0013544003013521433
+					validation loss : 3160.58544921875
+
+				weight_decay : 1e-06
+					training loss : 0.001452722935937345
+					validation loss : 2791.3662109375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0018750355811789632
+					validation loss : 3841.95654296875
+
+				weight_decay : 1e-06
+					training loss : 0.0015873180236667395
+					validation loss : 3946.97509765625
+
+	n_hidden : 32
+		batch_size : 1024
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.030829567462205887
+					validation loss : 72593.4296875
+
+				weight_decay : 1e-06
+					training loss : 0.0027898859698325396
+					validation loss : 16839.541015625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.026240486651659012
+					validation loss : 80066.671875
+
+				weight_decay : 1e-06
+					training loss : 0.06387393176555634
+					validation loss : 130230.2265625
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0021175167057663202
+					validation loss : 5681.5546875
+
+				weight_decay : 1e-06
+					training loss : 0.005369778722524643
+					validation loss : 8126.9384765625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.04684916511178017
+					validation loss : 57945.3828125
+
+				weight_decay : 1e-06
+					training loss : 0.009168419986963272
+					validation loss : 11444.375
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.021835453808307648
+					validation loss : 70605.2890625
+
+				weight_decay : 1e-06
+					training loss : 0.01020188257098198
+					validation loss : 37060.296875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.00756435701623559
+					validation loss : 8853.2255859375
+
+				weight_decay : 1e-06
+					training loss : 0.0052293771877884865
+					validation loss : 6764.64404296875
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0020242473110556602
+					validation loss : 3873.365966796875
+
+				weight_decay : 1e-06
+					training loss : 0.002892112359404564
+					validation loss : 4202.900390625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.004972804803401232
+					validation loss : 8222.74609375
+
+				weight_decay : 1e-06
+					training loss : 0.006740888115018606
+					validation loss : 7019.42431640625
+
+		batch_size : 512
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.021913038566708565
+					validation loss : 72032.2734375
+
+				weight_decay : 1e-06
+					training loss : 0.0018155103316530585
+					validation loss : 3879.6396484375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.019300127401947975
+					validation loss : 62183.80078125
+
+				weight_decay : 1e-06
+					training loss : 0.007360842078924179
+					validation loss : 10638.28515625
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.005693633574992418
+					validation loss : 7782.20703125
+
+				weight_decay : 1e-06
+					training loss : 0.001571831526234746
+					validation loss : 3478.69384765625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.00957701075822115
+					validation loss : 9651.7470703125
+
+				weight_decay : 1e-06
+					training loss : 0.007212805096060038
+					validation loss : 8576.1591796875
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0016485584201291203
+					validation loss : 4265.31689453125
+
+				weight_decay : 1e-06
+					training loss : 0.0017001115484163165
+					validation loss : 2826.935546875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.005980645772069693
+					validation loss : 8209.0673828125
+
+				weight_decay : 1e-06
+					training loss : 0.004822827875614166
+					validation loss : 9240.751953125
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0016090193530544639
+					validation loss : 2734.3369140625
+
+				weight_decay : 1e-06
+					training loss : 0.0016399098094552755
+					validation loss : 4081.688720703125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.002220872091129422
+					validation loss : 3790.90478515625
+
+				weight_decay : 1e-06
+					training loss : 0.006503664422780275
+					validation loss : 7248.54736328125
+
+		batch_size : 128
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.003701407928019762
+					validation loss : 5297.31689453125
+
+				weight_decay : 1e-06
+					training loss : 0.002385338768362999
+					validation loss : 5788.91796875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0034789908677339554
+					validation loss : 8158.87548828125
+
+				weight_decay : 1e-06
+					training loss : 0.003729208605363965
+					validation loss : 8055.76611328125
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0013539762003347278
+					validation loss : 4390.64013671875
+
+				weight_decay : 1e-06
+					training loss : 0.029595090076327324
+					validation loss : 81486.65625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0019442328484728932
+					validation loss : 5200.51171875
+
+				weight_decay : 1e-06
+					training loss : 0.0018245469545945525
+					validation loss : 4316.681640625
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.028044572100043297
+					validation loss : 79351.8125
+
+				weight_decay : 1e-06
+					training loss : 0.008157570846378803
+					validation loss : 8300.2392578125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0013674504589289427
+					validation loss : 3942.135986328125
+
+				weight_decay : 1e-06
+					training loss : 0.0016900256741791964
+					validation loss : 3501.1982421875
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.00217429269105196
+					validation loss : 5165.3291015625
+
+				weight_decay : 1e-06
+					training loss : 0.033821504563093185
+					validation loss : 86699.265625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0015220779459923506
+					validation loss : 3518.173095703125
+
+				weight_decay : 1e-06
+					training loss : 0.0015439821872860193
+					validation loss : 3417.347900390625
+
+	n_hidden : 64
+		batch_size : 1024
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0033057047985494137
+					validation loss : 10163.3974609375
+
+				weight_decay : 1e-06
+					training loss : 0.03875235468149185
+					validation loss : 60894.76953125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.011126154102385044
+					validation loss : 17422.2109375
+
+				weight_decay : 1e-06
+					training loss : 0.01771368831396103
+					validation loss : 17052.28515625
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.004680851940065622
+					validation loss : 7290.51708984375
+
+				weight_decay : 1e-06
+					training loss : 0.02378283068537712
+					validation loss : 73063.3203125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.021342653781175613
+					validation loss : 25270.12109375
+
+				weight_decay : 1e-06
+					training loss : 0.009657544083893299
+					validation loss : 15712.1962890625
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0024549681693315506
+					validation loss : 3833.994873046875
+
+				weight_decay : 1e-06
+					training loss : 0.0016362741589546204
+					validation loss : 4041.486328125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.007232876028865576
+					validation loss : 10093.6650390625
+
+				weight_decay : 1e-06
+					training loss : 0.008098042570054531
+					validation loss : 9506.4052734375
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.003997443709522486
+					validation loss : 11549.6689453125
+
+				weight_decay : 1e-06
+					training loss : 0.04262584075331688
+					validation loss : 83505.3828125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.006319961044937372
+					validation loss : 7059.5654296875
+
+				weight_decay : 1e-06
+					training loss : 0.009103274904191494
+					validation loss : 9967.9423828125
+
+		batch_size : 512
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.002823153045028448
+					validation loss : 8466.1103515625
+
+				weight_decay : 1e-06
+					training loss : 0.0016150576993823051
+					validation loss : 3999.656005859375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.006808529607951641
+					validation loss : 10823.4404296875
+
+				weight_decay : 1e-06
+					training loss : 0.005670385435223579
+					validation loss : 20164.892578125
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0028700842522084713
+					validation loss : 4277.5556640625
+
+				weight_decay : 1e-06
+					training loss : 0.026674846187233925
+					validation loss : 81784.3046875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.001883327728137374
+					validation loss : 6013.830078125
+
+				weight_decay : 1e-06
+					training loss : 0.00843418762087822
+					validation loss : 8255.2216796875
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0025522136129438877
+					validation loss : 6834.564453125
+
+				weight_decay : 1e-06
+					training loss : 0.03151357173919678
+					validation loss : 91157.3203125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0020358553156256676
+					validation loss : 6328.25146484375
+
+				weight_decay : 1e-06
+					training loss : 0.007820983417332172
+					validation loss : 12370.1123046875
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0009431446669623256
+					validation loss : 4068.02197265625
+
+				weight_decay : 1e-06
+					training loss : 0.0015249913558363914
+					validation loss : 3829.70068359375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.00197499617934227
+					validation loss : 3687.177001953125
+
+				weight_decay : 1e-06
+					training loss : 0.0026114163920283318
+					validation loss : 8307.6181640625
+
+		batch_size : 128
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.029257027432322502
+					validation loss : 80812.1875
+
+				weight_decay : 1e-06
+					training loss : 0.0015848728362470865
+					validation loss : 3975.003662109375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.003873467678204179
+					validation loss : 9340.3994140625
+
+				weight_decay : 1e-06
+					training loss : 0.004253504332154989
+					validation loss : 18251.408203125
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0013855616562068462
+					validation loss : 3975.3623046875
+
+				weight_decay : 1e-06
+					training loss : 0.034385088831186295
+					validation loss : 87532.9765625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.001643636031076312
+					validation loss : 4204.630859375
+
+				weight_decay : 1e-06
+					training loss : 0.0016909587429836392
+					validation loss : 3917.00537109375
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0011468344600871205
+					validation loss : 3604.807861328125
+
+				weight_decay : 1e-06
+					training loss : 0.0023491038009524345
+					validation loss : 4985.4375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0014051769394427538
+					validation loss : 3463.348876953125
+
+				weight_decay : 1e-06
+					training loss : 0.0013036074815317988
+					validation loss : 3292.2216796875
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.033207524567842484
+					validation loss : 82375.2734375
+
+				weight_decay : 1e-06
+					training loss : 0.033041879534721375
+					validation loss : 84468.0703125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0012045475887134671
+					validation loss : 3679.42626953125
+
+				weight_decay : 1e-06
+					training loss : 0.0016404358902946115
+					validation loss : 3607.71240234375
+
+	n_hidden : 128
+		batch_size : 1024
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.03373432904481888
+					validation loss : 78425.5546875
+
+				weight_decay : 1e-06
+					training loss : 0.023720188066363335
+					validation loss : 91097.9375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.012861878611147404
+					validation loss : 38413.21484375
+
+				weight_decay : 1e-06
+					training loss : 0.02101781778037548
+					validation loss : 71047.890625
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.002324719913303852
+					validation loss : 5892.53125
+
+				weight_decay : 1e-06
+					training loss : 0.009805925190448761
+					validation loss : 32887.71875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.008266996592283249
+					validation loss : 9848.58203125
+
+				weight_decay : 1e-06
+					training loss : 0.007213001139461994
+					validation loss : 18889.408203125
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.024193506687879562
+					validation loss : 73968.0390625
+
+				weight_decay : 1e-06
+					training loss : 0.031017128378152847
+					validation loss : 68887.84375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.012322836555540562
+					validation loss : 11674.041015625
+
+				weight_decay : 1e-06
+					training loss : 0.0066435206681489944
+					validation loss : 9405.9404296875
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.0015824263682588935
+					validation loss : 3414.32275390625
+
+				weight_decay : 1e-06
+					training loss : 0.02189217321574688
+					validation loss : 79388.0625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.011398542672395706
+					validation loss : 10692.416015625
+
+				weight_decay : 1e-06
+					training loss : 0.009698454290628433
+					validation loss : 11392.548828125
+
+		batch_size : 512
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.025636395439505577
+					validation loss : 78738.6171875
+
+				weight_decay : 1e-06
+					training loss : 0.03911329805850983
+					validation loss : 97628.6484375
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.01407670695334673
+					validation loss : 17134.59375
+
+				weight_decay : 1e-06
+					training loss : 0.014690986834466457
+					validation loss : 31802.361328125
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.03211822733283043
+					validation loss : 88780.8828125
+
+				weight_decay : 1e-06
+					training loss : 0.02531062625348568
+					validation loss : 89283.53125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.008416945114731789
+					validation loss : 12813.0361328125
+
+				weight_decay : 1e-06
+					training loss : 0.00851518101990223
+					validation loss : 20447.134765625
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.05608722195029259
+					validation loss : 102856.5703125
+
+				weight_decay : 1e-06
+					training loss : 0.027003366500139236
+					validation loss : 77621.78125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0030385805293917656
+					validation loss : 9705.7001953125
+
+				weight_decay : 1e-06
+					training loss : 0.0021174761932343245
+					validation loss : 8312.9228515625
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.03281266242265701
+					validation loss : 95645.5546875
+
+				weight_decay : 1e-06
+					training loss : 0.0485621877014637
+					validation loss : 107742.2578125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.001699688727967441
+					validation loss : 4052.706787109375
+
+				weight_decay : 1e-06
+					training loss : 0.0014756888849660754
+					validation loss : 4035.689697265625
+
+		batch_size : 128
+			num_epochs : 5
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.04502743482589722
+					validation loss : 91707.8828125
+
+				weight_decay : 1e-06
+					training loss : 0.03748769313097
+					validation loss : 74874.7578125
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.006731479428708553
+					validation loss : 18136.626953125
+
+				weight_decay : 1e-06
+					training loss : 0.003764782100915909
+					validation loss : 21799.677734375
+
+			num_epochs : 10
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.035802293568849564
+					validation loss : 85201.640625
+
+				weight_decay : 1e-06
+					training loss : 0.032460667192935944
+					validation loss : 74560.3515625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0016198044177144766
+					validation loss : 3941.6884765625
+
+				weight_decay : 1e-06
+					training loss : 0.002036005025729537
+					validation loss : 3756.81640625
+
+			num_epochs : 15
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.04543871805071831
+					validation loss : 83537.8203125
+
+				weight_decay : 1e-06
+					training loss : 0.04736993834376335
+					validation loss : 81220.2421875
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.00233238167129457
+					validation loss : 4618.59326171875
+
+				weight_decay : 1e-06
+					training loss : 0.0015204856172204018
+					validation loss : 3806.56689453125
+
+			num_epochs : 20
+				learning_rate : 0.01
+				weight_decay : 1e-05
+					training loss : 0.03877503052353859
+					validation loss : 80460.53125
+
+				weight_decay : 1e-06
+					training loss : 0.029048191383481026
+					validation loss : 77331.625
+
+				learning_rate : 0.001
+				weight_decay : 1e-05
+					training loss : 0.0016495919553562999
+					validation loss : 3477.812744140625
+
+				weight_decay : 1e-06
+					training loss : 0.0014491563197225332
+					validation loss : 3213.010009765625
+
