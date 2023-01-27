@@ -26,11 +26,11 @@ if __name__ == '__main__' :
     file_name = './~~~'
     valid_ratio = 0.3
     test_ratio = 0.2
-    # random.seed(1)
-    # torch.manual_seed(1)
-    # torch.backends.cudnn.deterministic = True
-    # torch.backends.cudnn.benchmark = False
-    # np.random.seed(1)
+    random.seed(1)
+    torch.manual_seed(1)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    np.random.seed(1)
 
     model_params = {
         'n_input' : 9,
@@ -55,6 +55,7 @@ if __name__ == '__main__' :
         'use_cuda' : True,
         'cuda_device_num' : 0,
         'epochs' : 1,
+        'max_loss_maintain' : 5,
         'batch_size' : batch_size,
         'window_size' :window_size,
         'lambda_l2reg' : 1e-06,
@@ -68,10 +69,9 @@ if __name__ == '__main__' :
             'index_col' : False,
             'shuffle' : False
         }
-        # 'logging' : {
-        #     'model_save_interval' : 500,
-        #     'log_interval' : 1,
-        # }
+        'logging' : {
+
+        }
     }
 
     optimizer_params = {

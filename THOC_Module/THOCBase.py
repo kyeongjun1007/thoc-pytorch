@@ -3,6 +3,8 @@ from DataConfigurator import DataConfigurator
 
 import torch
 
+from common.utils import get_result_folder, LogData
+
 
 class THOCBase:
     def __init__(self, model_params, logger_params, run_params):
@@ -18,6 +20,9 @@ class THOCBase:
 
         # model
         self.model = THOC(**self.model_params, init_data=init_data).to(self.device)
+
+        # save result
+        self.result_log = LogData()
 
     def _get_loss(self, anomaly_scores, centroids_diff, out_of_drnn, timeseries_input):
 
