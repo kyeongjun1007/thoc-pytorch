@@ -9,10 +9,10 @@ class DataConfigurator :
     def __init__(self, train_params) :
         self.device = torch.device("cuda", train_params['cuda_device_num'] if train_params['use_cuda'] else "cpu")
 
-        self.filename = train_params['data_config']['file_name'][:-4]
+        self.dataname = train_params['data_config']['data_name'][:-4]
         self.header = train_params['data_config']['header']
         self.index_col = train_params['data_config']['index_col']
-        self.data = pd.read_csv(self.filename+'.csv', header=self.header, index_col=self.index_col)
+        self.data = pd.read_csv(self.dataname+'.csv', header=self.header, index_col=self.index_col)
 
         self.window_size = train_params['window_size']
         self.batch_size = train_params['batch_size']
@@ -55,7 +55,7 @@ class DataConfigurator :
         test = self.data.iloc[start_index:start_index+self.test_len, :]
 
         #!! path 설정
-        test.to_csv(self.filename + '_test.csv', header=self.header, index=self.index_col)
+        test.to_csv(self.dataname + '_test.csv', header=self.header, index=self.index_col)
 
     def get_init_data(self) :
         init = self.data.iloc[:self.window_size*self.batch_size]

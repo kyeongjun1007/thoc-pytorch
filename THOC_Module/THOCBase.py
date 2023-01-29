@@ -3,6 +3,8 @@ from DataConfigurator import DataConfigurator
 
 import torch
 
+from pathlib import Path
+from logging import getLogger
 from common.utils import get_result_folder, LogData
 
 
@@ -21,7 +23,14 @@ class THOCBase:
         # model
         self.model = THOC(**self.model_params, init_data=init_data).to(self.device)
 
-        # save result
+        # result folder, logger
+        self.logger = getLogger(name='trainer')
+        self.result_folder = get_result_folder(logger_params['log_file']['desc'],
+                                               date_prefix=logger_params['log_file']['date_prefix'],
+                                               result_dir=logger_params['log_file']['result_dir']
+                                               )
+        Path(self.result_folder).mkdir(parents=True, exist_ok=True)
+
         self.result_log = LogData()
 
     def _get_loss(self, anomaly_scores, centroids_diff, out_of_drnn, timeseries_input):
@@ -50,3 +59,14 @@ class THOCBase:
         loss = loss_thoc + loss_orth * self.run_params['lambda_orth'] + loss_tss * self.run_params['lambda_tss']
 
         return loss
+
+    def _log(self, epoch, epochs, train_loss, valid_loss, best_loss, early_stop):
+        if not early_stop:
+            self.logger.info('Epoch: %d/%d, train_loss: %1.5f, valid_loss: %1.5f, best_loss: 1.5f' % (
+                epoch, epochs, train_loss, valid_loss, best_loss))
+        else:
+            self.logger.info('Early stoped. because validation loss did not improve for a long time.')
+
+    def _save_params(self):
+        param_dict = self.model.state_dict()
+        torch.save(param_dict, f'{self.result_folder}/param_dict.pt')

@@ -23,7 +23,7 @@ def check_debug() :
 if __name__ == '__main__' :
     batch_size = 32
     window_size = 80
-    file_name = './~~~'
+    data_name = './~~~'
     valid_ratio = 0.3
     test_ratio = 0.2
     random.seed(1)
@@ -44,10 +44,11 @@ if __name__ == '__main__' :
     }
 
     logger_params = {
-        'log_file' : {
-            'result_dir' : './result/',
-            'filename' : 'log.txt',
-            'date_prefix' : False
+        'log_file': {
+            'result_dir': './result/',
+            'desc': f"./{data_name}",
+            'filename': 'log.txt',
+            'date_prefix': False
         }
     }
 
@@ -60,16 +61,20 @@ if __name__ == '__main__' :
         'window_size' :window_size,
         'lambda_l2reg' : 1e-06,
         'lambda_orth' : 1e-02,
-        'lambda_orth' : 1e-02,
+        'lambda_tss' : 1e-02,
         'data_config' : {
-            'file_name' : file_name,
+            'data_name' : data_name,
             'valid_ratio' : valid_ratio,
             'test_ratio': test_ratio,
             'header' : 0,
             'index_col' : False,
             'shuffle' : False
-        }
+        },
         'logging' : {
+            'log_image_params': {
+                'json_foldername': 'log_image_style',
+                'filename': 'style_loss.json'
+            }
 
         }
     }
