@@ -1,27 +1,42 @@
 # review_models
 ## THOC
 Dilated RNN model code refers to [Zalando Research](https://github.com/zalandoresearch/pytorch-dilated-rnn).   
-And I changed the output of this model to extract whole layer outs.
-
+And I changed the output of this model to extract whole layer outs.   
+   
 ### THOC.py
 pytorch implementation of [THOC](https://proceedings.neurips.cc/paper/2020/file/97e401a02082021fd24957f852e0e475-Paper.pdf) model.   
-<<<<<<< HEAD
-You can train this model using your GPU. (Batches are calculated in one go)
+You can train this model using your GPU. (So that batches are calculated in one go)   
    
-### THOC_example.py
-Usage example of THOC with sliding window.   
-You can train this model for mini-batch learning and use GPU.   
-
-### THOC_debugging.py
-For debugging...
-=======
-You can train this model for mini-batch learning and use GPU. (So that batches are calculated in one go)    
-And If you don't use scaler for your data, there might be OOM error   
-becuase the tanh gate of vanilla RNN make your model output same
-
 ### experiment_mobiacts.py
 Usage example of THOC with open-dataset(MobiActs).   
->>>>>>> 867e2d67b6a5cd95708eef7a0e46bf2ec5065425
+   
+## THOC_Module
+Make THOC module. it contains Trainer(train and valid), DataConfigurator(data and model config), Base(build model and sliding window etc...)   
+some code refers to Yeong-Dae Kwon
+
+The MIT License
+
+Copyright (c) 2021 Yeong-Dae Kwon
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 
 ## SRNN   
 RNN with another scaled input data.   
