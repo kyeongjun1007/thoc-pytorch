@@ -41,8 +41,6 @@ import dataclasses
 from dataclasses import fields
 import torch
 
-from src.MapperDataClasses import StepState
-
 
 def get_result_folder(desc, result_dir, date_prefix=True):
     process_start_time = datetime.now(pytz.timezone("Asia/Seoul"))
@@ -84,7 +82,8 @@ def create_logger(log_file=None, result_dir='./result/'):
     if not os.path.exists(log_file['filepath']):
         os.makedirs(log_file['filepath'])
 
-    file_mode = 'a' if os.path.isfile(filename)  else 'w'
+    #file_mode = 'a' if os.path.isfile(filename) else 'w'
+    file_mode = 'w'
 
     root_logger = logging.getLogger()
     root_logger.setLevel(level=logging.INFO)
@@ -354,96 +353,3 @@ def copy_all_src(dst_root):
                     dst_filepath = filepath.format(post_index)
 
                 shutil.copy(src_abspath, dst_filepath)
-
-
-#############################
-# Utils for Mapper
-#############################
-
-
-def cal_distance_given_seq(seq_nodes, depot_node_xy):
-    batch_size = seq_nodes.size(0)
-    pomo = seq_nodes.size(1)
-
-    gathering_index = seq_nodes[:, :, :, None].expand(-1, -1, -1, 2)
-    # shape: (batch, pomo, selected_list_length, 2)
-    all_xy = depot_node_xy[:, None, :, :].expand(-1, pomo, -1, -1)
-    # shape: (batch, pomo, problem+1, 2)
-
-    ordered_seq = all_xy.gather(dim=2, index=gathering_index)
-    # shape: (batch, selected_list_length, 2)
-
-    rolled_seq = ordered_seq.roll(dims=2, shifts=-1)
-    segment_lengths = ((ordered_seq - rolled_seq) ** 2).sum(3).sqrt()
-    # shape: (batch, selected_list_length)
-
-    travel_distances = segment_lengths.sum(2)
-    return travel_distances
-
-
-def check_debug():
-    import sys
-
-    eq = sys.gettrace() is None
-
-    if eq is False:
-        return True
-    else:
-        return False
-
-
-def get_min_tour_seq(seq_nodes, depot_node_xy):
-    batch_size = seq_nodes.size(0)
-    pomo = seq_nodes.size(1)
-
-    travel_distances = cal_distance_given_seq(seq_nodes, depot_node_xy)
-
-    min_dist_route_idx = torch.argmin(travel_distances, dim=1)
-    min_dist_route = seq_nodes[torch.arange(batch_size), min_dist_route_idx]
-    return min_dist_route_idx, min_dist_route
-
-
-def get_sub_tours(vrp_env):
-    seq_nodes = vrp_env.selected_node_list
-    max_seq = seq_nodes.size(-1)  # seq_nodes includes POMO instances of result
-    batch_size = seq_nodes.size(0)
-
-    depot_node_xy = vrp_env.depot_node_xy
-
-    min_dist_route_idx, min_dist_route = get_min_tour_seq(seq_nodes, depot_node_xy)
-    depot_index = (min_dist_route == 0)
-    depot_appear_step = depot_index.nonzero()
-
-    max_subroute_seq = max(depot_appear_step[:, 1].roll(-1) - depot_appear_step[:, 1] + 1).item()
-
-    _, num_subroutes = torch.unique(depot_appear_step[:, 0], return_counts=True)
-    num_subroutes = num_subroutes - 1
-
-    max_num_subroutes = max(num_subroutes).item()
-
-    result = torch.zeros(batch_size, max_num_subroutes, max_subroute_seq, dtype=torch.int64)
-
-    for i in range(batch_size):
-        start = 0
-        one_sol = min_dist_route[i]
-        num_sol = 0
-
-        for j in range(1, max_seq):
-            if one_sol[j] == 0:
-                partial_sol = one_sol[start:j + 1]
-                result[i, num_sol, 0:partial_sol.size(0)] = partial_sol
-
-                start = j
-                num_sol += 1
-
-    return result
-
-
-def deepcopy_state(state):
-    to = StepState()
-
-    for field in fields(StepState):
-        setattr(to, field.name, deepcopy(getattr(state, field.name)))
-
-    return to
-

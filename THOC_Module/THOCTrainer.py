@@ -1,5 +1,4 @@
 from THOCBase import THOCBase
-from THOCValidator import THOCValidator as THOCVal
 from torch.optim import Adam as Optimizer
 from logging import getLogger
 import pandas as pd
@@ -22,6 +21,7 @@ class THOCTrainer(THOCBase):
     def run(self):
 
         print('**************** Training Start ****************')
+        print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
         for epoch in range(self.run_params['epochs']):
             # Training and Validation

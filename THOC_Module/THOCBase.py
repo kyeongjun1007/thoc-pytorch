@@ -16,13 +16,6 @@ class THOCBase:
 
         self.device = torch.device("cuda", run_params['cuda_device_num'] if run_params['use_cuda'] else "cpu")
 
-        # data config
-        self.data_configurator = DataConfigurator(**self.run_params)
-        init_data = self.data_configurator.get_init_data()
-
-        # model
-        self.model = THOC(**self.model_params, init_data=init_data).to(self.device)
-
         # result folder, logger
         self.logger = getLogger(name='trainer')
         self.result_folder = get_result_folder(logger_params['log_file']['desc'],
@@ -32,6 +25,13 @@ class THOCBase:
         Path(self.result_folder).mkdir(parents=True, exist_ok=True)
 
         self.result_log = LogData()
+
+        # data config
+        self.data_configurator = DataConfigurator(self.run_params, self.logger_params['log_file']['result_dir'])
+        init_data = self.data_configurator.get_init_data()
+
+        # model
+        self.model = THOC(**self.model_params, init_data=init_data).to(self.device)
 
     def _get_loss(self, anomaly_scores, centroids_diff, out_of_drnn, timeseries_input):
 
@@ -62,7 +62,7 @@ class THOCBase:
 
     def _log(self, epoch, epochs, train_loss, valid_loss, best_loss, early_stop):
         if not early_stop:
-            self.logger.info('Epoch: %d/%d, train_loss: %1.5f, valid_loss: %1.5f, best_loss: 1.5f' % (
+            self.logger.info('Epoch: %d/%d, train_loss: %1.5f, valid_loss: %1.5f, best_loss: %1.5f' % (
                 epoch, epochs, train_loss, valid_loss, best_loss))
         else:
             self.logger.info('Early stoped. because validation loss did not improve for a long time.')
