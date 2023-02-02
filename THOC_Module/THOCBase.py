@@ -27,8 +27,8 @@ class THOCBase:
         self.result_log = LogData()
 
         # data config
-        self.data_configurator = DataConfigurator(self.run_params, self.logger_params['log_file']['result_dir'])
-        init_data = self.data_configurator.get_init_data()
+        self.data_configurator = DataConfigurator(self.run_params, self.result_folder)
+        init_data = self.data_configurator.get_init_data(run_params['use_cuda'])
 
         # model
         self.model = THOC(**self.model_params, init_data=init_data).to(self.device)
