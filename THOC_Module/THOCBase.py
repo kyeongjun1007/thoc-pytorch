@@ -51,9 +51,8 @@ class THOCBase:
         tss_list = []
         for i, out in enumerate(out_of_drnn):
             dilation = 2 ** i
-            for b in range(out_of_drnn.shape[2]):
-                tss = ((out[:-dilation, b] - timeseries_input[b, dilation:]) ** 2).mean()
-                tss_list.append(tss)
+            tss = ((out[:, :-dilation] - timeseries_input[:, dilation:]) ** 2).mean()
+            tss_list.append(tss)
         loss_tss = torch.stack(tss_list).mean()
 
         loss = loss_thoc + loss_orth * self.run_params['lambda_orth'] + loss_tss * self.run_params['lambda_tss']

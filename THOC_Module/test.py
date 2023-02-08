@@ -70,8 +70,11 @@ with torch.no_grad() :
         anomaly_scores, _, _ = model.forward(window)
         anomaly_score = anomaly_scores.sum(dim=0)
 
-        pred = (anomaly_score < threshold).max()
+        pred = (anomaly_score > threshold).max()
         real = y.max()
+
+        pred = pred.item()
+        real = real.item()
 
         total += 1
         if real is False :

@@ -24,7 +24,7 @@ class THOC(nn.Module):
                          enumerate(self.n_centroids)]), requires_grad=True)
         self.cos = nn.CosineSimilarity(dim=3)  # cosine similarity layer
         self.cos_for_dist = nn.CosineSimilarity(dim=2)
-        self.mlp = nn.Linear(2 * n_hidden, n_hidden)  # MLP layer for concat function
+        self.mlp = [nn.Linear(2 * n_hidden, n_hidden).to(self.device) for _ in range(n_layers)]  # MLP layer for concat function
         self.linear = nn.Linear(n_hidden, n_hidden)  # linear layer for update function
         self.relu = nn.ReLU()  # relu layer for update function
         self.self_superv = nn.Linear(n_hidden, n_input)
@@ -51,7 +51,7 @@ class THOC(nn.Module):
             R = self.calculate_R(P, R)
             f_hat = self.update(f_bar, P)
             if layer != (self.n_layers - 1):
-                f_bar = self.concat(f_hat, out[layer + 1])
+                f_bar = self.concat(f_hat, out[layer + 1], layer)
 
         cluster_L = self.unpad_tensor(self.cluster_centers[-1],self.n_layers-1)
         cosine_distance = []
@@ -70,7 +70,7 @@ class THOC(nn.Module):
             diff_list.append((CI ** 2).mean())
         centroids_diff = torch.stack(diff_list)
 
-        out_f = self.self_superv(out)
+        out_f = self.self_superv(out).transpose(1,2)
 
         return anomaly_score, centroids_diff, out_f
 
@@ -102,11 +102,11 @@ class THOC(nn.Module):
 
     # f_hat = Tensor : (n_clusters[layer+1], T, B, H)
 
-    def concat(self, f_hat, f):
+    def concat(self, f_hat, f, layer):
         concat_list = []
         for i in range(len(f_hat)) :
             concat = torch.cat([f_hat[i], f], dim=2)
-            concat_list.append(self.mlp(concat))
+            concat_list.append(self.mlp[layer](concat))
         f_bar = torch.stack(concat_list)
         return f_bar
 
