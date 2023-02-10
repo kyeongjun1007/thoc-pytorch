@@ -53,6 +53,7 @@ if __name__ == '__main__':
             'n_layers': 3,
             'n_centroids': n_centroids,
             'tau': tau,
+            'tau_decay' : 2/3,
             'dropout': 0,
             'cell_type': 'RNN',
             'batch_first': True
@@ -98,7 +99,8 @@ if __name__ == '__main__':
 
         optimizer_params = {
             'lr': lr,
-            'weight_decay': 0.65
+            'lr_decay': 0.65,
+            'decay_step' : 20
         }
 
         create_logger(**logger_params)

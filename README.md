@@ -14,6 +14,10 @@ Usage example of THOC with open-dataset(MobiActs).
 Make THOC module. it contains Trainer(train and valid), DataConfigurator(data and model config), Base(build model and sliding window etc...)   
 some code refers to Yeong-Dae Kwon
 
+23.02.10
+learning rate is decayed after 20 epochs and 1/tau is increaseed every 5 epochs
+pytorch_kmeans is revised (can operate when num_clusters = 1)
+
 The MIT License
 
 Copyright (c) 2021 Yeong-Dae Kwon

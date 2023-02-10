@@ -7,7 +7,7 @@ use_cuda = torch.cuda.is_available()
 
 
 class THOC(nn.Module):
-    def __init__(self, n_input, n_hidden, n_layers, n_centroids, init_data, tau=1, dropout=0, cell_type='GRU',
+    def __init__(self, n_input, n_hidden, n_layers, n_centroids, init_data, tau=1, tau_decay=2/3, dropout=0, cell_type='GRU',
                  batch_first=False):
         super().__init__()
         if use_cuda:
@@ -29,14 +29,20 @@ class THOC(nn.Module):
         self.relu = nn.ReLU()  # relu layer for update function
         self.self_superv = nn.Linear(n_hidden, n_input)
         self.tau = tau  # assign probability between f_bar & centroids
+        self.tau_decay = tau_decay
         self.batch_first = batch_first
 
-    def forward(self, x):
+    def forward(self, x, epoch = None):
 
         # L : # of layers
         # T : length of input data
         # B : batch size
         # H : hidden size
+
+        if epoch is None :
+            pass
+        elif (epoch != 0) and ((epoch % 5) == 0) :
+            self._tau_decay()
 
         out, hidden = self.drnn(x)  # out = Tensor : (L, T, B, H)
         if self.batch_first:
@@ -136,6 +142,8 @@ class THOC(nn.Module):
             unpaded_tensor = long_tensor[:n_centroid]
         return unpaded_tensor
 
+    def _tau_decay(self):
+        self.tau = self.tau * self.tau_decay
 
 ##-------------------------------------------------DRNN---------------------------------------------------
 

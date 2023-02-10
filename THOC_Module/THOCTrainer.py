@@ -1,8 +1,6 @@
 from THOCBase import THOCBase
 from torch.optim import Adam as Optimizer
-from logging import getLogger
-import pandas as pd
-import numpy as np
+from torch.optim.lr_scheduler import StepLR
 import torch
 import datetime
 
@@ -13,7 +11,8 @@ class THOCTrainer(THOCBase):
     def __init__(self, model_params, logger_params, run_params, optimizer_params):
         super(THOCTrainer, self).__init__(model_params, logger_params, run_params)
 
-        self.optimizer = Optimizer(self.model.parameters(), **optimizer_params)
+        self.optimizer = Optimizer(self.model.parameters(), optimizer_params['lr'])
+        self.scheduler = StepLR(self.optimizer, step_size=optimizer_params['decay_step'], gamma=optimizer_params['lr_decay'])
 
         self.loss_best = float("inf")
         self.loss_maintain = 0
@@ -25,7 +24,7 @@ class THOCTrainer(THOCBase):
 
         for epoch in range(self.run_params['epochs']):
             # Training and Validation
-            train_loss = self._train_one_epoch()
+            train_loss = self._train_one_epoch(epoch)
             valid_loss = self._valid_one_epoch()
 
             self.result_log.append('train_loss', epoch, train_loss)
@@ -56,22 +55,20 @@ class THOCTrainer(THOCBase):
 
         print('**************** Training Done ****************')
 
-    def _train_one_epoch(self):
+    def _train_one_epoch(self, epoch):
         train_dataloader = self.data_configurator.train_dataloader()
         self.model.train()
         for i, window in enumerate(train_dataloader):
-            if i == 0:
-                pass
-            window = window.to(self.device)
+            if i != 0:
+                window = window.to(self.device)
 
-            anomaly_scores, centroids_diff, out_of_drnn = self.model.forward(window)
+                anomaly_scores, centroids_diff, out_of_drnn = self.model.forward(window, epoch)
 
-            loss = self._get_loss(anomaly_scores, centroids_diff, out_of_drnn, window)
+                loss = self._get_loss(anomaly_scores, centroids_diff, out_of_drnn, window)
 
-            self.optimizer.zero_grad()
-            loss.backward()
-            self.optimizer.step()
-
+                self.optimizer.zero_grad()
+                loss.backward()
+                self.optimizer.step()
         return loss.item()
 
     def _valid_one_epoch(self):
