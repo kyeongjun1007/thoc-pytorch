@@ -54,7 +54,7 @@ class DataConfigurator:
         valid = self.scaler.transform(valid)
         valid_tensor = torch.tensor((np.array(valid, dtype='float32')))
         valid_dataset = SlidingWindow(X=valid_tensor, window=self.window_size)
-        valid_dl = DataLoader(dataset=valid_dataset, batch_size=self.batch_size, shuffle=self.shuffle)
+        valid_dl = DataLoader(dataset=valid_dataset, batch_size=self.batch_size, shuffle=False)
 
         return valid_dl
 

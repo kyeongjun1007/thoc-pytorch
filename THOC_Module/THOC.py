@@ -20,7 +20,7 @@ class THOC(nn.Module):
         self.hiddens = self.drnn(init_data)[0]  # 1st window의 drnn output (cluster centroids initializing에 사용)
         self.cluster_centers = Parameter(
             torch.stack([self.pad_tensor(kmeans(X=self.hiddens[i].flatten(0,1), device=self.device,
-                                                num_clusters=n_clusters)[1].to(self.device), i) for i, n_clusters in
+                                                num_clusters=n_clusters)[1], i) for i, n_clusters in
                          enumerate(self.n_centroids)]), requires_grad=True)
         self.cos = nn.CosineSimilarity(dim=3)  # cosine similarity layer
         self.cos_for_dist = nn.CosineSimilarity(dim=2)
@@ -32,7 +32,7 @@ class THOC(nn.Module):
         self.tau_decay = tau_decay
         self.batch_first = batch_first
 
-    def forward(self, x, epoch = None):
+    def forward(self, x, i, epoch = None):
 
         # L : # of layers
         # T : length of input data
@@ -41,7 +41,7 @@ class THOC(nn.Module):
 
         if epoch is None :
             pass
-        elif (epoch != 0) and ((epoch % 5) == 0) :
+        elif (epoch != 0) and ((epoch % 5) == 0) and (i == 1):
             self._tau_decay()
 
         out, hidden = self.drnn(x)  # out = Tensor : (L, T, B, H)

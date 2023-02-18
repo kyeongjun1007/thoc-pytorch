@@ -34,13 +34,14 @@ if __name__ == '__main__':
     data_name = 'powerdemand.csv'
 
     for i, hyperparams in enumerate(product(*get_param_list(data_name))) :
-        n_hidden, n_centroids, tau, max_loss_maintain, batch_size, skip_length, lambda_orth, lambda_tss, lr = hyperparams
 
+        max_loss_maintain, n_hidden, n_centroids, tau, batch_size, skip_length, lambda_orth, lambda_tss, lr = hyperparams
+        print(hyperparams)
         window_size = 80
         n_input = 1
         header = 0
         index_col = False
-        shuffle = False
+        shuffle = True
         label = False
 
         data_dir = './data/'
