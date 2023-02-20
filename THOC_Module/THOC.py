@@ -11,7 +11,7 @@ class THOC(nn.Module):
                  batch_first=False):
         super().__init__()
         if use_cuda:
-            self.device = "cuda:0"
+            self.device = "cuda:1"
         else:
             self.device = 'cpu'
         self.drnn = DRNN(n_input, n_hidden, n_layers, dropout, cell_type, batch_first)
@@ -153,7 +153,7 @@ class DRNN(nn.Module):
     def __init__(self, n_input, n_hidden, n_layers, dropout=0, cell_type='GRU', batch_first=False):
         super(DRNN, self).__init__()
         if use_cuda:
-            self.device = "cuda:0"
+            self.device = "cuda:1"
         else:
             self.device = 'cpu'
         self.dilations = [2 ** i for i in range(n_layers)]
@@ -259,7 +259,7 @@ class DRNN(nn.Module):
         else:
             dilated_steps = n_steps // rate
             if use_cuda:
-                inputs = inputs.cuda()
+                inputs = inputs.to(self.device)
 
         return inputs, dilated_steps
 

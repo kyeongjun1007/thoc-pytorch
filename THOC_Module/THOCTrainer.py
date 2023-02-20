@@ -14,8 +14,7 @@ class THOCTrainer(THOCBase):
         self.optimizer = Optimizer(self.model.parameters(), optimizer_params['lr'])
         self.scheduler = StepLR(self.optimizer, step_size=optimizer_params['decay_step'], gamma=optimizer_params['lr_decay'])
 
-        self.loss_best_global = float('inf')
-        self.loss_best_local = float("inf")
+        self.loss_best = float("inf")
         self.loss_maintain = 0
 
     def run(self):
@@ -31,24 +30,18 @@ class THOCTrainer(THOCBase):
             self.result_log.append('train_loss', epoch, train_loss)
             self.result_log.append('valid_loss', epoch, valid_loss)
 
-            if valid_loss < self.loss_best_local:
-                self.loss_best_local = valid_loss
+            if valid_loss < self.loss_best:
+                self.loss_best = valid_loss
                 self.loss_maintain = 0
                 self._save_params()
             else:
                 self.loss_maintain += 1
 
             # Logging
-            self._log(epoch, self.run_params['epochs'], train_loss, valid_loss, self.loss_best_local, early_stop=False)
+            self._log(epoch, self.run_params['epochs'], train_loss, valid_loss, self.loss_best, early_stop=False)
             if self.loss_maintain >= (self.run_params['max_loss_maintain']+1):
-                self._log(epoch, self.run_params['epochs'], train_loss, valid_loss, self.loss_best_local, early_stop=True)
+                self._log(epoch, self.run_params['epochs'], train_loss, valid_loss, self.loss_best, early_stop=True)
                 break
-
-            if self.loss_best_local < self.loss_best_global :
-                self.loss_best_global = self.loss_best_local
-                # Save best model params
-                self._save_params(is_global = True)
-
 
         # Save Loss Images
         image_prefix = f'{self.result_folder}/img'

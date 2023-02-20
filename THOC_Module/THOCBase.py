@@ -24,7 +24,6 @@ class THOCBase:
                                                result_dir=logger_params['log_file']['result_dir']
                                                )
         Path(self.result_folder).mkdir(parents=True, exist_ok=True)
-        Path(f'{self.logger_params["log_file"]["result_dir"]}'+ f'{self.logger_params["log_file"]["desc"].split("/")[1]}/best').mkdir(parents=True, exist_ok=True)
 
         self.result_log = LogData()
 
@@ -68,15 +67,6 @@ class THOCBase:
         else:
             self.logger.info('Early stoped. because validation loss did not improve for a long time.')
 
-    def _save_params(self, is_global = False):
+    def _save_params(self):
         param_dict = self.model.state_dict()
-
-        if not is_global :
-            torch.save(param_dict, f'{self.result_folder}/param_dict.pt')
-        else :
-            best_dir = f'{self.logger_params["log_file"]["result_dir"]}' + f'{self.logger_params["log_file"]["desc"].split("/")[1]}/best'
-            torch.save(param_dict, best_dir + '/param_dict.pt')
-            torch.save(self.model_params, best_dir + '/model_param.pt')
-            torch.save(self.logger_params, best_dir + '/logger_param.pt')
-            torch.save(self.run_params, best_dir + '/train_param.pt')
-            torch.save(self.optimizer_params, best_dir + '/optimizer_param.pt')
+        torch.save(param_dict, f'{self.result_folder}/param_dict.pt')

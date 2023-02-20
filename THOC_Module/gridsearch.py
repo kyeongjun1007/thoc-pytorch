@@ -17,4 +17,3 @@ def get_param_list(dataset):
                   lambda_orth, lambda_tss, lr]
 
     return param_list
-'LKJCAWO;EIH;FOIW LBTW3U 97'
