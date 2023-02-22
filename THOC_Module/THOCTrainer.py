@@ -50,9 +50,12 @@ class THOCTrainer(THOCBase):
 
         print('**************** Training Done ****************')
 
+        return self.loss_best, self.model.state_dict()
+
     def _train_one_epoch(self, epoch):
         train_dataloader = self.data_configurator.train_dataloader()
         self.model.train()
+
         for i, window in enumerate(train_dataloader):
             if i != 0:
                 window = window.to(self.device)
@@ -64,6 +67,7 @@ class THOCTrainer(THOCBase):
                 self.optimizer.zero_grad()
                 loss.backward()
                 self.optimizer.step()
+
         return loss.item()
 
     def _valid_one_epoch(self):

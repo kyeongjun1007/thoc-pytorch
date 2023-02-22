@@ -42,7 +42,9 @@ class THOCBase:
                 for i in range(len(p)):
                     l2_loss.append(sum(torch.linalg.norm(p_[i], 2) for p_ in p))
             else:
+
                 l2_loss.append(torch.linalg.norm(p, 2))
+
         loss_l2reg = torch.tensor(l2_loss).sum()
 
         loss_thoc = anomaly_scores.mean() + self.run_params['lambda_l2reg'] * loss_l2reg
