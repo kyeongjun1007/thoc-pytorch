@@ -5,7 +5,7 @@ def get_param_list(dataset):
     tau = [100, 1, 0.1, 0.5]
     batch_size = [32, 64, 128]
     skip_length = [[1, 2, 4], [1, 4, 8], [1, 4, 12], [1, 4, 16]]
-    lambda_orth = [0.01, 0.1, 1, 10, 100] # 이게 문제 되는거 아님?
+    lambda_orth = [0.01, 0.1, 1, 10, 100]
 
     lambda_tss = [0.01, 0.1, 1, 10, 100]
 

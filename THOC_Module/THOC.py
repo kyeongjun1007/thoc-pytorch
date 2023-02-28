@@ -41,7 +41,7 @@ class THOC(nn.Module):
 
         if epoch is None :
             pass
-        elif (epoch != 0) and ((epoch % 5) == 0) and (i == 1):
+        elif (epoch != 0) and ((epoch % 5) == 0) and (i == 1) and (self.tau >= 3e-2):
             self._tau_decay()
 
         out, hidden = self.drnn(x)  # out = Tensor : (L, T, B, H)
@@ -86,8 +86,11 @@ class THOC(nn.Module):
             cs = torch.exp(self.cos(f_bar, centroids[i])/self.tau)
             P_list.append(cs)
         P_tensor = torch.stack(P_list)
-        P_sum = P_tensor.sum(0)
-        P = torch.div(P_tensor, P_sum)
+        P = torch.nn.functional.softmax(P_tensor, dim=0)
+        # P_sum = P_tensor.sum(0)
+        # P = torch.div(P_tensor, P_sum)
+        # P = P.nan_to_num(0)
+
         return P
 
     # P = Tensor : (n_clusters[layer+1], n_clusters[layer], T, H)

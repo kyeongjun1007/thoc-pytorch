@@ -23,6 +23,9 @@ class THOCTrainer(THOCBase):
         print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
         for epoch in range(self.run_params['epochs']):
+
+            if epoch == 35 :
+                print(epoch)
             # Training and Validation
             train_loss = self._train_one_epoch(epoch)
             valid_loss = self._valid_one_epoch()
