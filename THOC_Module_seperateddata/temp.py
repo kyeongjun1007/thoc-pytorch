@@ -35,15 +35,32 @@
 #
 # './powerdemand.csv/1234'.split('/')[1]
 
-for i in range(3) :
-    {f'val_{i}' : i}
+import wandb
+import random
 
+# start a new wandb run to track this script
+wandb.init(
+    # set the wandb project where this run will be logged
+    project="my-awesome-project",
 
-tp = 359625; fp = 60530; fn = 30531; tn = 114913;
+    # track hyperparameters and run metadata
+    config={
+        "learning_rate": 0.02,
+        "architecture": "CNN",
+        "dataset": "CIFAR-100",
+        "epochs": 10,
+    }
+)
 
-pr = tp / (tp+fp)
-rc = tp / (tp+fn)
+# simulate training
+epochs = 10
+offset = random.random() / 5
+for epoch in range(2, epochs):
+    acc = 1 - 2 ** -epoch - random.random() / epoch - offset
+    loss = 2 ** -epoch + random.random() / epoch + offset
 
-2*pr*rc/(pr+rc)
+    # log metrics to wandb
+    wandb.log({"acc": acc, "loss": loss})
 
-{'a' : 1, 'b' : 2}.items()
+# [optional] finish the wandb run, necessary in notebooks
+wandb.finish()

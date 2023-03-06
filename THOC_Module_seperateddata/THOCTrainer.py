@@ -3,6 +3,8 @@ from torch.optim import Adam as Optimizer
 from torch.optim.lr_scheduler import StepLR
 import torch
 import datetime
+from torch.utils.tensorboard import SummaryWriter
+
 
 from common.utils import util_save_log_image_with_label
 
@@ -38,8 +40,9 @@ class THOCTrainer(THOCBase):
         print('**************** Training Start ****************')
         print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
-        for epoch in range(self.run_params['epochs']):
+        self.data_configurator._save_test_set()
 
+        for epoch in range(self.run_params['epochs']):
             # Training and Validation
             train_loss = self._train_one_epoch(epoch)
             valid_loss = self._valid_one_epoch()
@@ -56,7 +59,7 @@ class THOCTrainer(THOCBase):
             else:
                 self.loss_maintain += 1
 
-            self.add_hparams(param_dict, {f'train_loss' : train_loss, f'valid_loss' : valid_loss}, epoch)
+            self.add_hparams(param_dict, {'train_loss': train_loss, 'valid_loss': valid_loss}, epoch)
 
             # Logging
             self._log(epoch, self.run_params['epochs'], train_loss, valid_loss, self.loss_best, early_stop=False)
@@ -64,12 +67,6 @@ class THOCTrainer(THOCBase):
                 self._log(epoch, self.run_params['epochs'], train_loss, valid_loss, self.loss_best, early_stop=True)
                 break
 
-        # # Save Loss Images
-        # image_prefix = f'{self.result_folder}/img'
-        # util_save_log_image_with_label(image_prefix, self.run_params['logging']['log_image_params'],
-        #                                self.result_log, labels=['train_loss', 'valid_loss'])
-
-        self.writer.close()
         print('**************** Training Done ****************')
 
         return self.loss_best, self.model.state_dict()
