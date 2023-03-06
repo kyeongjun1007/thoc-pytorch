@@ -43,7 +43,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.   
    
 ## THOC_Module_seperateddata
-This makes you experiment THOC model if your dataset is seperated with 3 parts (train, valid, test).   
+This allows you to experiment THOC model if your dataset is seperated with 3 parts (train, valid, test).   
 the three datasets have to be saved in data folder and named '(dataname)_(train or valid or test).csv'
 
 ## SRNN   
