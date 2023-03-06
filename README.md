@@ -40,7 +40,11 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+THE SOFTWARE.   
+   
+## THOC_Module_seperateddata
+This makes you experiment THOC model if your dataset is seperated with 3 parts (train, valid, test).   
+the three datasets have to be saved in data folder and named '(dataname)_(train or valid or test).csv'
 
 ## SRNN   
 RNN with another scaled input data.   
