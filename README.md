@@ -46,6 +46,14 @@ THE SOFTWARE.
 This allows you to experiment THOC model if your dataset is seperated with 3 parts (train, valid, test).   
 the three datasets have to be saved in data folder and named '(dataname)_(train or valid or test).csv'
 
+## MSRNN   
+Multi Scale RNN model code.   
+
+### MSRNN.py
+pytorch Implementation of MSRNN.   
+RNN can be alternated to LSTM or GRU.   
+
+
 ## SRNN   
 RNN with another scaled input data.   
 It can predict single/multiple time point.   
