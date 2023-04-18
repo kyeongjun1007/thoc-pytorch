@@ -19,6 +19,8 @@ def check_debug():
 
 
 T = 500
+sequence_length = 10
+
 device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 
 # logging config
@@ -34,17 +36,18 @@ else:
                         format="%(message)s")
     writer = SummaryWriter("./runs/debug/exp1")
 
+## data config
+train_x, train_y = data_generator(T, sequence_length)
+
 
 def train(*cnm, **default_params):
     global writer
+    global train_x
+    global train_y
 
     device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 
     cell_type, model_type = cnm
-
-    ## data config
-    train_x, train_y = data_generator(default_params['T'], default_params['sequence_length'], default_params['iters'])
-    # 30000, 520
 
     ## model config
     n_input = 1
@@ -84,25 +87,19 @@ def train(*cnm, **default_params):
 
     ## train
     iters = default_params['iters']
-    batch_size = default_params['batch_size']
 
     model.train()
     total_loss = 0
     start_time = time.time()
     correct = 0
     counter = 0
-    for batch_idx, batch in enumerate(range(0, iters, batch_size)):
-        start_ind = batch
-        end_ind = start_ind + batch_size
-
-        x = train_x[start_ind:end_ind]  # (batch, steps)
-        y = train_y[start_ind:end_ind]  # (batch, steps)
+    for iter in range(0, iters):
 
         optimizer.zero_grad()
-        out = model(x.unsqueeze(2).contiguous())  # out: (batch, steps, output_size)
+        out = model(train_x.unsqueeze(2).contiguous())  # out: (batch, steps, output_size)
 
         out = out[:, -default_params['sequence_length']:]
-        y = y[:, -default_params['sequence_length']:]
+        y = train_y[:, -default_params['sequence_length']:]
 
         loss = criterion(out.flatten(0,1), y.flatten())
         pred = out.flatten(0,1).data.max(1, keepdim=True)[1]
@@ -114,20 +111,20 @@ def train(*cnm, **default_params):
         optimizer.step()
         total_loss += loss.item()
 
-        writer.add_scalar(f'Loss/{model_type + cell_type}', loss.item(), batch_idx)
-        writer.add_scalars(f'Loss_all', {model_type + cell_type: loss.item()}, batch_idx)
+        writer.add_scalar(f'Loss/{model_type + cell_type}', loss.item(), iter)
+        writer.add_scalars(f'Loss_all', {model_type + cell_type: loss.item()}, iter)
 
-        if batch_idx > 0 and batch_idx % default_params['log_interbal'] == 0:
-            avg_loss = total_loss / default_params['log_interbal']
-            elapsed = time.time() - start_time
-            print('| Model {} | {:5d}/{:5d} batches | lr {:2.4f} | ms/batch {:5.2f} | '
-                  'loss {:5.8f} | accuracy {:5.4f}'.format(
-                model_type+cell_type, batch_idx, iters // batch_size + 1, default_params['learning_rate'], elapsed * 1000 / default_params['log_interbal'],
-                avg_loss, 100. * correct / counter))
-            start_time = time.time()
-            total_loss = 0
-            correct = 0
-            counter = 0
+        # if iter > 0 and iter % default_params['log_interbal'] == 0:
+        #     avg_loss = total_loss / default_params['log_interbal']
+        #     elapsed = time.time() - start_time
+        #     print('| Model {} | {:5d}/{:5d} batches | lr {:2.4f} | ms/batch {:5.2f} | '
+        #           'loss {:5.8f} | accuracy {:5.4f}'.format(
+        #         model_type+cell_type, iter, iters, default_params['learning_rate'], elapsed * 1000 / default_params['log_interbal'],
+        #         avg_loss, 100. * correct / counter))
+        #     start_time = time.time()
+        #     total_loss = 0
+        #     correct = 0
+        #     counter = 0
 
 
 def run(default_params, model_types, cell_types):
@@ -160,16 +157,15 @@ if __name__ == '__main__':
         'iters': 30000,
 
         # train params
-        'batch_size': 128,
         'learning_rate': 0.001,
         'alpha': 0.9,
         'dropout': 0.0,
         'clip': 0.0,
 
-        'log_interbal' : 50,
+        'log_interbal' : 10000,
         'num_proc': 4 if not check_debug() else 1}
     if not check_debug():
-        model_types = ['SV', 'MV', 'D']
+        model_types = ['SV', 'MV', 'D', 'MS']
         cell_types = ['RNN', 'LSTM', 'GRU']
     else :
         model_types = ['MS']
