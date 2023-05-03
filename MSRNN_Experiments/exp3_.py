@@ -1,4 +1,5 @@
-from exp_tools.exp1_tools import VRNN_Copy, DRNN_Copy, MSRNN_Copy, data_generator
+from exp_tools.exp1_tools import VRNN_Copy, DRNN_Copy, MSRNN_Copy
+from exp_tools.exp3_tools import sequence_generator
 from torch.utils.tensorboard import SummaryWriter
 import logging
 from pathlib import Path
@@ -18,8 +19,8 @@ def check_debug():
     return not eq
 
 
-T = 500
-sequence_length = 10
+T = 100
+n_components = 4
 
 device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 
@@ -29,21 +30,21 @@ if not Path(path).exists():
     Path(path).mkdir(parents=True)
 
 if not check_debug():
-    logging.basicConfig(level=logging.INFO, filename=path + f"/exp1_{T}.log", filemode="w", format="%(message)s")
-    writer = SummaryWriter(f"./runs/exp1/{T}")
+    logging.basicConfig(level=logging.INFO, filename=path + f"/exp3_{n_components}.log", filemode="w", format="%(message)s")
+    writer = SummaryWriter(f"./runs/exp3/{n_components}")
 else:
-    logging.basicConfig(level=logging.INFO, filename=path + f"/_debug_exp1_{T}.log", filemode="w",
+    logging.basicConfig(level=logging.INFO, filename=path + f"/_debug_exp3_{n_components}.log", filemode="w",
                         format="%(message)s")
-    writer = SummaryWriter("./runs/debug/exp1")
+    writer = SummaryWriter("./runs/debug/exp3")
 
 ## data config
-train_x, train_y = data_generator(T, sequence_length)
+sequence, answer = sequence_generator(T, n_components)
 
 
 def train(*cnm, **default_params):
     global writer
-    global train_x
-    global train_y
+    global sequence
+    global answer
 
     device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 
@@ -51,7 +52,7 @@ def train(*cnm, **default_params):
 
     ## model config
     n_input = 1
-    n_output = 10
+    n_output = len(answer)
     batch_first = True
     dropout = default_params['dropout']
 
@@ -76,8 +77,8 @@ def train(*cnm, **default_params):
         raise ValueError("cell_type is not valid")
 
     model = model.to(device)
-    train_x = train_x.to(device)
-    train_y = train_y.to(device)
+    sequence = sequence.to(device)
+    answer = answer.to(device)
 
     ## train config
     criterion = nn.CrossEntropyLoss()
@@ -94,14 +95,11 @@ def train(*cnm, **default_params):
     for iter in range(0, iters):
 
         optimizer.zero_grad()
-        out = model(train_x.unsqueeze(2).contiguous())  # out: (batch, steps, output_size)
+        out = model(sequence.unsqueeze(2).contiguous())  # out: (batch, steps, output_size)
 
-        out = out[:, -default_params['sequence_length']:]
-        y = train_y[:, -default_params['sequence_length']:]
-
-        loss = criterion(out.flatten(0,1), y.flatten())
+        loss = criterion(out.flatten(0,1), answer.flatten())
         pred = out.flatten(0,1).data.max(1, keepdim=True)[1]
-        correct += pred.eq(y.reshape(pred.shape)).cpu().sum()
+        correct += pred.eq(answer.reshape(pred.shape)).cpu().sum()
         counter += out.flatten(0,1).size(0)
         if default_params['clip'] > 0:
             torch.nn.utils.clip_grad_norm(model.parameters(), default_params['clip'])
@@ -111,9 +109,6 @@ def train(*cnm, **default_params):
 
         writer.add_scalar(f'Loss/{model_type + cell_type}', loss.item(), iter)
         writer.add_scalars(f'Loss_all', {model_type + cell_type: loss.item()}, iter)
-
-        if loss.item() < 0.1:
-            break
 
         # if iter > 0 and iter % default_params['log_interbal'] == 0:
         #     avg_loss = total_loss / default_params['log_interbal']
@@ -158,7 +153,7 @@ if __name__ == '__main__':
         'iters': 30000,
 
         # train params
-        'learning_rate': 0.001,
+        'learning_rate': 5e-04,
         'alpha': 0.9,
         'dropout': 0.0,
         'clip': 0.0,
@@ -166,8 +161,8 @@ if __name__ == '__main__':
         'log_interbal' : 10000,
         'num_proc': 4 if not check_debug() else 1}
     if not check_debug():
-        model_types = ['D']
-        cell_types = ['RNN']
+        model_types = ['SV', 'MV', 'D', 'MS']
+        cell_types = ['RNN', 'LSTM', 'GRU']
     else :
         model_types = ['MS']
         cell_types = ['RNN', 'LSTM', 'GRU']

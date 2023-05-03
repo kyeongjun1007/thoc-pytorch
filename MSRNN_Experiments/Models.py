@@ -68,25 +68,25 @@ class MSRNN(nn.Module):
             inputs = inputs.transpose(0, 1)
 
         layers = []
-        hiddens = []
 
         # make multiscale inputs
         ms_inputs = [inputs.unfold(0, s, 1).mean(dim=3) for s in self.input_scale]
 
         for l, (cell, scale) in enumerate(zip(self.cells, self.input_scale)):  # l = layer number
             if hidden is None:
-                inputs, k = self._msrnn_layer(cell, inputs, ms_inputs[l], scale)
+                inputs, _ = self._msrnn_layer(cell, inputs, ms_inputs[l], scale)
             else:
                 inputs, hidden[l] = self._msrnn_layer(cell, inputs, ms_inputs[l], scale, hidden[l])
-                k = hidden[l]
 
             if self.batch_first :
                 layers.append(inputs.transpose(0, 1))
             else:
                 layers.append(inputs)
-            hiddens.append(k)
 
-        return layers, hiddens
+        if self.batch_first :
+            inputs = inputs.transpose(0, 1)
+
+        return inputs, layers
 
     def _msrnn_layer(self, cell, inputs, ms_input, scale, hidden=None):
         batch_size = inputs[0].size(0)

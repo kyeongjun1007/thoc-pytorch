@@ -1,8 +1,24 @@
-import torch
-from torch import nn
+from keras.datasets import mnist
 import numpy as np
-from torch.autograd import Variable
+from torch import nn
+from torch.utils.data import DataLoader
 from Models import VRNN, VLSTM, VGRU, MSRNN, DRNN
+
+
+(train_x, train_y), _ = mnist.load_data()
+train_x = np.reshape(train_x, (train_x.shape[0], -1))
+train_y = np.reshape(train_y, (train_y.shape[0], -1))
+
+valid_x = train_x[50000:]
+valid_y = train_y[50000:]
+train_x = train_x[:50000]
+train_y = train_y[:50000]
+
+
+def get_data_loader(batch_size):
+    train_loader = DataLoader(list(zip(train_x, train_y)), batch_size=batch_size, shuffle=True)
+    valid_loader = DataLoader(list(zip(valid_x, valid_y)), batch_size=batch_size, shuffle=True)
+    return train_loader, valid_loader
 
 
 class VRNN_Copy(nn.Module):
@@ -26,7 +42,7 @@ class VRNN_Copy(nn.Module):
     def forward(self, x): # x: (batch, steps, input_size)
         y, _ = self.vrnn(x) # y: (batch, steps, hidden_size)
 
-        return self.linear(y) # (batch, steps, output_size)
+        return self.linear(y[:,-1]).unsqueeze(1) # (batch, steps, output_size)
 
 
 class MSRNN_Copy(nn.Module):
@@ -43,7 +59,7 @@ class MSRNN_Copy(nn.Module):
     def forward(self, x): # x: (batch, steps, input_size)
         y, _ = self.msrnn(x) # y: (batch, steps, hidden_size)
 
-        return self.linear(y) # (batch, steps, out_size)
+        return self.linear(y[:,-1]).unsqueeze(1) # (batch, steps, out_size)
 
 
 class DRNN_Copy(nn.Module):
@@ -60,18 +76,4 @@ class DRNN_Copy(nn.Module):
     def forward(self, x): # x: (batch, steps, input_size)
         y, _ = self.drnn(x) # y: (batch, steps, hidden_size)
 
-        return self.linear(y) # (batch, steps, output_size)
-
-
-def data_generator(T, mem_length):
-
-    seq = torch.from_numpy(np.random.randint(0, 8, size=(mem_length,))).float()
-    blanck = 8 * torch.ones(T)
-    marker = 9 * torch.ones(mem_length + 1)
-    placeholders = 8 * torch.ones(mem_length)
-
-    x = torch.cat((seq, blanck[:-1], marker), 0)
-    y = torch.cat((placeholders, blanck, seq), 0).long()
-
-    x, y = Variable(x), Variable(y)
-    return x.unsqueeze(0), y.unsqueeze(0)
+        return self.linear(y[:,-1]).unsqueeze(1) # (batch, steps, output_size)
