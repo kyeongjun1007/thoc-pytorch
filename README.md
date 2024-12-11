@@ -5,13 +5,15 @@ Dilated RNN model code refers to [Zalando Research](https://github.com/zalandore
 And I changed the output of this model to extract whole layer outs.   
    
 ## repo 파일 구조
-my_project/
-├── **README.md**
-├── **DataConfigurator.py**     # train-valid-test split, DataLoader 설정, test 데이터 저장 등.
-├── **THOC.py**                 # THOC 모델 Class.
-├── **THOCBase.py**             # 학습 과정 log 및 tensor board 저장, best model 저장 등.
-├── **THOCTrainer.py**          # THOC 모델 학습.
-├── **gridsearch.py**           # grid-search scope 설정.
-├── **train.py**                # 모델 학습 실행 코드.
-├── **test.py**                 # best 모델의 test 성능 확인 코드. (수정 중)
-└── **requirements.txt**
+<pre>
+thoc-pytorch/   
+├── DataConfigurator.py         # train-valid-test split, DataLoader 설정, test 데이터 저장 등.   
+├── THOC.py                     # THOC 모델 Class.   
+├── THOCBase.py                 # 학습 과정 log 및 tensor board 저장, best model 저장 등.   
+├── THOCTrainer.py              # THOC 모델 학습.   
+├── gridsearch.py               # grid-search scope 설정.   
+├── train.py                    # 모델 학습 실행 코드.   
+├── test.py                     # best 모델의 test 성능 확인 코드. (수정 중)   
+├── README.md   
+└── requirements.txt
+</pre>
